@@ -177,7 +177,7 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                                 <td className="px-3 py-2 text-ellipsis overflow-hidden text-nowrap text-center ">
                                                     {item.category_id?.name}
                                                 </td>
-                                                <td className="px-3 py-2 text-ellipsis overflow-hidden text-center">{item.service_date}</td>
+                                                <td className="px-3 py-2 text-ellipsis overflow-hidden text-center">{new Date(item.service_date).toLocaleDateString()}</td>
                                                 <td className="px-3 py-2 text-ellipsis overflow-hidden text-center">{item.isDisposition? "Yes": "No"}</td>
                                                 <td className="px-3 py-2 text-ellipsis overflow-hidden text-center">{item.cost}</td>
                                                 <td className="px-3 py-2 text-ellipsis overflow-hidde text-center">{item.nbv}</td>

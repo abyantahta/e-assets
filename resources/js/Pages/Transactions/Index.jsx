@@ -75,6 +75,15 @@ export default function Index({ auth, transactions, queryParams = null, success 
                                             >
                                                 ID
                                             </TableHeading>
+                                            <TableHeading
+                                                name="date"
+                                                sort_field={queryParams.sort_field}
+                                                sort_direction={queryParams.sort_direction}
+                                                sortChanged={sortChanged}
+                                                className=" w-28"
+                                            >
+                                                Date
+                                            </TableHeading>
                                             <th className="w-32 px-3 py-3">No Asset</th>
                                             <TableHeading
                                                 name="nama_asset"
@@ -133,6 +142,7 @@ export default function Index({ auth, transactions, queryParams = null, success 
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr className="text-nowrap">
                                             <th className="px-3 py-3"></th>
+                                            <th className="px-3 py-3"></th>
                                             <th className="px-3 py-3 w-1">
                                                 <TextInput
                                                     className="w-full"
@@ -178,20 +188,21 @@ export default function Index({ auth, transactions, queryParams = null, success 
                                                 key={transaction.id}
                                             >
                                                 <td className="px-3 py-2 text-center">{index+1}</td>
+                                                <td className="px-3 py-2 text-ellipsis overflow-hidden">{new Date(transaction.created_at).toLocaleDateString()}</td>
                                                 <td className="px-3 py-2">{transaction.item_id.no_asset}</td>
                                                 <td className="px-3 py-2">{transaction.item_id.name}</td>
-                                                <td className="px-3 py-2 text-nowrap text-ellipsis overflow-hidden text-center">
+                                                <td className="px-3 py-2 text-nowrap text-ellipsis overflow-hidden ">
                                                     {transaction.item_id.category_id.name}
                                                 </td>
-                                                <td className="px-3 py-2 text-ellipsis overflow-hidden text-nowrap text-center ">
+                                                <td className="px-3 py-2 text-ellipsis overflow-hidden text-nowrap  ">
                                                     {transaction.kondisi}
                                                 </td>
-                                                <td className="px-3 py-2 text-ellipsis overflow-hidden text-center">{transaction.lokasi}</td>
-                                                <td className="px-3 py-2 text-ellipsis overflow-hidden text-center">{transaction.pic}</td>
+                                                <td className="px-3 py-2 text-ellipsis overflow-hidden ">{transaction.lokasi}</td>
+                                                <td className="px-3 py-2 text-ellipsis overflow-hidden ">{transaction.pic}</td>
                                                 <td className="px-3 py-2 text-ellipsis overflow-hidden text-center">{transaction.user_id.name}</td>
                                                 {/* <td className="px-3 py-2 text-ellipsis overflow-hidde text-center">{transaction.nbv}</td>
                                                 <td className="px-3 py-2 text-ellipsis overflow-hidden text-center">{transaction.lokasi}</td> */}
-                                                <td className="px-3 py-2 overflow-hidden text-center flex gap-2">
+                                                <td className="px-3 py-2 overflow-hidden flex gap-2">
                                                     <Link href={route("transactions.edit", transaction.id)} className='bg-yellow-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
                                                         {/* <Squares2X2Icon className='w-5 text-white' />   */}
                                                         <PencilIcon className='w-5'/>
