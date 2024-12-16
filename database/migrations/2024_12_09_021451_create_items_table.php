@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('no_asset')->unique();
+            $table->string('encrypted_no_asset');
             $table->string('name');
             $table->foreignId('category_id')->constrained('categories');
             $table->timestamp('service_date')->nullable();

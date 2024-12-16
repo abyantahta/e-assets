@@ -42,6 +42,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'Office Equipment'
         ]);
 
-        Item::factory()->count(30)->hasTransactions(30)->create();
+        Item::factory()->count(90)->create();
     }
 }

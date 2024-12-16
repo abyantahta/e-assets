@@ -21,7 +21,7 @@ class TransactionFactory extends Factory
             'updated_at' => time(),
             'user_id' => 1,
             'lokasi' => fake()->randomElement(["Taruma", "Dojo", "Pos Satpam", "Gedung Baru", "Gedung Lama"]),
-            'PIC' => fake()->randomElement(["Abyan", "Amrullah", "Hilal", "Pietra", "Andrian"]),
+            'pic' => fake()->randomElement(["Abyan", "Amrullah", "Hilal", "Pietra", "Andrian"]),
             'Kondisi' => fake()->randomElement(["Baik", "Kurang", "Rusak"]),
             'image_path' => fake()->imageUrl(),
             //

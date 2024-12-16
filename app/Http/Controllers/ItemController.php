@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use App\Http\Resources\ItemResource;
+use Illuminate\Support\Facades\Crypt;
 
 class ItemController extends Controller
 {
@@ -13,6 +15,23 @@ class ItemController extends Controller
      */
     public function index()
     {
+        $query = Item::query();
+
+        $sortField = request("sort_field", "created_at");
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request("name")) {
+            $query->where("{{ name }}", "like", "%" . request("name") . "%");
+        }
+        if (request("category_id")) {
+            $query->where('category_id', request("category_id"));
+        }
+        $items = $query->orderBy($sortField, $sortDirection)->paginate(10);
+        return inertia("Items/Index",[
+            "items" => ItemResource::collection($items),
+            "queryParams" => request()->query() ?: null,
+            "success" => session('success'),
+        ]);
         //
     }
 
@@ -35,9 +54,18 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Item $item)
+    public function show($id)
     {
-        //
+        $item = Item::query()->where('id',$id)->get();
+        
+        // dd(Crypt::decrypt($id));
+        // ;
+        // dd($item);
+        // $itemRes = ItemResource::collection($item);
+        // dd($itemRes);
+        return inertia("Items/Show", [
+            "item" => ItemResource::collection($item),
+        ]);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +18,12 @@ class ItemFactory extends Factory
     public function definition(): array
     {
         return [
+            // 'id' => uniqid(),
             'created_at' => time(),
             'updated_at' => time(),
-            'no_asset' => fake()->sentence(),
+            // 'encrypted_no_asset' => Str::random(30),
+            'no_asset' => Str::random(9),
+            'encrypted_no_asset' => Str::random(30),
             'name' => fake()->sentence(),
             'category_id' => fake()->randomElement([1,2,3,4,5]),
             'service_date' => fake()->date(),

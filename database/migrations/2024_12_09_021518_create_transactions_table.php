@@ -16,8 +16,10 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('item_id')->constrained('items');
+            // $table->string('no_asset')->unique();
+            // $table->string('asset_name');
             $table->string('lokasi');
-            $table->string('PIC');
+            $table->string('pic');
             $table->string('kondisi');
             $table->string('image_path')->nullable();
         });
