@@ -16,7 +16,6 @@ export default function Index({ auth, items, queryParams = null, success }) {
         } else {
             delete queryParams[name];
         }
-
         router.get(route("items.index"), queryParams);
     };
 
@@ -69,7 +68,7 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                             </TableHeading>
                                             <th className="w-32 px-3 py-3">No Asset</th>
                                             <TableHeading
-                                                name="nama_asset"
+                                                name="name"
                                                 sort_field={queryParams.sort_field}
                                                 sort_direction={queryParams.sort_direction}
                                                 sortChanged={sortChanged}
@@ -79,7 +78,7 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                             </TableHeading>
 
                                             <TableHeading
-                                                name="category"
+                                                name="category_id"
                                                 sort_field={queryParams.sort_field}
                                                 sort_direction={queryParams.sort_direction}
                                                 sortChanged={sortChanged}
@@ -103,7 +102,7 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                                 sort_field={queryParams.sort_field}
                                                 sort_direction={queryParams.sort_direction}
                                                 sortChanged={sortChanged}
-                                                className=" w-24 text-ellipsis"
+                                                className=" w-36 text-ellipsis"
                                                 >
                                                 Disposisi
                                             </TableHeading>
@@ -125,10 +124,10 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr className="text-nowrap">
                                             <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3 w-1">
+                                            <th className=" py-3">
                                                 <TextInput
                                                     className="w-full"
-                                                    defaultValue={queryParams.name}
+                                                    defaultValue={queryParams.no_asset}
                                                     placeholder="no_asset"
                                                     onBlur={(e) =>
                                                         searchFieldChanged("no_asset", e.target.value)
@@ -156,7 +155,20 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                             </th>
                                             <th className="px-3 py-3"></th>
                                             {/* <th className="px-3 py-3"></th> */}
-                                            <th className="px-3 py-3"></th>
+                                            <th className="px-3 py-3">
+                                                <SelectInput
+                                                    className="w-full"
+                                                    defaultValue={queryParams.isDisposal}
+                                                    onChange={(e) =>
+                                                        searchFieldChanged("isDisposal", e.target.value)
+                                                    }
+                                                >
+                                                    <option value="">All</option>
+                                                    <option value="1">Active</option>
+                                                    <option value="2">Deactive</option>
+                                                    {/* <option value="6">Office Equipment</option> */}
+                                                </SelectInput>
+                                            </th>
                                             <th className="px-3 py-3"></th>
                                             <th className="px-3 py-3"></th>
                                             <th className="px-3 py-3"></th>

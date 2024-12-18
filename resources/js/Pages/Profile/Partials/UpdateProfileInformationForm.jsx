@@ -23,7 +23,6 @@ export default function UpdateProfileInformation({
 
         patch(route('profile.update'));
     };
-
     return (
         <section className={className}>
             <header>

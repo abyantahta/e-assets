@@ -6,6 +6,8 @@ use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Http\Resources\ItemResource;
+use App\Http\Resources\TransactionResource;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Crypt;
 
 class ItemController extends Controller
@@ -15,18 +17,25 @@ class ItemController extends Controller
      */
     public function index()
     {
+        // dd
         $query = Item::query();
-
+        // dd(request("isdisposal"));
         $sortField = request("sort_field", "created_at");
         $sortDirection = request("sort_direction", "desc");
 
-        if (request("name")) {
-            $query->where("{{ name }}", "like", "%" . request("name") . "%");
+        if (request("no_asset")) {
+            $query->where("no_asset", "like", "%" . request("no_asset") . "%");
         }
         if (request("category_id")) {
             $query->where('category_id', request("category_id"));
         }
-        $items = $query->orderBy($sortField, $sortDirection)->paginate(10);
+        if (request("isDisposal")==1) {
+            $query->where('isDisposition', request("isDisposal"));
+        }else if(request("isDisposal")==2){
+            $query->where('isDisposition',0);
+            // dd($query->get());
+        }
+        $items = $query->orderBy($sortField, $sortDirection)->paginate(10)->withQueryString();;
         return inertia("Items/Index",[
             "items" => ItemResource::collection($items),
             "queryParams" => request()->query() ?: null,
@@ -42,6 +51,9 @@ class ItemController extends Controller
     {
         //
     }
+    // public function itemhistory($id){
+    //     dd($id);
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -57,14 +69,15 @@ class ItemController extends Controller
     public function show($id)
     {
         $item = Item::query()->where('id',$id)->get();
-        
+        $transactions = Transaction::query()->where('item_id', $id)->get();
         // dd(Crypt::decrypt($id));
         // ;
-        // dd($item);
+        // dd($transactions);
         // $itemRes = ItemResource::collection($item);
         // dd($itemRes);
         return inertia("Items/Show", [
             "item" => ItemResource::collection($item),
+            "transactions" => TransactionResource::collection($transactions),
         ]);
     }
 

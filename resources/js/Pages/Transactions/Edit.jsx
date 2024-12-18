@@ -156,7 +156,7 @@ const Edit = ({ auth, transaction }) => {
                                     </h2>
                                 </div>
                                 <div className="mt-4 text-right">
-                                    <Link href={route("items.index")} className='bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2 text-sm'>
+                                    <Link href={route("transactions.index")} className='bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2 text-sm'>
                                         Cancel
                                     </Link>
                                     <button type='submit' className='bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600 text-sm'>

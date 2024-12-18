@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportFullSTO;
 use App\Models\Item;
 use App\Models\Transaction;
 use Illuminate\Support\Str;
@@ -10,6 +11,7 @@ use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Http\Resources\TransactionResource;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 // use Illuminate\Container\Attributes\Storage;
 
@@ -20,18 +22,23 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $query = Transaction::query();
-
-        $sortField = request("sort_field", "created_at");
+        $query = Transaction::select('transactions.*', 'items.id AS it_id')->leftJoin('items', 'items.id', '=', 'transactions.item_id'); 
+        $sortField = request("sort_field", "transactions.created_at");
         $sortDirection = request("sort_direction", "desc");
         // dd($query);
         if (request("no_asset")) {
+            $query->where("items.no_asset", "like", "%" . request("no_asset") . "%")->get();
+            // dd($query);
             $query->where("no_asset", "like", "%" . request("no_asset") . "%");
         }
         if (request("category_id")) {
-            $query->where('category_id', request("category_id"));
+            $query->where("items.category_id",  request("category_id") )->get();
+            // $query->where('category_id', request("category_id"));
         }
         $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10);
+        // dd($transactions);
+        // $transactionsRef = TransactionResource::make($transactions);
+        // dd($transactionsRef);
         // dd($transactions);
         return inertia("Transactions/Index", [
             "transactions" => TransactionResource::collection($transactions),
@@ -137,5 +144,9 @@ class TransactionController extends Controller
         return to_route('transactions.index')
         ->with('success', "Transaction was deleted");
         //
+    }
+    public function exportSTO(){
+        // dd(Excel::download(new ExportFullSTO, 'users.xlsx'));
+        return Excel::download(new ExportFullSTO, 'users.xlsx');
     }
 }

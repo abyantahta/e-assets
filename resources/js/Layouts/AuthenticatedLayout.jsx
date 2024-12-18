@@ -2,24 +2,27 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
+import { PlusIcon } from '@heroicons/react/16/solid';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
-
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
+            <nav className=" bg-white border-b border-gray-100 ">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
-                        <div className="flex">
+                        <div className="flex  w-full justify-between">
                             <div className="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                                <Link className='flex items-center gap-3' href="/">
+                                    {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" /> */}
+                                    <div className="p-1 rounded-full h-fit bg-white shadow-md w-fit">
+                                        <img className='w-8 h-8 rounded-full' src="https://media.licdn.com/dms/image/v2/D560BAQFAz4zMQsnRAQ/company-logo_200_200/company-logo_200_200/0/1683249151464?e=2147483647&v=beta&t=uMypPyvfsUZc0cit7ztKSxlYPNXGLY2a0I1RO-0v4IQ" alt="" />
+                                    </div>
+                                    <h2 className='font-bold text-greenTheme text-2xl md:text-3xl'>e-Assets</h2>
                                 </Link>
                             </div>
 
@@ -42,6 +45,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Transactions
                                 </NavLink>
+
                                 {/* <NavLink
                                     href={route('dashboard')}
                                     active={route().current('dashboard')}
@@ -51,7 +55,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
 
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                        <div className=" hidden sm:ms-6 sm:flex sm:items-center">
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -60,7 +64,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 type="button"
                                                 className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
                                             >
-                                                {user.name}
+                                                {user?.name}
 
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
@@ -77,8 +81,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                             </button>
                                         </span>
                                     </Dropdown.Trigger>
-
                                     <Dropdown.Content>
+                                        <Link
+                                            href={route('register')}
+                                            method="post"
+                                            as="button"
+                                            className='pl-4 text-white font-bold mb-2 mt-4'
+                                        >
+                                            <div className="px-4  rounded-full  text-sm py-1 bg-greenTheme flex gap-1">
+                                                Create New User
+                                                <PlusIcon className='w-4' />
+                                            </div>
+                                        </Link>
                                         <Dropdown.Link
                                             href={route('profile.edit')}
                                         >
@@ -91,6 +105,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         >
                                             Log Out
                                         </Dropdown.Link>
+
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
@@ -180,15 +195,15 @@ export default function AuthenticatedLayout({ header, children }) {
                 </div>
             </nav>
 
-            {header && (
+            {/* {header && (
                 <header className="bg-white shadow dark:bg-gray-800">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                         {header}
                     </div>
                 </header>
-            )}
+            )} */}
 
-            <main>{children}</main>
+            <main className=''>{children}</main>
         </div>
     );
 }
