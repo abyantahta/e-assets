@@ -84,7 +84,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <Dropdown.Content>
                                         <Link
                                             href={route('register')}
-                                            method="post"
+                                            method="get"
                                             as="button"
                                             className='pl-4 text-white font-bold mb-2 mt-4'
                                         >

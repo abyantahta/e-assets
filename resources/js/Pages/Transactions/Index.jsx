@@ -67,7 +67,7 @@ export default function Index({ auth, transactions, queryParams = null, success 
                                 <ArrowLeftStartOnRectangleIcon className="w-6" />
                                 Export Transactions
                             </a>
-                            <Link className="ml-auto  py-1 w-fit px-4 text-center bg-blue-400 text-white font-bold flex items-center justify-center gap-2 rounded-md">
+                            <Link href={route('transactions.dailyreport')} className="ml-auto  py-1 w-fit px-4 text-center bg-blue-400 text-white font-bold flex items-center justify-center gap-2 rounded-md">
                                 <ArrowDownOnSquareIcon className="w-6" />
                                 Generate Daily Report
                             </Link>

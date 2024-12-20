@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ExportFullSTO;
 use App\Models\Item;
+use File;
+// use Spatie\Image\Image;
 use App\Models\Transaction;
 use Illuminate\Support\Str;
+use Intervention\Image\Image;
+use App\Exports\ExportFullSTO;
 use App\Http\Resources\ItemResource;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\TransactionResource;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
-use App\Http\Resources\TransactionResource;
-use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Intervention\Image\Drivers\Gd\Driver;
+// use Intervention\Image\Drivers\Imagick\Driver;
+use Intervention\Image\ImageManager;
 
 // use Illuminate\Container\Attributes\Storage;
 
@@ -36,10 +43,11 @@ class TransactionController extends Controller
             // $query->where('category_id', request("category_id"));
         }
         $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10);
-        // dd($transactions);
-        // $transactionsRef = TransactionResource::make($transactions);
-        // dd($transactionsRef);
-        // dd($transactions);
+        // return view("exportFullSTO", [
+        //     "transactions" => TransactionResource::collection($transactions)->toJson(),
+        //     "queryParams" => request()->query() ?: null,
+        //     "success" => session('success'),
+        // ]);
         return inertia("Transactions/Index", [
             "transactions" => TransactionResource::collection($transactions),
             "queryParams" => request()->query() ?: null,
@@ -64,13 +72,30 @@ class TransactionController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
+        // dd();
         $data = $request->validated();
         // dd($data);
-        /** @var $image \Illuminate\Http\UploadedFile */
+        // /** @var $image \Illuminate\Http\UploadedFile */
         $image = $data['image_path'] ?? null;
         // dd($data);
         if ($image) {
-            $data['image_path'] = $image->store('task/' . Str::random(), 'public');
+            $filename = Str::random(20) . $image->getClientOriginalName();
+            $foldername = Str::random(10);
+            Storage::disk('public')->makeDirectory('transactions/'.$foldername);
+            $imgManager = new ImageManager(new Driver());
+            $thumbImage = $imgManager->read($image);
+            // $thumbImage->scale(width:750);
+            $thumbImage->scaleDown(width:750);
+            $thumbImage->scaleDown(height:400);
+            // $thumbImage->resize(height:350,width:750);
+            $thumbImage->save(storage_path('app/public/transactions/'.$foldername.'/'.$filename));
+            // $data['image_path'] =$thumbImage->save(storage_path('app/public/transactions/' . $foldername . '/' . $filename));
+            // dd($data['image_path']);
+            $data['image_path'] = 'transactions/'.$foldername.'/'.$filename;
+            // dd($data['image_path']);
+
+            // $data['image_path'] = $image->store('transactions/' . Str::random(), 'public');
+
         }
         // $data['item_id'] = 1;
         Transaction::create($data);
@@ -148,5 +173,9 @@ class TransactionController extends Controller
     public function exportSTO(){
         // dd(Excel::download(new ExportFullSTO, 'users.xlsx'));
         return Excel::download(new ExportFullSTO, 'users.xlsx');
+    }
+    public function dailyreport(){
+        $pdf = Pdf::loadView('generateDailyReport');
+        return $pdf->download('pdfkuh.pdf');
     }
 }

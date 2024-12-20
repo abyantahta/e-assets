@@ -11,11 +11,7 @@ use Illuminate\Contracts\View\View;
 class ExportFullSTO implements FromView
 {
     public function view() :View {
-        // dd('halo');
-        // return
         $transactions = Transaction::query()->get();
-        // $transactionsGet = new TransactionResource($transactions);
-        // dd($transa)
         return view('exportFullSTO', [
             "transactions" => TransactionResource::collection($transactions)->toJson(),
         ]);
