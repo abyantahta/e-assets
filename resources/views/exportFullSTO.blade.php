@@ -15,7 +15,7 @@
         // dd($transactionsDecode);
     @endphp;
     {{-- <h1>halo halo bandung</h1> --}}
-    <table style="background-color: red">
+    <table">
     <thead>
         <tr>
             <th>No</th>

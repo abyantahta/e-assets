@@ -43,7 +43,7 @@ class TransactionController extends Controller
             // $query->where('category_id', request("category_id"));
         }
         $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10);
-        // return view("exportFullSTO", [
+        // return view("generateDailyReport", [
         //     "transactions" => TransactionResource::collection($transactions)->toJson(),
         //     "queryParams" => request()->query() ?: null,
         //     "success" => session('success'),
@@ -175,7 +175,17 @@ class TransactionController extends Controller
         return Excel::download(new ExportFullSTO, 'users.xlsx');
     }
     public function dailyreport(){
-        $pdf = Pdf::loadView('generateDailyReport');
+        $transactions = Transaction::query()->get();
+        $pdf = Pdf::loadView('generateDailyReport',[
+            "transactions" => TransactionResource::collection($transactions)->toJson(),
+            // "queryParams" => request()->query() ?: null,
+            // "success" => session('success'),
+        ])->setOption(['dpi=>150'])->setPaper('a4', 'landscape');
         return $pdf->download('pdfkuh.pdf');
+        // return view("generateDailyReport",[
+        //     "transactions" => TransactionResource::collection($transactions)->toJson(),
+        //     // "queryParams" => request()->query() ?: null,
+        //     // "success" => session('success'),
+        // ]);
     }
 }
