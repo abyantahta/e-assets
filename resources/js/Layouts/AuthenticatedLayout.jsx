@@ -11,18 +11,18 @@ export default function AuthenticatedLayout({ header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
-            <nav className=" bg-white border-b border-gray-100 ">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen font-poppins bg-lightTheme dark:bg-gray-900 overflow-x-hidden">
+            <nav className=" bg-lightTheme shadow-md py-2 border-b border-gray-100 ">
+                <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex  w-full justify-between">
                             <div className="flex shrink-0 items-center">
                                 <Link className='flex items-center gap-3' href="/">
                                     {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" /> */}
-                                    <div className="p-1 rounded-full h-fit bg-white shadow-md w-fit">
-                                        <img className='w-8 h-8 rounded-full' src="https://media.licdn.com/dms/image/v2/D560BAQFAz4zMQsnRAQ/company-logo_200_200/company-logo_200_200/0/1683249151464?e=2147483647&v=beta&t=uMypPyvfsUZc0cit7ztKSxlYPNXGLY2a0I1RO-0v4IQ" alt="" />
-                                    </div>
-                                    <h2 className='font-bold text-greenTheme text-2xl md:text-3xl'>e-Assets</h2>
+                                    {/* <div className="p-1 rounded-full h-fit bg-white shadow-md w-fit"> */}
+                                        <img className='w-14 h-14 rounded-full' src="/storage/logo/logo.png" alt="" />
+                                    {/* </div> */}
+                                    <h2 className='font-semibold text-brownTheme text-2xl md:text-3xl'>e-Assets</h2>
                                 </Link>
                             </div>
 
@@ -30,6 +30,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <NavLink
                                     href={route('dashboard')}
                                     active={route().current('dashboard')}
+                                    className=''
                                 >
                                     Dashboard
                                 </NavLink>
@@ -55,14 +56,14 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
 
-                        <div className=" hidden sm:ms-6 sm:flex sm:items-center">
+                        <div className=" hidden sm:ms-6 sm:flex sm:items-center ">
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
+                                                className="inline-flex items-center rounded-md border border-transparent bg-lightTheme shadow-md px-3 py-2 text-sm font-medium leading-4 text-greenTheme transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
                                             >
                                                 {user?.name}
 

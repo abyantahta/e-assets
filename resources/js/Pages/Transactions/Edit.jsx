@@ -32,7 +32,7 @@ const Edit = ({ auth, transaction }) => {
         console.log('submit')
         post(route('transactions.update', id));
     }
-    // console.log(auth)
+    console.log(image_path, 'ImagePath')
     return (
         // <h1>hai</h1>
         <AuthenticatedLayout

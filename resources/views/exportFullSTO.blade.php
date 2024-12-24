@@ -12,10 +12,8 @@
 <body>
     @php
         $transactionsDecode = json_decode($transactions);
-        // dd($transactionsDecode);
     @endphp;
-    {{-- <h1>halo halo bandung</h1> --}}
-    <table">
+    <table>
     <thead>
         <tr>
             <th>No</th>

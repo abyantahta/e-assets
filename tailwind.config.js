@@ -16,11 +16,15 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 inter: ['Inter', ...defaultTheme.fontFamily.sans],
+                poppins: ['Poppins', ...defaultTheme.fontFamily.sans],
+                playfairDisplay: ['Playfair Display', ...defaultTheme.fontFamily.sans],
             },
             colors:{
-                'greenTheme' : '#32A37F',
-                'redTheme' : '#ED6359',
-                'blackTheme' : '#4B4C4B',
+                // 'lightTheme' : '#FFFEF5',
+                'lightTheme' : '#FFF5E5',
+                'orangeTheme' : '#E19922',
+                'greenTheme' : '#2C4D15',
+                'brownTheme' : '#612011',
             },
             keyframes:{
                 loginRed : {

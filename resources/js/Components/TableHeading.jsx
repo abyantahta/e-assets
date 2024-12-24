@@ -12,7 +12,7 @@ export default function TableHeading({
     return (
         <th 
         className={className} onClick={(e) => sortChanged(name)}>
-            <div className="px-3 py-3 flex items-center justify-between gap-1 cursor-pointer">
+            <div className="px-3 py-3 flex items-center justify-between gap-2 cursor-pointer">
                 {children}
                 {sortable && (
                     <div>

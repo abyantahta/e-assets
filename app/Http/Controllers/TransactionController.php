@@ -29,10 +29,10 @@ class TransactionController extends Controller
      */
     public function index()
     {
+        // dd('query');
         $query = Transaction::select('transactions.*', 'items.id AS it_id')->leftJoin('items', 'items.id', '=', 'transactions.item_id'); 
         $sortField = request("sort_field", "transactions.created_at");
         $sortDirection = request("sort_direction", "desc");
-        // dd($query);
         if (request("no_asset")) {
             $query->where("items.no_asset", "like", "%" . request("no_asset") . "%")->get();
             // dd($query);
@@ -137,15 +137,25 @@ class TransactionController extends Controller
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
         $data = $request->validated();
-        // dd($data);
         $image = $data['image_path'] ?? null;
-        // $data['updated_by'] = Auth::id();
-        // dd($image);
         if ($image) {
             if ($transaction->image_path) {
                 Storage::disk('public')->deleteDirectory(dirname($transaction->image_path));
             }
-            $data['image_path'] = $image->store('transaction/' . Str::random(), 'public');
+            $filename = Str::random(20) . $image->getClientOriginalName();
+            $foldername = Str::random(10);
+            Storage::disk('public')->makeDirectory('transactions/' . $foldername);
+            $imgManager = new ImageManager(new Driver());
+            $thumbImage = $imgManager->read($image);
+            // $thumbImage->scale(width:750);
+            $thumbImage->scaleDown(width: 750);
+            $thumbImage->scaleDown(height: 400);
+            // $thumbImage->resize(height:350,width:750);
+            $thumbImage->save(storage_path('app/public/transactions/' . $foldername . '/' . $filename));
+            // $data['image_path'] =$thumbImage->save(storage_path('app/public/transactions/' . $foldername . '/' . $filename));
+            // dd($data['image_path']);
+            $data['image_path'] = 'transactions/' . $foldername . '/' . $filename;
+            // $data['image_path'] = $image->store('transaction/' . Str::random(), 'public');
         } else {
             unset($data['image_path']);
         }
@@ -171,13 +181,38 @@ class TransactionController extends Controller
         //
     }
     public function exportSTO(){
+        // dd('auery');
         // dd(Excel::download(new ExportFullSTO, 'users.xlsx'));
         return Excel::download(new ExportFullSTO, 'users.xlsx');
     }
+    public function dailyReportPage(){
+        return inertia("Transactions/DailyReport", [
+            // "transactions" => TransactionResource::collection($transactions),
+            // "queryParams" => request()->query() ?: null,
+            // "success" => session('success'),
+        ]);
+    }
     public function dailyreport(){
+        // dd(request("PIC"), request("divisionInCharge"), request("stoAdmin"));
+        $pic = [
+            'name' => request("PIC"),
+            'role' => $this->role(request("PIC"))
+        ];
+        $divisionInCharge = [
+            'name' => request("divisionInCharge"),
+            'role' => $this->role(request("divisionInCharge"))
+        ];
+        $stoAdmin = [
+            'name' => request("stoAdmin"),
+            'role' => $this->role(request("stoAdmin"))
+        ];
+        // dd($stoAdmin, $divisionInCharge, $pic);
         $transactions = Transaction::query()->get();
         $pdf = Pdf::loadView('generateDailyReport',[
             "transactions" => TransactionResource::collection($transactions)->toJson(),
+            "pic" => $pic,
+            "divisionInCharge" => $divisionInCharge,
+            "stoAdmin" => $stoAdmin,
             // "queryParams" => request()->query() ?: null,
             // "success" => session('success'),
         ])->setOption(['dpi=>150'])->setPaper('a4', 'landscape');
@@ -187,5 +222,18 @@ class TransactionController extends Controller
         //     // "queryParams" => request()->query() ?: null,
         //     // "success" => session('success'),
         // ]);
+    }
+
+        private function role($name)
+    {
+        $translate = [
+            'Amrullah' => 'IT Section Head',
+            'Pietra Shafira' => 'HRGA Section Head',
+            'Muhammad Khoirifan' => 'Asset Management',
+            'Agung Samudra' => 'Admin Dept.Head',
+            // Tambahkan pola lain di sini jika perlu
+        ];
+
+        return $translate[$name] ?? $name;
     }
 }

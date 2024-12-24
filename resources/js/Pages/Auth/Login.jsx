@@ -25,14 +25,14 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <GuestLayout>
-            <div className="-mt-6 w-full h-lvh flex items-center justify-center ">
-                <div className="hidden">adsadasdas</div>
-                <div className="relative">
-                    <div className="relative  z-10 backdrop-blur-md flex flex-col items-center bg-white  bg-opacity-40 rounded-xl border-white border-2 backdrop:blur-xl py-12 min-w-96 px-8">
-                        <div className="p-2 bg-white rounded-full mb-2">
-                            <img src='https://media.licdn.com/dms/image/v2/D560BAQFAz4zMQsnRAQ/company-logo_200_200/company-logo_200_200/0/1683249151464?e=1741824000&v=beta&t=aQcfFvgQ4trOi8ep4w2eaNHdEsEdt1ur6XW__xP_kWo' className="h-16 w-16 fill-current text-gray-500" />
+            <div className="-mt-6 px-4  w-full h-lvh flex items-center justify-center ">
+                    <div className="relative  z-10 backdrop-blur-md flex flex-col items-center rounded-xl bg-lightTheme py-12 min-w-[21rem] px-5 shadow-md">
+                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-transparent w-20 h-20 rounded-full mb-2">
+                            <img src={"storage/logo/logo.png"} alt="Logo" />
+                        {/* <img src="{{ url($transaction->image_path) }}" alt=""> */}
                         </div>
-                        <h2 className='text-greenTheme text-4xl font-inter font-extrabold mb-6'>Login</h2>
+
+                        <h2 className='text-greenTheme text-4xl font-playfairDisplay font-semibold mb-6'>Login</h2>
                         <Head title="Log in" />
                         {status && (
                             <div className="mb-4 text-sm font-medium text-green-600">
@@ -41,8 +41,8 @@ export default function Login({ status, canResetPassword }) {
                         )}
                         {/* <div className="bg-blue-400 inline-block w-full">dasdas</div> */}
 
-                        <form className=' inline-block w-full' onSubmit={submit}>
-                            <div className='flex gap-2 items-center px-3 mt-4 w-full rounded-md shadow-md bg-opacity-15 bg-[#F1B24A]'>
+                        <form className=' inline-block w-full ' onSubmit={submit}>
+                            <div className='flex gap-2 items-center px-3 py-1 mt-4 w-full rounded-xl shadow-md bg-opacity-15 !bg-white'>
                                 {/* <InputLabel htmlFor="email" value="Email" /> */}
                                 <InputLabel htmlFor="email" value="">
                                     <EnvelopeIcon className='w-6 text-blackTheme' />
@@ -63,7 +63,7 @@ export default function Login({ status, canResetPassword }) {
                             </div>
                                 <InputError message={errors.email} className="mt-2" />
 
-                            <div className=" flex gap-2 items-center px-3 mt-4 w-full rounded-md shadow-md bg-opacity-15 bg-[#F1B24A]">
+                            <div className=" flex gap-2 items-center px-3 mt-5 w-full rounded-xl py-1 shadow-md bg-opacity-15 !bg-white">
                                 <InputLabel htmlFor="password" value="">
                                     <KeyIcon className='w-6 text-blackTheme' />
                                 </InputLabel>
@@ -82,7 +82,7 @@ export default function Login({ status, canResetPassword }) {
                             </div>
                                 <InputError message={errors.password} className="mt-2" />
 
-                            <div className="mt-4 block">
+                            <div className="mt-5 block">
                                 <label className="flex items-center">
                                     <Checkbox
                                         name="remember"
@@ -96,17 +96,16 @@ export default function Login({ status, canResetPassword }) {
                                     </span>
                                 </label>
                             </div>
-                            <PrimaryButton className=" mt-2 w-full text-center bg-greenTheme" disabled={processing}>
+                            <PrimaryButton className=" mt-2 w-full px-4 py-1 text-center bg-orangeTheme !text-base tracking-wider" disabled={processing}>
                                 Login
                             </PrimaryButton>
                         </form>
 
                     </div>
-                    <div className="w-20 h-20 bg-gradient-to-tr from-greenTheme to-green-200 rounded-full absolute -top-3 -left-5 animate-loginGreen"></div>
-                    <div className="w-20 h-20 bg-gradient-to-tr from-redTheme to-red-200 rounded-full absolute -bottom-2 -right-7 animate-loginRed"></div>
+                    {/* <div className="w-20 h-20 bg-gradient-to-tr from-greenTheme to-green-200 rounded-full absolute -top-3 -left-5 animate-loginGreen"></div>
+                    <div className="w-20 h-20 bg-gradient-to-tr from-redTheme to-red-200 rounded-full absolute -bottom-2 -right-7 animate-loginRed"></div> */}
                     {/* <div className="w-20 h-20 bg-gradient-to-tr from-redTheme to-red-200 rounded-full absolute top-12 left-28"></div> */}
                 </div>
-            </div>
         </GuestLayout>
     );
 }

@@ -131,7 +131,7 @@
 </head>
 @php
     $transactionsDecode = json_decode($transactions);
-    // dd($transactionsDecode);
+    // dd($pic['role']);
 @endphp
 
 <body style="padding: 1.5rem ">
@@ -159,8 +159,8 @@
             <table style="font-size: 12px" class="tableHeader">
                 <tr class="">
                     <td style="min-width: 100px" class="tdTableHeader">Admin Dept. Head</td>
-                    <td style="min-width: 100px" class="tdTableHeader">HRGA Section Head</td>
-                    <td style="min-width: 100px" class="tdTableHeader">Asset Management </td>
+                    <td style="min-width: 100px" class="tdTableHeader">{{ $divisionInCharge['role'] }}</td>
+                    <td style="min-width: 100px" class="tdTableHeader">{{ $stoAdmin['role']  }} </td>
                     <td style="min-width: 100px" class="tdTableHeader">PIC</td>
                 </tr>
                 <tr class="">
@@ -171,9 +171,9 @@
                 </tr>
                 <tr>
                     <td class="tdTableHeader">Agung Samudra</td>
-                    <td class="tdTableHeader">Pietra Shafira</td>
-                    <td class="tdTableHeader">Muhammad Khoirifan</td>
-                    <td class="tdTableHeader">PIC</td>
+                    <td class="tdTableHeader">{{ $divisionInCharge['name']  }}</td>
+                    <td class="tdTableHeader">{{ $stoAdmin['name'] }}</td>
+                    <td class="tdTableHeader">{{ $pic['name'] }}</td>
                 </tr>
             </table>
         </div>

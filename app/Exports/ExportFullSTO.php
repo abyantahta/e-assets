@@ -12,6 +12,7 @@ class ExportFullSTO implements FromView
 {
     public function view() :View {
         $transactions = Transaction::query()->get();
+        // dd($transactions);
         return view('exportFullSTO', [
             "transactions" => TransactionResource::collection($transactions)->toJson(),
         ]);

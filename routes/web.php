@@ -23,6 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('/transactions/fullsto', [TransactionController::class, 'exportSTO'])->name('transactions.fullsto');
         Route::get('/transactions/dailyreport', [TransactionController::class, 'dailyreport'])->name('transactions.dailyreport');
+        Route::get('/transactions/dailyreportpage', [TransactionController::class, 'dailyreportpage'])->name('transactions.dailyreportpage');
         Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
         Route::put('/transactions/{transaction}', [TransactionController::class, 'update'])->name('transactions.update');
         Route::delete('/transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
