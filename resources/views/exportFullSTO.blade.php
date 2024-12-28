@@ -31,15 +31,18 @@
     <tbody>
         @foreach ($transactionsDecode as $transaction)
         <tr>
-            <td>1</td>
-            <td>{{ $transaction->created_at }}</td>
+            <td>{{ ($loop->index)+1 }}</td>
+            <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('d/m/Y H:m')}}</td>
             <td>{{ $transaction->item_id->no_asset }}</td>
             <td>{{ $transaction->item_id->name }}</td>
             <td>{{ $transaction->item_id->category_id->name }}</td>
             <td>{{ $transaction->kondisi }}</td>
             <td>{{ $transaction->lokasi }}</td>
             <td>{{ $transaction->pic }}</td>
-            <td>{{ $transaction->user_id->name }}</td>
+            <td>{{ $transaction->created_by->name }}</td>
+            {{-- @if (isset($transaction->c))
+                
+            @endif --}}
             <td>
                 <img src="{{ url($transaction->image_path) }}" alt="">
             </td>

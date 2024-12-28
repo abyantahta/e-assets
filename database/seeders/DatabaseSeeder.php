@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Item;
+use App\Models\Transaction;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -42,6 +43,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Office Equipment'
         ]);
 
-        Item::factory()->count(90)->create();
+        Item::factory()->count(200)->create();
+        // Transaction::factory()->count(100)->create();
     }
 }

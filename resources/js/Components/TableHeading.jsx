@@ -19,16 +19,16 @@ export default function TableHeading({
                         <ChevronUpIcon
                             className={
                                 "w-4 " +
-                                (sort_field === name && sort_direction === "asc"
-                                    ? "text-white"
+                                (sort_field === name && sort_direction === "desc"
+                                    ? "text-greenTheme"
                                     : "")
                             }
                         />
                         <ChevronDownIcon
                             className={
                                 "w-4 -mt-2 " +
-                                (sort_field === name && sort_direction === "desc"
-                                    ? "text-white"
+                                (sort_field === name && sort_direction === "asc"
+                                    ? "text-greenTheme"
                                     : "")
                             }
                         />

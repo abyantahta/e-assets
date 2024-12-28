@@ -10,33 +10,23 @@ import SelectInput from '@/Components/SelectInput'
 const DailyReport = () => {
     const [PIC, setPIC] = useState('')
     const [divisionInCharge, setdivisionInCharge] = useState('')
-    const [stoAdmin, setstoAdmin] = useState('')
-    // let queryParams
-    // queryParams = {};
+    const [kategori, setKategori] = useState('')
     let users = [
-            "Pietra Shafira",
-            "Amrullah",
-            "Muhammad Khoirifan",
+        "Pietra Shafira",
+        "Amrullah",
+        "Muhammad Khoirifan",
     ]
-    // console.log(auth.user.id)
-    // let { id, no_asset, name, category_id, cost, isDisposition, lokasi, nbv, service_date } = item.data[0]
     const onSubmit = (e) => {
-        console.log(PIC, divisionInCharge, stoAdmin);
         e.preventDefault();
         let queryParams = {
-            "PIC" : PIC,
-            "divisionInCharge" : divisionInCharge,
-            "stoAdmin" : stoAdmin
+            "PIC": PIC,
+            "divisionInCharge": divisionInCharge,
+            "kategori": kategori
         }
-        console.log('submit')
         router.get(route("transactions.dailyreport"), queryParams)
-        // post(route('transactions.store'));
     }
-    // console.log(auth)
     return (
-        // <h1>hai</h1>
         <AuthenticatedLayout
-            // user={auth.user}
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -49,67 +39,70 @@ const DailyReport = () => {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-lightTheme dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <form onSubmit={onSubmit} action="" className='p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg '>
+                            <form onSubmit={onSubmit} action="" className='p-4 sm:p-8 bg-lightTheme dark:bg-gray-800 shadow sm:rounded-lg '>
                                 <div className="mt-4">
                                     <InputLabel htmlFor="divisionInCharge" value="Division in Charge" />
                                     <SelectInput
-                                        className="w-full"
+                                        className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                         onChange={(e) =>
                                             setdivisionInCharge(e.target.value)
                                         }
                                     >
                                         <option value="">Select Division in Charge Head</option>
                                         {
-                                            users.map(user=>(
+                                            users.map(user => (
                                                 <option key={user} value={user}>{user}</option>
                                             ))
                                         }
                                     </SelectInput>
                                     {/* <InputError className='mt-2' /> */}
                                 </div>
-                                <div className="mt-4">
-                                    <InputLabel htmlFor="stoadmin" value="STO Admin" />
-                                    <SelectInput
-                                        className="w-full"
-                                        onChange={(e) =>
-                                            setstoAdmin(e.target.value)
-                                        }
-                                    >
-                                        <option value="">Select STO Admin</option>
-                                        {
-                                            users.map(user=>(
-                                                <option key={user} value={user}>{user}</option>
-                                            ))
-                                        }
-                                    </SelectInput>
-                                    {/* <InputError message={errors.stoadmin} className='mt-2' /> */}
-                                </div>
+
+
                                 <div className="mt-4">
                                     <InputLabel htmlFor="pic" value="PIC" />
                                     <SelectInput
-                                        className="w-full"
+                                        className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                         onChange={(e) =>
                                             setPIC(e.target.value)
                                         }
                                     >
                                         <option value="PIC">Select PIC</option>
                                         {
-                                            users.map(user=>(
+                                            users.map(user => (
                                                 <option key={user} value={user}>{user}</option>
                                             ))
                                         }
                                     </SelectInput>
                                     {/* <InputError message={errors.pic} className='mt-2' /> */}
                                 </div>
+                                <div className="mt-4 w-full">
+                                    <InputLabel htmlFor="kategori" value="Kategori" />
+                                    <SelectInput
+                                        className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
+                                        onChange={(e) =>
+                                            setKategori(e.target.value)
+                                        }
+                                    >
+                                        <option value="">Select Kategori</option>
+                                        <option value="Tooling">Tooling</option>
+                                        <option value="Tooling2"> Tooling2</option>
+                                        <option value="Tooling3">Tooling3 </option>
+                                        <option value="Building">Building</option>
+                                        <option value="Vehicle">Vehicle </option>
+                                        <option value="Office Equipment">Office Equipment</option>
+                                    </SelectInput>
+                                    {/* <InputError message={errors.kategori} className='mt-2' /> */}
+                                </div>
 
-                                <div className="mt-4 text-right">
-                                    <Link href={route("transactions.index")} className='bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2 text-sm'>
+                                <div className="mt-8 text-center flex flex-col-reverse md:flex-row gap-x-4 gap-y-3 justify-center ">
+                                    <Link href={route("transactions.index")} className='bg-gray-100 py-3 px-20 font-semibold text-greenTheme rounded shadow transition-all hover:bg-gray-200text-md'>
                                         Cancel
                                     </Link>
-                                    <button type='submit' className='bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600 text-sm'>
-                                        Submit
+                                    <button type='submit' className='bg-orangeTheme font-semibold py-3 text-md px-20 text-white rounded shadow transition-all hover:brightness-110'>
+                                        Generate
                                     </button>
                                 </div>
                             </form>
@@ -122,7 +115,6 @@ const DailyReport = () => {
 }
 
 export default DailyReport
-
 
 
 

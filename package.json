@@ -23,6 +23,7 @@
     "dependencies": {
         "@heroicons/react": "^2.2.0",
         "@types/crypto-js": "^4.2.2",
-        "crypto-js": "^4.2.0"
+        "crypto-js": "^4.2.0",
+        "moment": "^2.30.1"
     }
 }

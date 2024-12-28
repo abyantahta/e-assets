@@ -26,8 +26,10 @@ class UpdateTransactionRequest extends FormRequest
             'image_path' => ['nullable', 'image', 'mimes:png,jpeg,jpg'],
             "lokasi" => ['required', 'string'],
             "kondisi" => ['required', 'string'],
+            "keterangan" => ['required', 'string'],
             "pic" => ['required', 'string'],
-            "user_id" => ['required', 'exists:users,id'],
+            "created_by" => ['required', 'exists:users,id'],
+            "updated_by" => ['required', 'exists:users,id'],
             //
         ];
     }

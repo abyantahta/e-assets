@@ -81,14 +81,14 @@
         }
 
         .header-one {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             /* line-height: 1.75rem; */
             margin: 0;
             padding: 0
             font-weight: bold;
         }
         .header-two {
-            /* font-size: 1.25rem; */
+            font-size: 1.25rem;
             /* line-height: 1.75rem; */
             margin: 0;
             padding: 0
@@ -131,6 +131,7 @@
 </head>
 @php
     $transactionsDecode = json_decode($transactions);
+    // dd($kategori)
     // dd($pic['role']);
 @endphp
 
@@ -140,18 +141,14 @@
             <p class="header-one" style="font-weight: 700;">AKTIVITAS STO ASSET</p>
             <p class="header-two" style="font-weight: 700;">
                 PT.SANKEI DHARMA INDONESIA</p>
-            <table class="">
+            <table class="" style="margin-top: 10px">
                 <tr>
                     <td>Hari / Tanggal </td>
                     <td>: Kamis, 14 November 2024</td>
                 </tr>
                 <tr>
-                    <td>Waktu </td>
-                    <td>: 09.30 - 11.30</td>
-                </tr>
-                <tr>
                     <td>Kategori </td>
-                    <td>: Office Equipment (GA)</td>
+                    <td>: {{ $kategori }}</td>
                 </tr>
             </table>
         </div>
@@ -160,7 +157,8 @@
                 <tr class="">
                     <td style="min-width: 100px" class="tdTableHeader">Admin Dept. Head</td>
                     <td style="min-width: 100px" class="tdTableHeader">{{ $divisionInCharge['role'] }}</td>
-                    <td style="min-width: 100px" class="tdTableHeader">{{ $stoAdmin['role']  }} </td>
+                    <td style="min-width: 100px" class="tdTableHeader">Asset Management</td>
+                    {{-- <td style="min-width: 100px" class="tdTableHeader">{{ $stoAdmin['role']  }} </td> --}}
                     <td style="min-width: 100px" class="tdTableHeader">PIC</td>
                 </tr>
                 <tr class="">
@@ -172,7 +170,8 @@
                 <tr>
                     <td class="tdTableHeader">Agung Samudra</td>
                     <td class="tdTableHeader">{{ $divisionInCharge['name']  }}</td>
-                    <td class="tdTableHeader">{{ $stoAdmin['name'] }}</td>
+                    {{-- <td class="tdTableHeader">{{ $stoAdmin['name'] }}</td> --}}
+                    <td class="tdTableHeader">Muhammad Khoirifan</td>
                     <td class="tdTableHeader">{{ $pic['name'] }}</td>
                 </tr>
             </table>
@@ -189,13 +188,13 @@
                         No
                     </th>
                     <th class="headingRow">
+                        Waktu STO
+                    </th>
+                    <th class="headingRow">
                         Nomor Aset
                     </th>
                     <th class="headingRow">
                         Nama Aset
-                    </th>
-                    <th class="headingRow">
-                        Kategori
                     </th>
                     <th class="headingRow">
                         Kondisi
@@ -204,7 +203,7 @@
                         Lokasi
                     </th>
                     <th class="headingRow">
-                        PIC
+                        Keterangan
                     </th>
                 </tr>
             </thead>
@@ -214,6 +213,11 @@
                         <td class="childRow">
 
                             {{ $loop->index + 1 }}
+                        </td>
+                        <td class="childRow">
+
+                            {{ \Carbon\Carbon::parse($transaction->created_at)->translatedFormat('H:i') }}
+                            {{-- {{ $transaction->created_at }} --}}
 
                         </td>
                         <td class="childRow">
@@ -224,12 +228,6 @@
                         <td class="childRow">
 
                             {{ $transaction->item_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->category_id->name }}
-
                         </td>
                         <td class="childRow">
 
@@ -243,274 +241,7 @@
                         </td>
                         <td class="childRow">
 
-                            {{ $transaction->pic }}
-
-                        </td>
-                @endforeach
-                @foreach ($transactionsDecode as $transaction)
-                    <tr>
-                        <td class="childRow">
-
-                            {{ $loop->index + 1 }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->no_asset }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->category_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->kondisi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->lokasi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->pic }}
-
-                        </td>
-                @endforeach
-                @foreach ($transactionsDecode as $transaction)
-                    <tr>
-                        <td class="childRow">
-
-                            {{ $loop->index + 1 }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->no_asset }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->category_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->kondisi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->lokasi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->pic }}
-
-                        </td>
-                @endforeach
-                @foreach ($transactionsDecode as $transaction)
-                    <tr>
-                        <td class="childRow">
-
-                            {{ $loop->index + 1 }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->no_asset }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->category_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->kondisi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->lokasi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->pic }}
-
-                        </td>
-                @endforeach
-                @foreach ($transactionsDecode as $transaction)
-                    <tr>
-                        <td class="childRow">
-
-                            {{ $loop->index + 1 }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->no_asset }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->category_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->kondisi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->lokasi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->pic }}
-
-                        </td>
-                @endforeach
-                @foreach ($transactionsDecode as $transaction)
-                    <tr>
-                        <td class="childRow">
-
-                            {{ $loop->index + 1 }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->no_asset }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->category_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->kondisi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->lokasi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->pic }}
-
-                        </td>
-                @endforeach
-                @foreach ($transactionsDecode as $transaction)
-                    <tr>
-                        <td class="childRow">
-
-                            {{ $loop->index + 1 }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->no_asset }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->category_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->kondisi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->lokasi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->pic }}
-
-                        </td>
-                @endforeach
-                @foreach ($transactionsDecode as $transaction)
-                    <tr>
-                        <td class="childRow">
-
-                            {{ $loop->index + 1 }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->no_asset }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->item_id->category_id->name }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->kondisi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->lokasi }}
-
-                        </td>
-                        <td class="childRow">
-
-                            {{ $transaction->pic }}
-
+                            {{ $transaction->keterangan }}
                         </td>
                 @endforeach
             </tbody>

@@ -27,7 +27,9 @@ class StoreTransactionRequest extends FormRequest
             "lokasi" => ['required', 'string'],
             "kondisi" => ['required', 'string'],
             "pic" => ['required', 'string'],
-            "user_id" => ['required', 'exists:users,id'],
+            "created_by" => ['required', 'exists:users,id'],
+            "updated_by" => ['nullable', 'exists:users,id'],
+            "keterangan"=> ['nullable', 'string']
             //
         ];
     }

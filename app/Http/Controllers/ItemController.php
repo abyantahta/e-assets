@@ -25,6 +25,7 @@ class ItemController extends Controller
 
         if (request("no_asset")) {
             $query->where("no_asset", "like", "%" . request("no_asset") . "%");
+            // request("page")=1;
         }
         if (request("category_id")) {
             $query->where('category_id', request("category_id"));

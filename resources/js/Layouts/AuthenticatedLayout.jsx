@@ -25,7 +25,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <h2 className='font-semibold text-brownTheme text-2xl md:text-3xl'>e-Assets</h2>
                                 </Link>
                             </div>
-
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
                                     href={route('dashboard')}
@@ -46,7 +45,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Transactions
                                 </NavLink>
-
                                 {/* <NavLink
                                     href={route('dashboard')}
                                     active={route().current('dashboard')}
@@ -55,7 +53,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </NavLink> */}
                             </div>
                         </div>
-
                         <div className=" hidden sm:ms-6 sm:flex sm:items-center ">
                             <div className="relative ms-3">
                                 <Dropdown>
@@ -66,7 +63,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 className="inline-flex items-center rounded-md border border-transparent bg-lightTheme shadow-md px-3 py-2 text-sm font-medium leading-4 text-greenTheme transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
                                             >
                                                 {user?.name}
-
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -106,12 +102,10 @@ export default function AuthenticatedLayout({ header, children }) {
                                         >
                                             Log Out
                                         </Dropdown.Link>
-
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
                         </div>
-
                         <div className="-me-2 flex items-center sm:hidden">
                             <button
                                 onClick={() =>
@@ -169,7 +163,6 @@ export default function AuthenticatedLayout({ header, children }) {
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
-
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800 dark:text-gray-200">
@@ -179,7 +172,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                 {user.email}
                             </div>
                         </div>
-
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>
                                 Profile
@@ -195,15 +187,6 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
             </nav>
-
-            {/* {header && (
-                <header className="bg-white shadow dark:bg-gray-800">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                        {header}
-                    </div>
-                </header>
-            )} */}
-
             <main className=''>{children}</main>
         </div>
     );

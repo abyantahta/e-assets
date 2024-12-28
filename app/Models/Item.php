@@ -12,7 +12,7 @@ class Item extends Model
     protected $guarded = [];
     /** @use HasFactory<\Database\Factories\ItemFactory> */
     use HasFactory;
-
+    // protected $with = ['category'];
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');

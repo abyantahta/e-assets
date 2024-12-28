@@ -16,6 +16,7 @@ use App\Http\Resources\TransactionResource;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Intervention\Image\Drivers\Gd\Driver;
 // use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
@@ -29,20 +30,37 @@ class TransactionController extends Controller
      */
     public function index()
     {
+        $query = Transaction::select('transactions.*', 'items.id AS it_id', 'items.created_at AS it_created_at')->leftJoin('items', 'items.id', '=', 'transactions.item_id'); 
+        // $morokeco = Transaction::all();
+        // dd($morokeco->toJson());
         // dd('query');
-        $query = Transaction::select('transactions.*', 'items.id AS it_id')->leftJoin('items', 'items.id', '=', 'transactions.item_id'); 
         $sortField = request("sort_field", "transactions.created_at");
         $sortDirection = request("sort_direction", "desc");
         if (request("no_asset")) {
             $query->where("items.no_asset", "like", "%" . request("no_asset") . "%")->get();
             // dd($query);
-            $query->where("no_asset", "like", "%" . request("no_asset") . "%");
+            // $query->where("no_asset", "like", "%" . request("no_asset") . "%");
         }
         if (request("category_id")) {
             $query->where("items.category_id",  request("category_id") )->get();
             // $query->where('category_id', request("category_id"));
         }
+        if(request("dateStart") && request("dateEnd")){
+            $start = Carbon::parse(request("dateStart"));
+            $end = Carbon::parse(request("dateEnd"));
+            if(request("dateStart") == request("dateEnd")){
+                $query->whereDate("transactions.created_at",$start)->get();
+            }else{
+                $query->whereBetween('transactions.created_at', [$start,$end])->get();
+            }
+        }else if(request("dateStart")){
+            $start = Carbon::parse(request("dateStart"));
+            $query->whereDate("transactions.created_at",$start)->get();
+            // dd($query);
+        }
+        // dd(request("dateStart"));
         $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10);
+        // dd($transactions);
         // return view("generateDailyReport", [
         //     "transactions" => TransactionResource::collection($transactions)->toJson(),
         //     "queryParams" => request()->query() ?: null,
@@ -72,7 +90,7 @@ class TransactionController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
-        // dd();
+        // dd('halo');
         $data = $request->validated();
         // dd($data);
         // /** @var $image \Illuminate\Http\UploadedFile */
@@ -97,6 +115,7 @@ class TransactionController extends Controller
             // $data['image_path'] = $image->store('transactions/' . Str::random(), 'public');
 
         }
+        $data['updated_by'] = null;
         // $data['item_id'] = 1;
         Transaction::create($data);
 
@@ -110,6 +129,7 @@ class TransactionController extends Controller
      */
     public function show($id)
     {
+        // dd('hai');
         $no_asset = substr($id, -9);
         // dd($no_asset);
         $item = Item::query()->where('no_asset', $no_asset)->get();
@@ -181,9 +201,16 @@ class TransactionController extends Controller
         //
     }
     public function exportSTO(){
-        // dd('auery');
+        // dd(request("dateStart"), request("dateEnd"), request("category_id"));
+        // dd(request("category_id"));
         // dd(Excel::download(new ExportFullSTO, 'users.xlsx'));
-        return Excel::download(new ExportFullSTO, 'users.xlsx');
+        // dd(request("dateStart"),request("category_id"), request("dateEnd"));
+        $dateStart = request("dateStart");
+        $dateEnd = request("dateEnd");
+        $category_id = request("category_id");
+        // dd(request("dateStart"), request("dateEnd"), request("category_id"));
+        // dd(request("category_id"));
+        return Excel::download(new ExportFullSTO($category_id,$dateStart,$dateEnd), 'users.xlsx');
     }
     public function dailyReportPage(){
         return inertia("Transactions/DailyReport", [
@@ -206,6 +233,7 @@ class TransactionController extends Controller
             'name' => request("stoAdmin"),
             'role' => $this->role(request("stoAdmin"))
         ];
+        $kategori = request("kategori");
         // dd($stoAdmin, $divisionInCharge, $pic);
         $transactions = Transaction::query()->get();
         $pdf = Pdf::loadView('generateDailyReport',[
@@ -213,6 +241,7 @@ class TransactionController extends Controller
             "pic" => $pic,
             "divisionInCharge" => $divisionInCharge,
             "stoAdmin" => $stoAdmin,
+            "kategori" => $kategori,
             // "queryParams" => request()->query() ?: null,
             // "success" => session('success'),
         ])->setOption(['dpi=>150'])->setPaper('a4', 'landscape');

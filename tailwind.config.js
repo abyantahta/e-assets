@@ -20,8 +20,8 @@ export default {
                 playfairDisplay: ['Playfair Display', ...defaultTheme.fontFamily.sans],
             },
             colors:{
-                // 'lightTheme' : '#FFFEF5',
-                'lightTheme' : '#FFF5E5',
+                'lightTheme' : '#FFFEF5',
+                // 'lightTheme' : '#FFF5E5',
                 'orangeTheme' : '#E19922',
                 'greenTheme' : '#2C4D15',
                 'brownTheme' : '#612011',

@@ -21,16 +21,16 @@ class TransactionResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            // 'id' => $this->id,
             'pic' => $this->PIC?? $this->pic,
             'kondisi' => $this->kondisi,
             'image_path' =>
             $this->image_path && !(str_starts_with($this->image_path, 'http')) ?
                 Storage::url($this->image_path) : '',
-            'user_id' => new UserResource($this->user),
-            // 'user_id' => new CategoryResource(1),
+            'created_by' => new UserResource($this->createdBy),
+            'updated_by' => new UserResource($this->updatedBy),
+            'keterangan' => $this->keterangan,
             'item_id' => new ItemResource($this->item),
-            // 'user_id'=> $this->user_id,
-            // 'item_id'=> $this->item_id,
             'lokasi' => $this->lokasi,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

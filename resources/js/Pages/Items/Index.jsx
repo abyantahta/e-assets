@@ -6,19 +6,19 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { MagnifyingGlassCircleIcon, Squares2X2Icon } from '@heroicons/react/16/solid';
 import { Head, router, Link } from '@inertiajs/react';
 import * as CryptoJS from 'crypto-js';
+import moment from 'moment';
 
 export default function Index({ auth, items, queryParams = null, success }) {
-    console.log(items.data[0]);
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
         if (value) {
             queryParams[name] = value;
+            queryParams['page'] =1;
         } else {
             delete queryParams[name];
         }
         router.get(route("items.index"), queryParams);
     };
-
     const onKeyPress = (name, e) => {
         if (e.key !== "Enter") return;
 
@@ -38,7 +38,6 @@ export default function Index({ auth, items, queryParams = null, success }) {
         }
         router.get(route("items.index"), queryParams);
     };
-    console.log(items)
     return (
         <AuthenticatedLayout
             header={
@@ -55,7 +54,7 @@ export default function Index({ auth, items, queryParams = null, success }) {
                     <div className="bg-lightTheme dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="flex flex-col-reverse gap-y-2 mb-4 md:flex-row md:justify-between">
-                                <div className="flex flex-col gap-y-2 md:flex-row w-96 gap-4">
+                                <div className="flex flex-col gap-y-2 w-full md:flex-row md:w-96 gap-4">
                                     <SelectInput
                                         className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
                                         defaultValue={queryParams.category_id}
@@ -199,7 +198,7 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                                 <td className={` ${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}>
                                                     {item.category_id?.name}
                                                 </td>
-                                                <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}>{new Date(item.service_date).toLocaleDateString()}</td>
+                                                <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}>{moment(item.service_date).format('DD/MM/YYYY')}</td>
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-32`}>{item.isDisposition ? "Yes" : "No"}</td>
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{item.cost}</td>
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{item.nbv}</td>
