@@ -9,7 +9,7 @@ import { Head, router, Link } from '@inertiajs/react';
 import moment from 'moment';
 
 export default function Index({ auth, transactions, queryParams = null, success }) {
-    console.log(transactions)
+    // console.log(new Date(transactions.data[0].created_at))
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {
@@ -180,7 +180,7 @@ export default function Index({ auth, transactions, queryParams = null, success 
                                     </thead>
                                     <tbody className='overflow-auto box-border no-scrollbar'>
                                         {transactions.data.map((transaction, index) => (
-                                            <tr className="min-w-full flex text-center gap-3 mt-3" key={transaction.item_id.no_asset} >
+                                            <tr className="min-w-full flex text-center gap-3 mt-3" key={transaction.id} >
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}>{index + 1}</td>
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{moment(transaction.created_at).format('DD/MM/YYYY')}</td>
                                                 <td className={` overflow-visible  h-11 -mr-3 bg-lightTheme text-ellipsis text-nowrap text-center pr-3 w-40`}>

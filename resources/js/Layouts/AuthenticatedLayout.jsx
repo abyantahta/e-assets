@@ -12,7 +12,7 @@ export default function AuthenticatedLayout({ header, children }) {
         useState(false);
     return (
         <div className="min-h-screen font-poppins bg-lightTheme dark:bg-gray-900 overflow-x-hidden">
-            <nav className=" bg-lightTheme shadow-md py-2 border-b border-gray-100 ">
+            <nav className="fixed top-0 w-full z-50 bg-lightTheme shadow-md py-2 border-b border-gray-100 ">
                 <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex  w-full justify-between">
@@ -20,7 +20,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <Link className='flex items-center gap-3' href="/">
                                     {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" /> */}
                                     {/* <div className="p-1 rounded-full h-fit bg-white shadow-md w-fit"> */}
-                                        <img className='w-14 h-14 rounded-full' src="/storage/logo/logo.png" alt="" />
+                                    <img className='w-14 h-14 rounded-full' src="/storage/logo/logo.png" alt="" />
                                     {/* </div> */}
                                     <h2 className='font-semibold text-brownTheme text-2xl md:text-3xl'>e-Assets</h2>
                                 </Link>
@@ -162,6 +162,18 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('items.index')}
+                            active={route().current('items.index')}
+                        >
+                            Items
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('transactions.index')}
+                            active={route().current('transactions.index')}
+                        >
+                            Transactions
+                        </ResponsiveNavLink>
                     </div>
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
                         <div className="px-4">
@@ -187,7 +199,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
             </nav>
-            <main className=''>{children}</main>
+            <main className='pt-20'>{children}</main>
         </div>
     );
 }

@@ -61,10 +61,6 @@ export default function Show({ auth, item, transactions }) {
                                     <table className='  mx-auto text-center mb-4  table-fixed z-10 h-full border-collapse border-spacing-2 gap-1'>
                                         <thead className='overflow-auto'>
                                             <tr className='min-w-full flex text-center gap-3 !font-semibold'>
-                                                {/* <th className='bg-white text-white w-12 h-11 flex items-center !font-semibold justify-center sticky pr-2 left-0 top-0 -mr-2'>
-                                                <span className='w-9 h-11 bg-greenTheme rounded-md'>
-                                                </span>
-                                            </th> */}
                                                 <th
                                                     name="id"
                                                     className=" bg-greenTheme text-white w-16 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
@@ -102,17 +98,14 @@ export default function Show({ auth, item, transactions }) {
                                         </thead>
                                         <tbody className='overflow-auto box-border no-scrollbar'>
                                             {transactions.data.map((transaction, index) => (
-                                                <tr className="min-w-full flex text-center gap-3 mt-3" key={transaction.item_id.no_asset} >
-                                                    {/* <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} sticky -mr-2 left-0 top-0 h-11 py-2 text-ellipsis overflow-hidden text-nowrap flex items-center  w-12`}>
-                                                    <Link href={route("items.show", transaction.id)} className='bg-orangeTheme hover:brightness-110 duration-200 p-1 w-fit font-bold text-white rounded-[0.25rem] flex items-center justify-center'> <Squares2X2Icon className='w-7 text-white' /> </Link>
-                                                </td> */}
+                                                <tr className="min-w-full flex text-center gap-3 mt-3" key={transaction.id} >
                                                     <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}>{transaction.id}</td>
                                                     <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{new Date(transaction.created_at).toLocaleDateString()}</td>
                                                 
                                                     <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}>{transaction.kondisi}</td>
                                                     <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-32`}>{transaction.lokasi}</td>
                                                     <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.pic}</td>
-                                                    <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.created_by.name}</td> {/* <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-48`}>{transactions.lokasi}</td> */}
+                                                    <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.created_by.name}</td> 
                                                     {
                                                         auth.user.role === 'admin' && (
                                                             <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-6 flex h-11 py-1 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>

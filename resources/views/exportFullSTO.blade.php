@@ -12,6 +12,8 @@
 <body>
     @php
         $transactionsDecode = json_decode($transactions);
+        // console.log()
+        // dd($transactionsDecode);
     @endphp;
     <table>
     <thead>
@@ -32,7 +34,7 @@
         @foreach ($transactionsDecode as $transaction)
         <tr>
             <td>{{ ($loop->index)+1 }}</td>
-            <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('d/m/Y H:m')}}</td>
+            <td>{{ \Carbon\Carbon::parse($transaction->created_at)->setTimezone("Asia/Jakarta")}}</td>
             <td>{{ $transaction->item_id->no_asset }}</td>
             <td>{{ $transaction->item_id->name }}</td>
             <td>{{ $transaction->item_id->category_id->name }}</td>

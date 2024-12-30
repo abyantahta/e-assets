@@ -30,9 +30,10 @@ class TransactionController extends Controller
      */
     public function index()
     {
+
         $query = Transaction::select('transactions.*', 'items.id AS it_id', 'items.created_at AS it_created_at')->leftJoin('items', 'items.id', '=', 'transactions.item_id'); 
         // $morokeco = Transaction::all();
-        // dd($morokeco->toJson());
+        // dd($query->get()->toJson());
         // dd('query');
         $sortField = request("sort_field", "transactions.created_at");
         $sortDirection = request("sort_direction", "desc");
@@ -60,7 +61,7 @@ class TransactionController extends Controller
         }
         // dd(request("dateStart"));
         $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10);
-        // dd($transactions);
+        // dd($transactions->toJson());
         // return view("generateDailyReport", [
         //     "transactions" => TransactionResource::collection($transactions)->toJson(),
         //     "queryParams" => request()->query() ?: null,
@@ -75,7 +76,10 @@ class TransactionController extends Controller
     // [
     //         "transactions" => TransactionResource::collection($transactions),
     //     ]
-
+    public function cobacoba(){
+        $transaction = Transaction::all();
+        dd($transaction->toJson());
+    }
     /**
      * Show the form for creating a new resource.
      */

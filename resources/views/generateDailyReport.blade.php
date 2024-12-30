@@ -216,7 +216,7 @@
                         </td>
                         <td class="childRow">
 
-                            {{ \Carbon\Carbon::parse($transaction->created_at)->translatedFormat('H:i') }}
+                            {{ \Carbon\Carbon::parse($transaction->created_at)->setTimezone("Asia/Jakarta")->translatedFormat('H:i') }}
                             {{-- {{ $transaction->created_at }} --}}
 
                         </td>

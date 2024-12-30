@@ -21,6 +21,7 @@ Route::get('/items/{item}', [ItemController::class, 'show'])->name('items.show')
 Route::middleware(['auth', 'verified'])->group(function () {
     // Route::resource("/transactions", TransactionController::class);
     Route::middleware(['admin'])->group(function () {
+        Route::get('/cobacoba', [TransactionController::class, 'cobacoba'])->name('cobacoba');
         Route::get('/transactions/fullsto', [TransactionController::class, 'exportSTO'])->name('transactions.fullsto');
         Route::get('/transactions/dailyreport', [TransactionController::class, 'dailyreport'])->name('transactions.dailyreport');
         Route::get('/transactions/dailyreportpage', [TransactionController::class, 'dailyreportpage'])->name('transactions.dailyreportpage');
