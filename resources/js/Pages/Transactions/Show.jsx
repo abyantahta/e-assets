@@ -64,7 +64,6 @@ const Show = ({ auth, item }) => {
                                             isFocused={true}
                                             defaultValue={name}
                                             disabled="true"
-                                            // disable={true}
                                             className="mt-1 cursor-default block w-full outline-none border-none bg-lightTheme text-gray-400 shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl   h-12" />
                                         <InputError message={errors.name} className='mt-2' />
                                     </div>
@@ -140,11 +139,9 @@ const Show = ({ auth, item }) => {
                                             id="project_image_path"
                                             type="file"
                                             name="image_path"
-                                            // value={data.image_path} 
                                             className="mt-1 block w-full cursor-pointer file:cursor-pointer outline-none border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12 file:bg-brownTheme file:border-none file:h-full file:text-white file:px-4 file:text-base file:mr-4"
                                             onChange={e => setData('image_path',
                                                 e.target.files[0])} />
-                                        {/* <input class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="default_size" type="file"> */}
                                         <InputError message={errors.image_path} className='mt-2' />
                                     </div>
 
@@ -158,7 +155,6 @@ const Show = ({ auth, item }) => {
                                         name="keterangan"
                                         isFocused={true}
                                         value={data.keterangan}
-                                        // disable="true"
                                         className="mt-1 block w-full outline-none border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                         onChange={e => setData("keterangan", e.target.value)} />
                                     <InputError message={errors.keterangan} className='mt-2' />
@@ -185,55 +181,3 @@ export default Show
 
 
 
-
-
-// import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-// import { Head, Link } from "@inertiajs/react";
-// // import TasksTable from "../Task/TasksTable";
-// export default function Show({auth,item}) {
-//     // dd()
-//     let {id, no_asset,name,category_id,cost,isDisposition,lokasi,nbv,service_date} = item.data[0]
-//     return (
-//         // <h1>hai</h1>
-//         <AuthenticatedLayout
-//             user={auth.user}
-//             // header={
-//             //     <div className="flex items-center justify-between">
-//             //         <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-//             //             {`Project "${project.name}"`}
-//             //         </h2>
-//             //         <Link
-//             //             href={route("project.edit", project.id)}
-//             //             className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-//             //         >
-//             //             Edit
-//             //         </Link>
-//             //     </div>
-//             // }
-//         >
-//             <Head title={`Project "${name}"`} />
-//             <div className="py-12">
-//                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-//                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-//                         <h1>hlo</h1>
-//                     </div>
-//                 </div>
-//             </div>
-
-//             {/* <div className="pb-12">
-//                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-//                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-//                         <div className="p-6 text-gray-900 dark:text-gray-100">
-//                             <TasksTable
-//                                 tasks={tasks}
-//                                 success={success}
-//                                 queryParams={queryParams}
-//                                 hideProjectColumn={true}
-//                             />
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div> */}
-//         </AuthenticatedLayout>
-//     );
-// }

@@ -197,10 +197,10 @@ export default function Index({ auth, transactions, queryParams = null, success 
                                                 {
                                                     auth.user.role === 'admin' && (
                                                         <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-6 flex h-11 py-1 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>
-                                                            <Link href={route("transactions.edit", transaction)} className='bg-yellow-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
+                                                            <Link href={route("transactions.edit", transaction)} className='bg-yellow-500 hover:brightness-110 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
                                                                 <PencilIcon className='w-5' />
                                                             </Link>
-                                                            <button onClick={(e) => deleteTransaction(transaction)} className='bg-red-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
+                                                            <button onClick={(e) => deleteTransaction(transaction)} className='bg-red-400 hover:brightness-125 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
                                                                 <XMarkIcon className='w-5' />
                                                             </button>
                                                         </td>
@@ -214,11 +214,11 @@ export default function Index({ auth, transactions, queryParams = null, success 
                             </div>
                             <Pagination links={transactions.meta.links} />
                             <div className="flex-col md:flex-row flex gap-4 md:w-fit ml-auto mt-6 mr-6  w-full">
-                                <a href={`transactions/fullsto${queryParamsExport()}`} className="w-full md:w-72  py-3 px-4 tracking-wide text-center bg-orangeTheme font-bold flex items-center justify-center gap-2 text-white rounded-md">
+                                <a href={`transactions/fullsto${queryParamsExport()}`} className="w-full md:w-72  py-3 px-4 tracking-wide text-center bg-orangeTheme font-bold flex items-center justify-center gap-2 text-white rounded-md hover:brightness-110 duration-150">
                                     <ArrowLeftStartOnRectangleIcon className="w-6" />
                                     Export Transactions
                                 </a>
-                                <Link href={route('transactions.dailyreportpage')} className=" w-full md:w-72 py-3 px-4 text-center bg-brownTheme tracking-wide text-white font-bold flex items-center justify-center gap-2 rounded-md">
+                                <Link href={route('transactions.dailyreportpage')} className=" w-full md:w-72 py-3 px-4 text-center bg-brownTheme tracking-wide text-white font-bold flex items-center justify-center gap-2 rounded-md hover:brightness-125 duration-150">
                                     <ArrowDownOnSquareIcon className="w-6" />
                                     Generate Daily Report
                                 </Link>

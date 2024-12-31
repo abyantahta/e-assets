@@ -11,6 +11,7 @@ const DailyReport = () => {
     const [PIC, setPIC] = useState('')
     const [divisionInCharge, setdivisionInCharge] = useState('')
     const [kategori, setKategori] = useState('')
+    const [date, setDate] = useState(new Date().toISOString().substr(0, 10))
     let users = [
         "Pietra Shafira",
         "Amrullah",
@@ -21,7 +22,8 @@ const DailyReport = () => {
         let queryParams = {
             "PIC": PIC,
             "divisionInCharge": divisionInCharge,
-            "kategori": kategori
+            "kategori": kategori,
+            "date": date
         }
         router.get(route("transactions.dailyreport"), queryParams)
     }
@@ -45,6 +47,7 @@ const DailyReport = () => {
                                 <div className="mt-4">
                                     <InputLabel htmlFor="divisionInCharge" value="Division in Charge" />
                                     <SelectInput
+                                        required
                                         className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                         onChange={(e) =>
                                             setdivisionInCharge(e.target.value)
@@ -60,10 +63,10 @@ const DailyReport = () => {
                                     {/* <InputError className='mt-2' /> */}
                                 </div>
 
-
                                 <div className="mt-4">
                                     <InputLabel htmlFor="pic" value="PIC" />
                                     <SelectInput
+                                        required
                                         className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                         onChange={(e) =>
                                             setPIC(e.target.value)
@@ -81,6 +84,7 @@ const DailyReport = () => {
                                 <div className="mt-4 w-full">
                                     <InputLabel htmlFor="kategori" value="Kategori" />
                                     <SelectInput
+                                        required
                                         className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                         onChange={(e) =>
                                             setKategori(e.target.value)
@@ -94,6 +98,11 @@ const DailyReport = () => {
                                         <option value="Vehicle">Vehicle </option>
                                         <option value="Office Equipment">Office Equipment</option>
                                     </SelectInput>
+                                    {/* <InputError message={errors.kategori} className='mt-2' /> */}
+                                </div>
+                                <div className="mt-4 w-full">
+                                    <InputLabel htmlFor="kategori" value="Kategori" />
+                                    <input required value={date} onChange={(e) => setDate(e.target.value)} type="date" className='w-52 outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12' />
                                     {/* <InputError message={errors.kategori} className='mt-2' /> */}
                                 </div>
 

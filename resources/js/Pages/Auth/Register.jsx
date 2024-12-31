@@ -141,30 +141,12 @@ export default function Register() {
                         <InputError message={errors.password} className="mt-2" />
                         <InputError message={errors.password_confirmation} className="mt-2" />
 
-                        {/* <div className="mt-5 block">
-                            <label className="flex items-center">
-                                <Checkbox
-                                    name="remember"
-                                    checked={data.remember}
-                                    onChange={(e) =>
-                                        setData('remember', e.target.checked)
-                                    }
-                                />
-                                <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                                    Remember me
-                                </span>
-                            </label>
-                        </div> */}
                         <PrimaryButton className=" mt-5 w-full px-4 py-2 text-center bg-orangeTheme !text-base tracking-wider" disabled={processing}>
                             Create
                         </PrimaryButton>
                     </form>
                 </div>
-                {/* <div className="w-20 h-20 bg-gradient-to-tr from-greenTheme to-green-200 rounded-full absolute -top-3 -left-5 animate-registerGreen"></div>
-                    <div className="w-20 h-20 bg-gradient-to-tr from-redTheme to-red-200 rounded-full absolute -bottom-2 -right-7 animate-registerRed"></div> */}
-                {/* <div className="w-20 h-20 bg-gradient-to-tr from-redTheme to-red-200 rounded-full absolute top-12 left-28"></div> */}
             </div>
-            {/* <Head title="Register" /> */}
         </AuthenticatedLayout>
     );
 }

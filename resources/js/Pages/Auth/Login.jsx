@@ -52,7 +52,7 @@ export default function Login({ status, canResetPassword }) {
                                 type="email"
                                 name="email"
                                 value={data.email}
-                                className="bg-transparent outline-none border-none"
+                                className="bg-transparent outline-none border-none w-full"
                                 placeholder="email"
                                 autoComplete="username"
                                 isFocused={true}
@@ -73,7 +73,7 @@ export default function Login({ status, canResetPassword }) {
                                 name="password"
                                 placeholder="password"
                                 value={data.password}
-                                className=" outline-none border-none bg-transparent focus:outline-none"
+                                className=" outline-none border-none bg-transparent focus:outline-none w-full"
                                 autoComplete="current-password"
                                 onChange={(e) => setData('password', e.target.value)}
                             />

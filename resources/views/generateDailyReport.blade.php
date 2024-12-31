@@ -131,8 +131,7 @@
 </head>
 @php
     $transactionsDecode = json_decode($transactions);
-    // dd($kategori)
-    // dd($pic['role']);
+    // dd($date);
 @endphp
 
 <body style="padding: 1.5rem ">
@@ -144,7 +143,7 @@
             <table class="" style="margin-top: 10px">
                 <tr>
                     <td>Hari / Tanggal </td>
-                    <td>: Kamis, 14 November 2024</td>
+                    <td>: {{ \Carbon\Carbon::parse($date)->translatedFormat('d F Y') }}</td>
                 </tr>
                 <tr>
                     <td>Kategori </td>

@@ -17,9 +17,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/items/{item}', [ItemController::class, 'show'])->name('items.show');
-// Route::resource("/items", ItemController::class);
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Route::resource("/transactions", TransactionController::class);
     Route::middleware(['admin'])->group(function () {
         Route::get('/cobacoba', [TransactionController::class, 'cobacoba'])->name('cobacoba');
         Route::get('/transactions/fullsto', [TransactionController::class, 'exportSTO'])->name('transactions.fullsto');
@@ -41,10 +39,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/items/{item}', [ItemController::class, 'update'])->name('items.update');
     Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
     Route::get('/items/{item}/edit', [ItemController::class, 'edit'])->name('items.edit');
-    // Route::get("/transactions/create/{id}", [TransactionController::class,'create']);
-    // Route::get("/items/{id}/history", [ItemController::class,'itemhistory'])->name('items.history');
-    // Route::get("/items", [ItemController::class, 'index'])->name('items.index');
-    // Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.show');
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 

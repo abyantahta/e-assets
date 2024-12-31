@@ -134,14 +134,14 @@ export default function Show({ auth, item, transactions }) {
                     <div className="mt-1 flex flex-col md:flex-row justify-center gap-4">
                         {
                             !showHistory && (
-                                <button onClick={() => viewHistory()} className="py-3 md:py-1 w-full md:w-48 -mb-4 md:mb-0 bg-orangeTheme font-semibold tracking-wider text-white rounded-md flex items-center gap-2 justify-center">
+                                <button onClick={() => viewHistory()} className="py-3 md:py-1 w-full md:w-48 -mb-4 md:mb-0 bg-orangeTheme hover:brightness-110 duration-150 font-semibold tracking-wider text-white rounded-md flex items-center gap-2 justify-center">
                                     <EyeIcon className="w-6" />
                                     STO History
                                 </button>
 
                             )
                         }
-                        <Link href={route("transactions.show", `${encrypted_no_asset}${no_asset}`)} className="py-2 mt-3 md:mt-0 md:py-1 w-full md:w-48 text-center bg-brownTheme text-white font-semibold flex items-center justify-center gap-2  rounded-md">
+                        <Link href={route("transactions.show", `${encrypted_no_asset}${no_asset}`)} className="py-2 mt-3 md:mt-0 md:py-1 w-full md:w-48 text-center hover:brightness-110 duration-150 bg-brownTheme text-white font-semibold flex items-center justify-center gap-2  rounded-md">
                             <PlusIcon className="w-8" />
                             Add STO
                         </Link>
