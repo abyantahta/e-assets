@@ -1,21 +1,28 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { EyeIcon, PencilIcon, PlusIcon, XMarkIcon } from "@heroicons/react/16/solid";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
+// import {useNavigate}
 // import th from "@/Components/th";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
 // import TasksTable from "../Task/TasksTable";
-
 
 export default function Show({ auth, item, transactions }) {
     let [showHistory, setShowHistory] = useState(null);
     let { id, encrypted_no_asset, no_asset, name, category_id, cost, isDisposition, lokasi, nbv, service_date } = item.data[0]
 
     const viewHistory = () => {
+        console.log(auth.user)
         // if(!auth) return to_route('items.index');
-        setShowHistory(true);
+        if(auth.user){
+            setShowHistory(true);
+        }else{
+            router.visit('/login')
+            // return Inertia::
+            // navigate('/login')
+        }
         // if(transactions)
     }
     let content = (
@@ -24,7 +31,7 @@ export default function Show({ auth, item, transactions }) {
             <div className="relative mt-20 max-w-[90rem] mx-auto pb-8">
                 <div className=" z-10 md:mx-auto md:max-w-2xl flex flex-col items-center bg-lightTheme drop-shadow-lg py-12 px-4 md:px-24 mx-8">
                     <h1 className="text-greenTheme text-center font-bold text-5xl">{no_asset}</h1>
-                    <h3 className="text-redTheme font-bold mt-1 text-brownTheme text-lg text-center">{name}</h3>
+                    <h3 className="text-redTheme font-bold mt-1 text-brownTheme text-xl text-center">{name}</h3>
                     <table className="mt-2 font-playfairDisplay text-xl tracking-wider">
                         <thead>
                             <tr>
@@ -107,7 +114,7 @@ export default function Show({ auth, item, transactions }) {
                                                     <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.pic}</td>
                                                     <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.created_by.name}</td> 
                                                     {
-                                                        auth.user.role === 'admin' && (
+                                                        (auth.user && auth.user?.role === 'admin') && (
                                                             <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-6 flex h-11 py-1 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>
                                                                 <Link href={route("transactions.edit", transaction)} className='bg-yellow-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
 
