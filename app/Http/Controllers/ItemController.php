@@ -57,10 +57,12 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($encryptedId)
     {
-        $item = Item::query()->where('id',$id)->get();
-        $transactions = Transaction::query()->where('item_id', $id)->get();
+        $no_asset = Crypt::decryptString($encryptedId);
+        // dd($encryptedId,$id);
+        $item = Item::query()->where('no_asset',$no_asset)->get();
+        $transactions = Transaction::query()->where('item_id', $no_asset)->get();
 
         return inertia("Items/Show", [
             "item" => ItemResource::collection($item),
