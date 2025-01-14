@@ -10,7 +10,7 @@ import SelectInput from '@/Components/SelectInput'
 const Show = ({ auth, item }) => {
     let { id, no_asset, name, category_id, cost, isDisposition, lokasi, nbv, service_date } = item.data[0]
     const { data, setData, post, errors, reset } = useForm({
-        item_id: id,
+        item_id: no_asset,
         lokasi: lokasi,
         image_path: '',
         kategori: category_id.name,
@@ -21,6 +21,8 @@ const Show = ({ auth, item }) => {
     })
     const onSubmit = (e) => {
         e.preventDefault();
+        // dd($data);
+        console.log(data)
         post(route('transactions.store'));
     }
     return (
@@ -46,10 +48,10 @@ const Show = ({ auth, item }) => {
                                     <InputLabel htmlFor="item_id" value="Nomor Asset" />
                                     <TextInput
                                         id="item_id"
-                                        type="number"
+                                        type="text"
                                         name="item_id"
                                         isFocused={true}
-                                        defaultValue={id}
+                                        defaultValue={no_asset}
                                         disabled="true"
                                         className="mt-1 block cursor-default w-full outline-none border-none bg-lightTheme text-gray-400 shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-3xl text-center   h-16" />
                                     <InputError message={errors.item_id} className='mt-2' />

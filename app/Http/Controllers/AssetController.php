@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Exception;
 use App\Models\Asset;
 use App\Models\Item;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use session;
 // use DB;
@@ -38,6 +39,7 @@ class AssetController extends Controller
                     $items->cost  = $datas->t_fa_puramt;
                     $items->nbv  = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
                     $items->service_date  = $datas->t_fa_startdt;
+                    // $items->service_date  = $datas["t_fa_disp_dt"]?:Carbon::today();
                     $items->encrypted_no_asset  = Crypt::encryptString($datas->t_fa_id);
                     $items->lokasi  = $datas->t_fa_faloc_id;
                     $items->isDisposition  = isset($datas["t_fa_disp_dt"]);
@@ -85,7 +87,7 @@ class AssetController extends Controller
                 DB::commit();
             } catch (Exception $e) {
                 DB::rollback();
-                // dd($e);
+                dd($e);
                 // alert()->error('error', 'Item not loaded');
                 return redirect()->back()->with('alert', 'Item not loaded');
             }

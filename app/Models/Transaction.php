@@ -20,7 +20,7 @@ class Transaction extends Model
     protected $with = ['item','createdBy','updatedBy'];
     public function item()
     {
-        return $this->belongsTo(Item::class, 'item_id');
+        return $this->belongsTo(Item::class, 'item_id','no_asset');
     }
     public function createdBy()
     {

@@ -16,6 +16,7 @@ use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Crypt;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
@@ -28,7 +29,7 @@ class TransactionController extends Controller
     public function index()
     {
 
-        $query = Transaction::select('transactions.*', 'items.id AS it_id', 'items.created_at AS it_created_at')->leftJoin('items', 'items.id', '=', 'transactions.item_id'); 
+        $query = Transaction::select('transactions.*', 'items.id AS it_id', 'items.created_at AS it_created_at')->leftJoin('items', 'items.no_asset', '=', 'transactions.item_id'); 
         $sortField = request("sort_field", "transactions.created_at");
         $sortDirection = request("sort_direction", "desc");
         if (request("no_asset")) {
@@ -50,6 +51,7 @@ class TransactionController extends Controller
             $query->whereDate("transactions.created_at",$start)->get();
         }
         $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10);
+        // dd($transactions);
         return inertia("Transactions/Index", [
             "transactions" => TransactionResource::collection($transactions),
             "queryParams" => request()->query() ?: null,
@@ -99,9 +101,11 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($encrypted_no_asset)
     {
-        $no_asset = substr($id, -9);
+        $no_asset = Crypt::decryptString($encrypted_no_asset);
+        // dd($no_asset);
+        // $no_asset = substr($id, -9);
         $item = Item::query()->where('no_asset', $no_asset)->get();
         return inertia("Transactions/Show", [
             "item" => ItemResource::collection($item),

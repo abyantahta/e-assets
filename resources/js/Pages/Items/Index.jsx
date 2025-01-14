@@ -6,17 +6,18 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {
     MagnifyingGlassCircleIcon,
     Squares2X2Icon,
+    ArrowPathIcon
 } from "@heroicons/react/16/solid";
 import { Head, router, Link, useForm } from "@inertiajs/react";
 import * as CryptoJS from "crypto-js";
 import moment from "moment";
 
 export default function Index({ auth, items, queryParams = null, success }) {
-        const { data, setData, post, errors, reset } = useForm()
+    const { data, setData, post, errors, reset } = useForm();
     const onSubmit = (e) => {
         e.preventDefault();
-        post(route('syncqad'));
-    }
+        post(route("syncqad"));
+    };
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
         if (value) {
@@ -55,9 +56,7 @@ export default function Index({ auth, items, queryParams = null, success }) {
             }
         >
             <Head title="Item" />
-            <form action="POST" onSubmit={onSubmit}>
-                <button type="submit" className="bg-red-400 py-2 px-8"> sync qad asset</button>
-            </form>
+
             <div className="py-12">
                 <h1 className="text-5xl text-center font-semibold font-playfairDisplay text-greenTheme tracking-wider">
                     SDI's Assets
@@ -66,7 +65,7 @@ export default function Index({ auth, items, queryParams = null, success }) {
                     <div className="bg-lightTheme dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="flex flex-col-reverse gap-y-2 mb-4 md:flex-row md:justify-between">
-                                <div className="flex flex-col gap-y-2 w-full md:flex-row md:w-96 gap-4">
+                                <div className="flex flex-col gap-y-2 w-full md:flex-row md:w-[34rem] gap-4">
                                     <SelectInput
                                         className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
                                         defaultValue={queryParams.category_id}
@@ -81,7 +80,9 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                         <option value="1">Tooling</option>
                                         <option value="2">Building</option>
                                         <option value="3">Vehicle</option>
-                                        <option value="4">Office Equipment</option>
+                                        <option value="4">
+                                            Office Equipment
+                                        </option>
                                         <option value="5">Machine</option>
                                         {/* <option value="6">Office Equipment</option> */}
                                     </SelectInput>
@@ -99,6 +100,15 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                         <option value="1">Active</option>
                                         <option value="2">Deactive</option>
                                     </SelectInput>
+                                    <form action="POST" onSubmit={onSubmit}>
+                                        <button
+                                            type="submit"
+                                            className="bg-orangeTheme rounded-md text-white font-bold tracking-wider md:w-36 md:h-full px-2 flex items-center justify-center gap-1 hover:duration-150 hover:brightness-110 duration-150 w-full h-11"
+                                        >
+                                            Sync
+                                            <ArrowPathIcon className="w-5 text-white" />
+                                        </button>
+                                    </form>
                                 </div>
                                 <TextInput
                                     className="w-full md:w-56 border-gray-700 border-[3px] placeholder:italic text-greenTheme font-normal focus:border-greenTheme focus:ring-greenTheme placeholder:text-greenTheme"
@@ -317,8 +327,10 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                                             : "bg-white"
                                                     } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}
                                                 >
-                                                    Rp. {Intl.NumberFormat('en-DE').format(item.cost)}
-                                                    
+                                                    Rp.{" "}
+                                                    {Intl.NumberFormat(
+                                                        "en-DE"
+                                                    ).format(item.cost)}
                                                 </td>
                                                 <td
                                                     className={`${
@@ -327,7 +339,10 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                                             : "bg-white"
                                                     } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}
                                                 >
-                                                    Rp. {Intl.NumberFormat('en-DE').format(item.nbv)}
+                                                    Rp.{" "}
+                                                    {Intl.NumberFormat(
+                                                        "en-DE"
+                                                    ).format(item.nbv)}
                                                 </td>
                                                 <td
                                                     className={`${

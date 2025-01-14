@@ -10,6 +10,7 @@ import moment from 'moment';
 
 export default function Index({ auth, transactions, queryParams = null, success }) {
     // console.log(new Date(transactions.data[0].created_at))
+    console.log(transactions)
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {
@@ -185,7 +186,7 @@ export default function Index({ auth, transactions, queryParams = null, success 
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{moment(transaction.created_at).format('DD/MM/YYYY')}</td>
                                                 <td className={` overflow-visible  h-11 -mr-3 bg-lightTheme text-ellipsis text-nowrap text-center pr-3 w-40`}>
                                                     <span className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} border-greenTheme border-2 rounded-[0.25rem] w-full h-full inline-block px-3 py-2 `}>
-                                                        {transaction.item_id.no_asset}
+                                                        {transaction.item_id?.no_asset}
                                                     </span>
                                                 </td>
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-52`}> {transaction.item_id.name} </td>
