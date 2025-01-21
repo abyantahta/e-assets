@@ -305,9 +305,8 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                                             : "bg-white"
                                                     } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}
                                                 >
-                                                    {moment(
-                                                        item.service_date
-                                                    ).format("DD/MM/YYYY")}
+                                                    {(item.service_date)? moment(item.service_date).format("DD/MM/YYYY"): ""}
+                                                    {/* {moment(item.service_date.format("DD/MM/YYYY"))} */}
                                                 </td>
                                                 <td
                                                     className={`${

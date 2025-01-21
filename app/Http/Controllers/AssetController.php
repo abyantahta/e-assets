@@ -22,7 +22,7 @@ class AssetController extends Controller
     {
         // dd('halo');
         $itemwsa = (new WsaService())->wsaasset();
-        // dd($itemwsa[0][0]["t_fa_disp_dt"]);
+        // dd($itemwsa[0][0]);
         if (is_bool($itemwsa)) {
             // alert()->error('error','Item not loaded, WSA problem');
             return redirect()->back() - with('alert', 'Item not loaded, WSA problem');
@@ -32,17 +32,20 @@ class AssetController extends Controller
             try {
                 foreach ($itemwsa[0] as $datas) {
                     //if($datas->t_pt_prod_line == 'FG' || $datas->t_pt_prod_line ==  'SA' || $datas->t_pt_prod_line ==  'FG64' && $datas->t_pt_status == 'AC'){
-
+                        // dd(Carbon::parse($datas->t_fa_disp_dt));
                     $items = Item::firstOrNew(['no_asset' => $datas->t_fa_id]);
                     // $items->pt_desc1  = $datas->t_pt_desc1 . ' ' . $datas->t_pt_desc2;
+                    // $items->name  = $datas->t_fa_disp_dt;
                     $items->name  = $datas->t_fa_desc1;
                     $items->cost  = $datas->t_fa_puramt;
                     $items->nbv  = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
-                    $items->service_date  = $datas->t_fa_startdt;
-                    // $items->service_date  = $datas["t_fa_disp_dt"]?:Carbon::today();
+                    // $items->service_date  = ($datas->t_fa_disp_dt == "") ? null : Carbon::parse($datas->t_fa_disp_dt);
+                    $items->isDisposition  = ($datas->t_fa_disp_dt == "") ? true : false;
+                    $items->service_date  = Carbon::parse($datas->t_fa_startdt);
                     $items->encrypted_no_asset  = Crypt::encryptString($datas->t_fa_id);
                     $items->lokasi  = $datas->t_fa_faloc_id;
-                    $items->isDisposition  = isset($datas["t_fa_disp_dt"]);
+                    // $items->isDisposition  = is_null($datas->t_fa_disp_dt);
+                    // $items->isDisposition  = isset($datas["t_fa_disp_dt"]);
                     // $items->category_id  = 1;
                     switch ($datas->t_fa_facls_id) {
                         case "TOOLING":
