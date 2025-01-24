@@ -28,9 +28,10 @@ class ItemController extends Controller
             $query->where('category_id', request("category_id"));
         }
         if (request("isDisposal")==1) {
-            $query->where('isDisposition', request("isDisposal"));
+            $query->whereNull('disposal_date');
         }else if(request("isDisposal")==2){
-            $query->where('isDisposition',0);
+            $query->whereNotNull('disposal_date');
+            // $query->where('isDisposition',0);
         }
         $items = $query->orderBy($sortField, $sortDirection)->paginate(10)->withQueryString();;
         return inertia("Items/Index",[

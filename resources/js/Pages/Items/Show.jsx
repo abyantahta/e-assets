@@ -11,7 +11,7 @@ import SelectInput from "@/Components/SelectInput";
 
 export default function Show({ auth, item, transactions }) {
     let [showHistory, setShowHistory] = useState(null);
-    let { id, encrypted_no_asset, no_asset, name, category_id, cost, isDisposition, lokasi, nbv, service_date } = item.data[0]
+    let { id, encrypted_no_asset, no_asset, name, category_id, cost, disposal_date, lokasi, nbv, service_date } = item.data[0]
 
     const viewHistory = () => {
         console.log(auth.user)

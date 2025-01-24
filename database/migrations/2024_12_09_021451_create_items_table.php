@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('category_id')->constrained('categories');
             $table->timestamp('service_date')->nullable();
-            $table->boolean('isDisposition')->nullable();
+            $table->timestamp('disposal_date')->nullable();
             $table->unsignedBigInteger('cost')->nullable();
             $table->unsignedBigInteger('nbv')->nullable();
             $table->string('lokasi');

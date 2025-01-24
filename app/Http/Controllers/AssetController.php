@@ -22,10 +22,11 @@ class AssetController extends Controller
     {
         // dd('halo');
         $itemwsa = (new WsaService())->wsaasset();
+        $loadingToggle = request("loadingToggle");
         // dd($itemwsa[0][0]);
         if (is_bool($itemwsa)) {
             // alert()->error('error','Item not loaded, WSA problem');
-            return redirect()->back() - with('alert', 'Item not loaded, WSA problem');
+            return redirect()->back() -> with('error', [$loadingToggle,"Items failed to load, WSA Problem"]);
         } else {
             // dd($itemwsa[0][7000],$itemwsa[0][8000],$itemwsa[0][9000]);
             DB::begintransaction();
@@ -40,12 +41,10 @@ class AssetController extends Controller
                     $items->cost  = $datas->t_fa_puramt;
                     $items->nbv  = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
                     // $items->service_date  = ($datas->t_fa_disp_dt == "") ? null : Carbon::parse($datas->t_fa_disp_dt);
-                    $items->isDisposition  = ($datas->t_fa_disp_dt == "") ? true : false;
+                    $items->disposal_date  = ($datas->t_fa_disp_dt == "") ?  null : Carbon::parse($datas->t_fa_disp_dt);
                     $items->service_date  = Carbon::parse($datas->t_fa_startdt);
                     $items->encrypted_no_asset  = Crypt::encryptString($datas->t_fa_id);
                     $items->lokasi  = $datas->t_fa_faloc_id;
-                    // $items->isDisposition  = is_null($datas->t_fa_disp_dt);
-                    // $items->isDisposition  = isset($datas["t_fa_disp_dt"]);
                     // $items->category_id  = 1;
                     switch ($datas->t_fa_facls_id) {
                         case "TOOLING":
@@ -88,15 +87,33 @@ class AssetController extends Controller
                     //   } // if FG / SA / 
                 }
                 DB::commit();
+
             } catch (Exception $e) {
                 DB::rollback();
                 dd($e);
                 // alert()->error('error', 'Item not loaded');
-                return redirect()->back()->with('alert', 'Item not loaded');
+                return redirect()->back()->with('error', [$loadingToggle,"Items failed to load"]);
             }
         }
         // alert()->success('Success', 'Item successfully loaded!');
-        return redirect()->back()->with('alert', 'Item successfully loaded');
+        // return inertia("Items/Index",[
+        //     "isLoading" => false,
+        //     "isSuccess" => true
+        // ]);
+        // if(request("loading")){
+            // dd(request("loading"));
+            
+        // }
+        // dd(request("loadingToggle"));
+        // dd($loadingToggle);
+        $kima = true;
+        return redirect()->back()->with('success', 
+            [
+                "toggle" => !$loadingToggle,
+                "message" => "Items successfully loaded"
+            ]
+        );
+
         //
     }
 }

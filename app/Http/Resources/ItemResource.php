@@ -24,7 +24,7 @@ class ItemResource extends JsonResource
             'category_id'=> new CategoryResource($this->category),
             // 'createdBy'=> new UserResource(1),
             'service_date'=> $this->service_date,
-            'isDisposition'=> $this->isDisposition,
+            'disposal_date'=> $this->disposal_date,
             'cost'=> $this->cost,
             'nbv'=> $this->nbv,
             'lokasi'=> $this->lokasi,

@@ -11,12 +11,28 @@ import {
 import { Head, router, Link, useForm } from "@inertiajs/react";
 import * as CryptoJS from "crypto-js";
 import moment from "moment";
+import { useEffect, useState } from "react";
 
-export default function Index({ auth, items, queryParams = null, success }) {
-    const { data, setData, post, errors, reset } = useForm();
+export default function Index({ auth, items, queryParams = null, loadingParams = null, success, error, loading_toggle }) {
+    // let success
+    // console.log(success? success[1]: !success)
+    // console.log(success)
+    const [loadingSync,setLoadingSync] = useState(false);
+    const [successInfo,setSuccessInfo] = useState(success || null);
+    const [errorInfo,setErrorInfo] = useState(error);
+    // console.log(successInfo)
+    useEffect(()=>{
+        // setSuccessInfo(success)
+        setLoadingSync(false)
+        // setErrorInfo(error)
+    },[success])
     const onSubmit = (e) => {
         e.preventDefault();
-        post(route("syncqad"));
+        setLoadingSync(true)
+        loadingParams = loadingParams || {}
+        
+        loadingParams["loadingToggle"] = !successInfo
+        router.post(route("syncqad"), loadingParams);
     };
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
@@ -47,7 +63,17 @@ export default function Index({ auth, items, queryParams = null, success }) {
         }
         router.get(route("items.index"), queryParams);
     };
+    const closeLoadingSync = () =>{
+        success = null
+    }
     return (
+        <>
+        
+        {(loadingSync) && (
+            <div className="w-full h-lvh bg-[rgba(0,0,0,0.3)]  fixed top-0 left-0 z-[99999]">
+                
+            </div>
+        )}
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
@@ -56,7 +82,6 @@ export default function Index({ auth, items, queryParams = null, success }) {
             }
         >
             <Head title="Item" />
-
             <div className="py-12">
                 <h1 className="text-5xl text-center font-semibold font-playfairDisplay text-greenTheme tracking-wider">
                     SDI's Assets
@@ -194,7 +219,7 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                             </TableHeading>
 
                                             <TableHeading
-                                                name="isDisposition"
+                                                name="disposal_date"
                                                 sort_field={
                                                     queryParams.sort_field
                                                 }
@@ -315,9 +340,7 @@ export default function Index({ auth, items, queryParams = null, success }) {
                                                             : "bg-white"
                                                     } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-32`}
                                                 >
-                                                    {item.isDisposition
-                                                        ? "Yes"
-                                                        : "No"}
+                                                    {(item.disposal_date)? moment(item.disposal_date).format("DD/MM/YYYY"): ""}
                                                 </td>
                                                 <td
                                                     className={`${
@@ -364,5 +387,6 @@ export default function Index({ auth, items, queryParams = null, success }) {
                 </div>
             </div>
         </AuthenticatedLayout>
+        </>
     );
 }
