@@ -95,24 +95,7 @@ class AssetController extends Controller
                 return redirect()->back()->with('error', [$loadingToggle,"Items failed to load"]);
             }
         }
-        // alert()->success('Success', 'Item successfully loaded!');
-        // return inertia("Items/Index",[
-        //     "isLoading" => false,
-        //     "isSuccess" => true
-        // ]);
-        // if(request("loading")){
-            // dd(request("loading"));
-            
-        // }
-        // dd(request("loadingToggle"));
-        // dd($loadingToggle);
-        $kima = true;
-        return redirect()->back()->with('success', 
-            [
-                "toggle" => !$loadingToggle,
-                "message" => "Items successfully loaded"
-            ]
-        );
+        return redirect()->back()->with('success', [!$loadingToggle,"Items successfully loaded"]);
 
         //
     }

@@ -19,7 +19,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
-
+use Spatie\Activitylog\Models\Activity;
 
 class TransactionController extends Controller
 {
@@ -76,6 +76,7 @@ class TransactionController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
+        // activity()
         $data = $request->validated();
         $image = $data['image_path'] ?? null;
         if ($image) {
@@ -92,7 +93,11 @@ class TransactionController extends Controller
         }
         $data['updated_by'] = null;
         Transaction::create($data);
-
+        $activity = Activity::all()->last();
+        $activity->description;
+        $activity->subject;
+        $activity->changes;
+        // $activity->log_name = $data["item_id"]."was created";
         return to_route('items.index')
         ->with('success', 'Transaction was created');
         //
@@ -129,6 +134,7 @@ class TransactionController extends Controller
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
         $data = $request->validated();
+        // dd($data);
         $image = $data['image_path'] ?? null;
         if ($image) {
             if ($transaction->image_path) {
@@ -147,7 +153,10 @@ class TransactionController extends Controller
             unset($data['image_path']);
         }
         $transaction->update($data);
-
+        $activity = Activity::all()->last();
+        $activity->description;
+        $activity->subject;
+        $activity->changes;
         return to_route('transactions.index')
         ->with('success', "Transaction \"$transaction->name\" was updated");
         //
@@ -159,6 +168,10 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         $transaction->delete();
+        $activity = Activity::all()->last();
+        $activity->description;
+        $activity->subject;
+        $activity->changes;
         if ($transaction->image_path){
             Storage::disk('public')->deleteDirectory(dirname($transaction->image_path));
         }

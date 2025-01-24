@@ -14,7 +14,7 @@ const Edit = ({ auth, transaction }) => {
     let createdBy = transaction.data.created_by
     // console.log
     const { data, setData, post, errors, reset } = useForm({
-        item_id: id || "",
+        item_id: no_asset || "",
         image_path: "",
         lokasi: lokasi || "",
         kondisi: kondisi || "",

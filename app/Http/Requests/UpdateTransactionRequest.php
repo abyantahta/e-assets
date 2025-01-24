@@ -22,7 +22,7 @@ class UpdateTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "item_id" => ['required', 'exists:items,id'],
+            "item_id" => ['required', 'exists:items,no_asset'],
             'image_path' => ['nullable', 'image', 'mimes:png,jpeg,jpg'],
             "lokasi" => ['required', 'string'],
             "kondisi" => ['required', 'string'],
