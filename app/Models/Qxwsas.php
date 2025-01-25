@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Qxwsas extends Model
+class qxwsas extends Model
 {
-    /** @use HasFactory<\Database\Factories\ItemFactory> */
-    //
-    protected $table = 'qxwsas';
+    /** @use HasFactory<\Database\Factories\QxwsasFactory> */
+    use HasFactory;
     protected $guarded = [];
 }

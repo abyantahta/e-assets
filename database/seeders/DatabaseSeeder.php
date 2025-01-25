@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Machine'
         ]);
         
-        // Qxwsas::factory()->create();
+        Qxwsas::factory()->create();
 
         // Item::factory()->count(200)->create();
         // Transaction::factory()->count(100)->create();

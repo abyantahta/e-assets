@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('qxwsa_qxtend_url')->nullable();
             $table->string('qxwsa_qxtend_receiver')->nullable();
         });
-        //
     }
 
     /**
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('qxwsas');
     }
 };

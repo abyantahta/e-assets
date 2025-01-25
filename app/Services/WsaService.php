@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Qxwsas;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -89,9 +90,12 @@ class WsaService
             curl_close($curl);
         }
         // dd($qdocResponse);
-        $xmlResp = simplexml_load_string($qdocResponse);
-
-        $xmlResp->registerXPathNamespace('ns1', $wsa->qxwsa_wsa_path);
+        try{
+            $xmlResp = simplexml_load_string($qdocResponse);
+            $xmlResp->registerXPathNamespace('ns1', $wsa->qxwsa_wsa_path);
+        }catch(Exception $e){
+            return false;
+        }
         // dd($qdocResponse);
         $itemdata = $xmlResp->xpath('//ns1:tempRow');
         $qdocResult = (string) $xmlResp->xpath('//ns1:outOK')[0];

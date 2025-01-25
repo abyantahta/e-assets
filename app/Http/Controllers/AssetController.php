@@ -21,12 +21,24 @@ class AssetController extends Controller
     public function store(Request $request)
     {
         // dd('halo');
-        $itemwsa = (new WsaService())->wsaasset();
         $loadingToggle = request("loadingToggle");
+        // try{
+            $itemwsa = (new WsaService())->wsaasset();
+            // dd($itemwsa);
+        // }catch(Exception $e){
+        //     return redirect()->back()->with('error', [$loadingToggle,"Items failed to load, WSA Problem"]);
+        // }
         // dd($itemwsa[0][0]);
-        if (is_bool($itemwsa)) {
+        
+        if (($itemwsa === false)) {
             // alert()->error('error','Item not loaded, WSA problem');
-            return redirect()->back() -> with('error', [$loadingToggle,"Items failed to load, WSA Problem"]);
+            // dd('lewat sini');
+
+            return redirect()->back()->with('success', [
+                "toggle" => !$loadingToggle,
+                "status" => "error",
+                "message" => "Can't load data, WSA Problem"
+            ]);
         } else {
             // dd($itemwsa[0][7000],$itemwsa[0][8000],$itemwsa[0][9000]);
             DB::begintransaction();
@@ -90,12 +102,16 @@ class AssetController extends Controller
 
             } catch (Exception $e) {
                 DB::rollback();
-                dd($e);
+                // dd($e);
                 // alert()->error('error', 'Item not loaded');
-                return redirect()->back()->with('error', [$loadingToggle,"Items failed to load"]);
+                return redirect()->back()->with('success', [!$loadingToggle,"Items failed to load"]);
             }
         }
-        return redirect()->back()->with('success', [!$loadingToggle,"Items successfully loaded"]);
+        return redirect()->back()->with('success', [
+            "toggle" => !$loadingToggle,
+            "status" => "success",
+            "message" => "Items successfully loaded"
+        ]);
 
         //
     }
