@@ -136,7 +136,7 @@
 </head>
 @php
     $transactionsDecode = json_decode($transactions);
-    // dd($transactionsDecode);
+    dd($transactionsDecode);
 @endphp
 
 <body style="padding: 1.5rem ">

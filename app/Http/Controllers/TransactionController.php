@@ -191,37 +191,37 @@ class TransactionController extends Controller
         ]);
     }
     public function dailyreport(){
-        // $pic = [
-        //     'name' => request("PIC"),
-        //     'role' => $this->role(request("PIC"))
-        // ];
-        // $divisionInCharge = [
-        //     'name' => request("divisionInCharge"),
-        //     'role' => $this->role(request("divisionInCharge"))
-        // ];
-        // $stoAdmin = [
-        //     'name' => request("stoAdmin"),
-        //     'role' => $this->role(request("stoAdmin"))
-        // ];
-        // $date = request("date");
-        //     // 'role' => $this->role(request("stoAdmin"))
+        $pic = [
+            'name' => request("PIC"),
+            'role' => $this->role(request("PIC"))
+        ];
+        $divisionInCharge = [
+            'name' => request("divisionInCharge"),
+            'role' => $this->role(request("divisionInCharge"))
+        ];
+        $stoAdmin = [
+            'name' => request("stoAdmin"),
+            'role' => $this->role(request("stoAdmin"))
+        ];
+        $date = request("date");
+            // 'role' => $this->role(request("stoAdmin"))
         
-        // $kategori = request("kategori");
-        // $transactions = Transaction::query()->whereDate("created_at",$date)->get();
+        $kategori = request("kategori");
+        $transactions = Transaction::query()->whereDate("created_at",$date)->get();
+        // dd($transactions);
+        $pdf = Pdf::loadView('generateDailyReport',[
+            "transactions" => TransactionResource::collection($transactions)->toJson(),
+            "pic" => $pic,
+            "divisionInCharge" => $divisionInCharge,
+            "stoAdmin" => $stoAdmin,
+            "kategori" => $kategori,
+            "date" => $date,
+        ])->setOption(['dpi=>150'])->setPaper('a4', 'landscape')->setWarnings(false);
 
-        // $pdf = Pdf::loadView('generateDailyReport',[
-        //     "transactions" => TransactionResource::collection($transactions)->toJson(),
-        //     "pic" => $pic,
-        //     "divisionInCharge" => $divisionInCharge,
-        //     "stoAdmin" => $stoAdmin,
-        //     "kategori" => $kategori,
-        //     "date" => $date,
-        // ])->setOption(['dpi=>150'])->setPaper('a4', 'landscape')->setWarnings(false);
+        // $pdf = Pdf::loadHTML('coba');
+        // return $pdf->stream('app.pdf');
 
-        $pdf = Pdf::loadHTML('coba');
-        return $pdf->stream('app.pdf');
-
-        // return $pdf->download('pdfkuh.pdf');
+        return $pdf->download('pdfkuh.pdf');
         // exit();
     }
 
