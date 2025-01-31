@@ -8,11 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    {{-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> --}}
+    
     <title>Document</title>
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     {{-- @viteReactRefresh --}}
     @vite(['resources/js/app.jsx', 'resources/js/Pages/}.jsx'])
     <style>
+        *{
+            font-family: 'Times New Roman', Times, serif;
+        }
         .headingRow {
             padding: 1rem;
             border-bottom-width: 1px;
@@ -131,7 +136,7 @@
 </head>
 @php
     $transactionsDecode = json_decode($transactions);
-    // dd($date);
+    // dd($transactionsDecode);
 @endphp
 
 <body style="padding: 1.5rem ">

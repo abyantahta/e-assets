@@ -99,9 +99,7 @@ export default function Index({
                                     <h2 className=" mt-2 font-bold text-3xl">{syncMessage}</h2>
                                     </>
                                 )
-
                             }
-
                     </div>
                 </div>
             )}

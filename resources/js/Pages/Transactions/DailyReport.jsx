@@ -25,6 +25,7 @@ const DailyReport = () => {
             "kategori": kategori,
             "date": date
         }
+        console.log(queryParams)
         router.get(route("transactions.dailyreport"), queryParams)
     }
     return (

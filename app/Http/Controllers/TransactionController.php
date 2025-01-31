@@ -186,37 +186,43 @@ class TransactionController extends Controller
         return Excel::download(new ExportFullSTO($category_id,$dateStart,$dateEnd), 'users.xlsx');
     }
     public function dailyReportPage(){
+        // dd('kesini');
         return inertia("Transactions/DailyReport", [
         ]);
     }
     public function dailyreport(){
-        $pic = [
-            'name' => request("PIC"),
-            'role' => $this->role(request("PIC"))
-        ];
-        $divisionInCharge = [
-            'name' => request("divisionInCharge"),
-            'role' => $this->role(request("divisionInCharge"))
-        ];
-        $stoAdmin = [
-            'name' => request("stoAdmin"),
-            'role' => $this->role(request("stoAdmin"))
-        ];
-        $date = request("date");
-            // 'role' => $this->role(request("stoAdmin"))
+        // $pic = [
+        //     'name' => request("PIC"),
+        //     'role' => $this->role(request("PIC"))
+        // ];
+        // $divisionInCharge = [
+        //     'name' => request("divisionInCharge"),
+        //     'role' => $this->role(request("divisionInCharge"))
+        // ];
+        // $stoAdmin = [
+        //     'name' => request("stoAdmin"),
+        //     'role' => $this->role(request("stoAdmin"))
+        // ];
+        // $date = request("date");
+        //     // 'role' => $this->role(request("stoAdmin"))
         
-        $kategori = request("kategori");
-        // dd($date);
-        $transactions = Transaction::query()->whereDate("created_at",$date)->get();
-        $pdf = Pdf::loadView('generateDailyReport',[
-            "transactions" => TransactionResource::collection($transactions)->toJson(),
-            "pic" => $pic,
-            "divisionInCharge" => $divisionInCharge,
-            "stoAdmin" => $stoAdmin,
-            "kategori" => $kategori,
-            "date" => $date,
-        ])->setOption(['dpi=>150'])->setPaper('a4', 'landscape');
-        return $pdf->download('pdfkuh.pdf');
+        // $kategori = request("kategori");
+        // $transactions = Transaction::query()->whereDate("created_at",$date)->get();
+
+        // $pdf = Pdf::loadView('generateDailyReport',[
+        //     "transactions" => TransactionResource::collection($transactions)->toJson(),
+        //     "pic" => $pic,
+        //     "divisionInCharge" => $divisionInCharge,
+        //     "stoAdmin" => $stoAdmin,
+        //     "kategori" => $kategori,
+        //     "date" => $date,
+        // ])->setOption(['dpi=>150'])->setPaper('a4', 'landscape')->setWarnings(false);
+
+        $pdf = Pdf::loadHTML('coba');
+        return $pdf->stream('app.pdf');
+
+        // return $pdf->download('pdfkuh.pdf');
+        // exit();
     }
 
         private function role($name)
