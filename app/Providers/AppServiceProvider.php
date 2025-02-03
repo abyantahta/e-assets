@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,6 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+          if ($this->app->environment('production') || $this->app->environment('dev')) {
+            URL::forceScheme('https');
+        }
         //
     }
 
