@@ -22,7 +22,7 @@ const DailyReport = () => {
         //     kategori: kategori,
         //     date: date,
         // };
-        console.log(queryParams);
+        // console.log(queryParams);
         router.get(route("transactions.dailyreport"), queryParams);
     };
     const queryParamsExport = () => {
@@ -65,6 +65,7 @@ const DailyReport = () => {
                                     />
                                     <SelectInput
                                         required
+                                    	id = "divisionInCharge"
                                         className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                         onChange={(e) =>
                                             setdivisionInCharge(e.target.value)
@@ -85,6 +86,7 @@ const DailyReport = () => {
                                     <InputLabel htmlFor="pic" value="PIC" />
                                     <SelectInput
                                         required
+                                    	id = "pic"
                                         className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                         onChange={(e) => setPIC(e.target.value)}
                                     >
@@ -104,6 +106,7 @@ const DailyReport = () => {
                                     />
                                     <SelectInput
                                         required
+                                    	id = "kategori"
                                         className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                         onChange={(e) =>
                                             setKategori(e.target.value)
@@ -134,11 +137,12 @@ const DailyReport = () => {
                                 </div>
                                 <div className="mt-4 w-full">
                                     <InputLabel
-                                        htmlFor="kategori"
-                                        value="Kategori"
+                                        htmlFor="date"
+                                        value="Date"
                                     />
                                     <input
                                         required
+                                    	id = "date"
                                         value={date}
                                         onChange={(e) =>
                                             setDate(e.target.value)

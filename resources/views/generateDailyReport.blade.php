@@ -12,8 +12,7 @@
     
     <title>Document</title>
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
-    {{-- @viteReactRefresh --}}
-    @vite(['resources/js/app.jsx', 'resources/js/Pages/}.jsx'])
+
     <style>
         *{
             font-family: 'Times New Roman', Times, serif;
@@ -136,7 +135,7 @@
 </head>
 @php
     $transactionsDecode = json_decode($transactions);
-    dd($transactionsDecode);
+    // dd($transactionsDecode);
 @endphp
 
 <body style="padding: 1.5rem ">
