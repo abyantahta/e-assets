@@ -16,13 +16,6 @@ const DailyReport = () => {
     let users = ["Pietra Shafira", "Amrullah", "Muhammad Khoirifan"];
     const onSubmit = (e) => {
         e.preventDefault();
-        // let queryParams = {
-        //     PIC: PIC,
-        //     divisionInCharge: divisionInCharge,
-        //     kategori: kategori,
-        //     date: date,
-        // };
-        // console.log(queryParams);
         router.get(route("transactions.dailyreport"), queryParams);
     };
     const queryParamsExport = () => {

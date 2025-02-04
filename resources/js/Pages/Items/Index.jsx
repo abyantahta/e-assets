@@ -9,7 +9,8 @@ import {
     Squares2X2Icon,
     ArrowPathIcon,
     CheckBadgeIcon,
-    XCircleIcon
+    XCircleIcon,
+    ArrowLeftStartOnRectangleIcon,
 } from "@heroicons/react/16/solid";
 import { Head, router, Link, useForm } from "@inertiajs/react";
 import * as CryptoJS from "crypto-js";
@@ -32,15 +33,15 @@ export default function Index({
     useEffect(() => {
         setLoadingSync(false);
         if (success) {
-            setSyncStatus(success.status)
-            setSyncMessage(success.message)
+            setSyncStatus(success.status);
+            setSyncMessage(success.message);
         }
     }, [success]);
     const onSubmit = (e) => {
         e.preventDefault();
         setLoadingSync(true);
         loadingParams = loadingParams || {};
-        loadingParams["loadingToggle"] = !(successInfo?.toggle);
+        loadingParams["loadingToggle"] = !successInfo?.toggle;
         router.post(route("syncqad"), loadingParams);
     };
     queryParams = queryParams || {};
@@ -81,25 +82,30 @@ export default function Index({
             {loadingSync && (
                 <div className="w-full h-lvh bg-[rgba(0,0,0,0.3)]  fixed top-0 left-0 z-[99999]"></div>
             )}
-            {(syncStatus) && (
+            {syncStatus && (
                 <div className="w-full h-lvh bg-[rgba(0,0,0,0.3)] fixed top-0 left-0 z-[99999]">
                     <div className="w-fit relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white h-60 flex flex-col items-center px-12 py-8 rounded-lg">
-                        <div onClick={closeLoadingSync} className="cursor-pointer w-12 bg-white rounded-full text-red-500 absolute -top-4 -right-2">
-                        <XCircleIcon className=""/>
+                        <div
+                            onClick={closeLoadingSync}
+                            className="cursor-pointer w-12 bg-white rounded-full text-red-500 absolute -top-4 -right-2"
+                        >
+                            <XCircleIcon className="" />
                         </div>
-                        {
-                                syncStatus==='success' ? (
-                                    <>
-                                        <CheckBadgeIcon className="w-28 text-green-600"/>
-                                        <h2 className="font-bold text-3xl">{syncMessage}</h2>
-                                    </>
-                                ):(
-                                    <>
-                                    <XCircleIcon className="w-28 text-red-400"/>
-                                    <h2 className=" mt-2 font-bold text-3xl">{syncMessage}</h2>
-                                    </>
-                                )
-                            }
+                        {syncStatus === "success" ? (
+                            <>
+                                <CheckBadgeIcon className="w-28 text-green-600" />
+                                <h2 className="font-bold text-3xl">
+                                    {syncMessage}
+                                </h2>
+                            </>
+                        ) : (
+                            <>
+                                <XCircleIcon className="w-28 text-red-400" />
+                                <h2 className=" mt-2 font-bold text-3xl">
+                                    {syncMessage}
+                                </h2>
+                            </>
+                        )}
                     </div>
                 </div>
             )}
@@ -167,6 +173,13 @@ export default function Index({
                                                 <ArrowPathIcon className="w-5 text-white" />
                                             </button>
                                         </form>
+                                        <a
+                                            href={`items/export/url`}
+                                            className="w-full md:w-44 py-3 px-4 tracking-wide text-center bg-brownTheme font-bold flex items-center justify-center gap-2 text-white rounded-md hover:brightness-110 duration-150"
+                                        >
+                                            <ArrowLeftStartOnRectangleIcon className="w-6" />
+                                            Barcode
+                                        </a>
                                     </div>
                                     <TextInput
                                         className="w-full md:w-56 border-gray-700 border-[3px] placeholder:italic text-greenTheme font-normal focus:border-greenTheme focus:ring-greenTheme placeholder:text-greenTheme"

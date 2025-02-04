@@ -14,7 +14,6 @@ export default function Show({ auth, item, transactions }) {
     let { id, encrypted_no_asset, no_asset, name, category_id, cost, disposal_date, lokasi, nbv, service_date } = item.data[0]
 
     const viewHistory = () => {
-        console.log(auth.user)
         // if(!auth) return to_route('items.index');
         if(auth.user){
             setShowHistory(true);

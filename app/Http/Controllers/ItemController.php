@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportUrl;
 use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
@@ -9,6 +10,7 @@ use App\Http\Resources\ItemResource;
 use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Crypt;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItemController extends Controller
 {
@@ -93,5 +95,9 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         //
+    }
+    public function exportUrl(){
+        // dd('masuk sini');
+        return Excel::download(new ExportUrl(), 'items.xlsx');
     }
 }

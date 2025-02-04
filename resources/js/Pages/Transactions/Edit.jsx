@@ -12,7 +12,6 @@ const Edit = ({ auth, transaction }) => {
     let { no_asset, name } = transaction.data.item_id
     let category = transaction.data.item_id.category_id.name
     let createdBy = transaction.data.created_by
-    // console.log
     const { data, setData, post, errors, reset } = useForm({
         item_id: no_asset || "",
         image_path: "",

@@ -21,8 +21,6 @@ const Show = ({ auth, item }) => {
     })
     const onSubmit = (e) => {
         e.preventDefault();
-        // dd($data);
-        console.log(data)
         post(route('transactions.store'));
     }
     return (
