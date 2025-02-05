@@ -125,7 +125,7 @@ export default function Index({
                         <div className="bg-lightTheme dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg">
                             <div className="p-6 text-gray-900 dark:text-gray-100">
                                 <div className="flex flex-col-reverse gap-y-2 mb-4 md:flex-row md:justify-between">
-                                    <div className="flex flex-col gap-y-2 w-full md:flex-row md:w-[34rem] gap-4">
+                                    <div className="flex flex-col gap-y-2 w-full md:flex-row md:w-[40rem] gap-4">
                                         <SelectInput
                                             className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
                                             defaultValue={

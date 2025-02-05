@@ -21,4 +21,11 @@ class Item extends Model
     {
         return $this->hasMany(Transaction::class, 'item_id');
     }
+    public function scopeWhereYearIn($query, array $years)
+{
+    foreach ($years as $year) {
+        $query->orWhereYear('service_date', $year);
+    }
+    return $query;
+}
 }
