@@ -2,6 +2,7 @@ import SelectInput from "@/Components/SelectInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 // import Chart from react-ReactApexChart
+import { ShieldExclamationIcon } from "@heroicons/react/16/solid";
 import Chart from "react-apexcharts";
 export default function Dashboard({
     numberOfItems,
@@ -120,13 +121,13 @@ export default function Dashboard({
                 maxHeight: 120,
                 style: {
                     colors: [],
-                    fontSize: '13px',
-                    fontWeight: 'bold',
-                    fontFamily: 'Helvetica, Arial, sans-serif',
-                    cssClass: 'apexcharts-xaxis-label',
+                    fontSize: "13px",
+                    fontWeight: "bold",
+                    fontFamily: "Helvetica, Arial, sans-serif",
+                    cssClass: "apexcharts-xaxis-label",
                 },
+            },
         },
-    },
         fill: {
             opacity: 1,
         },
@@ -250,6 +251,17 @@ export default function Dashboard({
                 <div className="mx-auto max-w-[100rem] sm:px-6 lg:px-8">
                     <div className="shadow-sm sm:rounded-lg ">
                         <div className="p-6 text-gray-900 ">
+                            <div className="bg-yellow-400 flex items-center justify-center gap-4 mb-4">
+                            <ShieldExclamationIcon
+                                    className={"h-12 text-red-500 "}
+                                />
+                                <h1 className=" font-bold text-4xl text-[#444] text-center">
+                                    UNDER DEVELOPMENT
+                                </h1>
+                                <ShieldExclamationIcon
+                                    className={"h-12 text-red-500 "}
+                                />
+                            </div>
                             <div className="flex gap-8 ">
                                 <SelectInput
                                     className="w-72 border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
@@ -419,7 +431,7 @@ export default function Dashboard({
                                     </div>
                                     <div className="bg-yellow-50 rounded-md shadow-md w-1/6 flex flex-col">
                                         <h4 className="font-semibold text-center text-xl mt-3 uppercase mb-2 text-brownTheme h-[13%]">
-                                            NBV & COST <br/> PER KATEGORI
+                                            NBV & COST <br /> PER KATEGORI
                                         </h4>
                                         <Chart
                                             options={nbv_cost_category_options}

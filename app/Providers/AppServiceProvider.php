@@ -13,9 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // if ($this->app->environment('production') || $this->app->environment('dev')) {
-        //     URL::forceScheme('https');
-        // }
+        if ($this->app->environment('production') || $this->app->environment('dev')) {
+            URL::forceScheme('https');
+        }
         
     }
 
@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-    	// $this->app['request']->server->set('HTTPS','on');
-        // Vite::prefetch(concurrency: 3);
+    	$this->app['request']->server->set('HTTPS','on');
+        Vite::prefetch(concurrency: 3);
     }
 }
