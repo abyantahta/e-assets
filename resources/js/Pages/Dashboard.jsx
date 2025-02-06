@@ -29,7 +29,7 @@ export default function Dashboard({
             position: "bottom",
             offsetX: 0,
             offsetY: 0,
-            width: "100px"
+            width: "100px",
         },
     };
     let costPerCategoriesOptions = {
@@ -109,15 +109,39 @@ export default function Dashboard({
         ],
         xaxis: {
             categories: ["COST", "NBV"],
+            labels: {
+                show: true,
+                rotate: -45,
+                rotateAlways: false,
+                hideOverlappingLabels: true,
+                showDuplicates: false,
+                trim: false,
+                minHeight: undefined,
+                maxHeight: 120,
+                style: {
+                    colors: [],
+                    fontSize: '13px',
+                    fontWeight: 'bold',
+                    fontFamily: 'Helvetica, Arial, sans-serif',
+                    cssClass: 'apexcharts-xaxis-label',
+                },
         },
+    },
         fill: {
             opacity: 1,
         },
         legend: {
-            position: "top",
+            position: "bottom",
             offsetX: 0,
-            offsetY: 20,
+            offsetY: 0,
         },
+        // label: {
+        //     enabled: true,
+        //     style: {
+        //         colors: ['#333']
+        //     },
+        //     offsetX: 30
+        //   },
     };
     let sto_progress_options = {
         series: [90],
@@ -126,7 +150,7 @@ export default function Dashboard({
                 height: 350,
                 type: "radialBar",
                 toolbar: {
-                    show: true,
+                    show: false,
                 },
             },
             plotOptions: {
@@ -135,7 +159,7 @@ export default function Dashboard({
                     endAngle: 225,
                     hollow: {
                         margin: 0,
-                        size: "70%",
+                        size: "65%",
                         background: "#fff",
                         image: undefined,
                         imageOffsetX: 0,
@@ -151,7 +175,7 @@ export default function Dashboard({
                     },
                     track: {
                         background: "#fff",
-                        strokeWidth: "67%",
+                        strokeWidth: "57%",
                         margin: 0, // margin is in pixels
                         dropShadow: {
                             enabled: true,
@@ -165,7 +189,7 @@ export default function Dashboard({
                     dataLabels: {
                         show: true,
                         name: {
-                            offsetY: -15,
+                            offsetY: -12,
                             show: true,
                             color: "#666",
                             fontSize: "19px",
@@ -177,7 +201,7 @@ export default function Dashboard({
                             offsetY: 20,
                             color: "#444",
                             fontSize: "50px",
-                            fontWeight : "bold",
+                            fontWeight: "bold",
                             show: true,
                         },
                     },
@@ -199,7 +223,7 @@ export default function Dashboard({
             stroke: {
                 lineCap: "round",
             },
-            labels: ["STO Progress (%)"],
+            labels: ["STO (%)"],
         },
     };
     queryParams = queryParams || {};
@@ -265,7 +289,7 @@ export default function Dashboard({
                                 </SelectInput>
                             </div>
                             <div className="w-full h-fit mt-6 ">
-                                <div className="w-full flex gap-10">
+                                <div className="w-full flex gap-8">
                                     <div className="w-72 py-6 bg-greenTheme rounded-lg flex items-center justify-center gap-2 flex-col text-lightTheme">
                                         <h2 className="tracking-wider text-2xl">
                                             JUMLAH ASSET
@@ -306,20 +330,40 @@ export default function Dashboard({
                                                 Rp.
                                                 {Intl.NumberFormat(
                                                     "en-DE"
-                                                ).format(totalNBVAssets)}
+                                                ).format(
+                                                    totalNBVAssets / 1000000000
+                                                )}{" "}
+                                                M
                                             </h3>
                                         </div>
                                         <div className="bg-[#E19922] rounded-lg w-full grow"></div>
                                     </div>
                                 </div>
-                                <div className=" flex mt-4 gap-2 w-full  ">
-                                    <div className="  w-5/6 ">
+                                <div className=" flex mt-4 gap-2 w-full ">
+                                    <div className="w-5/6 ">
                                         <div className="flex gap-2 h-72">
-                                            <div className="bg-indigo-50 rounded-lg shadow-md">
-                                                {/* <h4 className="font-semibold text-center text-xl uppercase mb-2 text-brownTheme">
-                                                    Presentase Jenis Aset Aktifs
-                                                </h4> */}
-                                                <Chart options={sto_progress_options.options} series={sto_progress_options.series} type="radialBar" height={"100%"} />
+                                            <div className="flex flex-col gap-2 w-72">
+                                                <div className="h-[30%] gap-2 flex flex-col">
+                                                    <h2 className="bg-green-100 h-1/2 flex items-center justify-center font-bold text-xl rounded-t-lg text-green-800">
+                                                        Active :{" "}
+                                                        {numberOfActiveItems}
+                                                    </h2>
+                                                    <h2 className="bg-red-100 h-1/2 flex items-center justify-center font-bold text-xl text-red-700">
+                                                        Deactive :{" "}
+                                                        {numberOfDeactiveItems}
+                                                    </h2>
+                                                </div>
+                                                <Chart
+                                                    options={
+                                                        sto_progress_options.options
+                                                    }
+                                                    series={
+                                                        sto_progress_options.series
+                                                    }
+                                                    type="radialBar"
+                                                    className="bg-indigo-50 rounded-b-lg "
+                                                    height={"70%"}
+                                                />
                                             </div>
                                             <div className="bg-red-100 rounded-lg pt-2 shadow-md grow h-full ">
                                                 <h4 className="font-semibold text-center text-xl uppercase mb-2 text-brownTheme">
@@ -332,12 +376,8 @@ export default function Dashboard({
                                                     series={
                                                         serviceDateByMonth.series
                                                     }
-                                                    // labels={
-                                                    //     serviceDateByMonthOptions.labels
-                                                    // }
                                                     type="bar"
                                                     height="88%"
-                                                    // width="400"
                                                 />
                                             </div>
                                         </div>
@@ -373,28 +413,26 @@ export default function Dashboard({
                                                     }
                                                     type="pie"
                                                     height="240"
-                                                    // className="bg-red-400 flex items-center justify-center"
-                                                    // width="290"
                                                 />
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="bg-yellow-50 rounded-md shadow-md w-1/6">
+                                    <div className="bg-yellow-50 rounded-md shadow-md w-1/6 flex flex-col">
+                                        <h4 className="font-semibold text-center text-xl mt-3 uppercase mb-2 text-brownTheme h-[13%]">
+                                            NBV & COST <br/> PER KATEGORI
+                                        </h4>
                                         <Chart
                                             options={nbv_cost_category_options}
                                             series={
                                                 nbv_cost_category_options.series
                                             }
+                                            className="grow"
                                             type="bar"
-                                            height={"100%"}
+                                            height={"87%"}
                                         />
                                     </div>
                                 </div>
-
-                                {/* <h2>{numberOfActiveItems}</h2>
-                                <h2>{numberOfDeactiveItems}</h2> */}
                             </div>
-                            {/* You're logged in! */}
                         </div>
                     </div>
                 </div>
