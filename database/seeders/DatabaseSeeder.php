@@ -27,22 +27,27 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin'
         ]);
         Category::factory()->create([
-            'name' => 'Tooling'
+            'name' => 'Tooling',
+            'lifetime'=> 60
         ]);
         Category::factory()->create([
-            'name' => 'Building'
+            'name' => 'Building',
+            'lifetime'=> 240
         ]);
         Category::factory()->create([
-            'name' => 'Vehicle'
+            'name' => 'Vehicle',
+            'lifetime'=> 60
         ]);
         Category::factory()->create([
-            'name' => 'Office Equipment'
+            'name' => 'Office Equipment',
+            'lifetime'=> 60
         ]);
         Category::factory()->create([
-            'name' => 'Machine'
+            'name' => 'Machine',
+            'lifetime'=> 96
         ]);
         
-        // Qxwsas::factory()->create();
+        Qxwsas::factory()->create();
 
         // Item::factory()->count(200)->create();
         // Transaction::factory()->count(100)->create();

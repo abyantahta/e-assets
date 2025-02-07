@@ -16,7 +16,10 @@ export default function Dashboard({
     months_label,
     cost_per_categories,
     nbv_cost_category,
+    depreciation,
+    depreciation_per_month
 }) {
+    console.log(depreciation,depreciation_per_month)
     //PIE CHART NBV_COST_CATEGORY_OPTIONS
     // let numOfItemsOptions = {
     //     series: [numberOfActiveItems,numberOfDeactiveItems],
@@ -231,7 +234,7 @@ export default function Dashboard({
     const searchFieldChanged = (name, value) => {
         if (value) {
             queryParams[name] = value;
-            queryParams["page"] = 1;
+            // queryParams["page"] = 1;
         } else {
             delete queryParams[name];
         }
@@ -283,10 +286,10 @@ export default function Dashboard({
                                 </SelectInput>
                                 <SelectInput
                                     className="w-72 border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
-                                    defaultValue={queryParams.category_id}
+                                    defaultValue={queryParams.years}
                                     onChange={(e) =>
                                         searchFieldChanged(
-                                            "category_id",
+                                            "years",
                                             e.target.value
                                         )
                                     }
@@ -312,25 +315,29 @@ export default function Dashboard({
                                             )}
                                         </h3>
                                     </div>
-                                    <div className="w-72 py-6 bg-greenTheme rounded-lg flex items-center justify-center gap-2 flex-col text-lightTheme">
-                                        <h2 className="tracking-wider text-2xl">
+                                    <div className="w-72 grow py-6 bg-[#E19922] text-lightTheme rounded-lg flex items-center justify-center gap-2 flex-col ">
+                                        <h2 className="font-semibold tracking-wider text-2xl">
                                             TOTAL DEPRESIASI
                                         </h2>
-                                        <h3 className="font-semibold text-6xl">
-                                            {Intl.NumberFormat("en-DE").format(
-                                                10000
-                                            )}
-                                            K
+                                        <h3 className="font-semibold text-5xl">
+                                        Rp.
+                                                {Intl.NumberFormat(
+                                                    "en-DE"
+                                                ).format(
+                                                    depreciation / 1000000000
+                                                )}
+                                                M
+                                            
                                         </h3>
                                     </div>
                                     <div className="w-72 py-6 bg-greenTheme rounded-lg flex items-center justify-center gap-2 flex-col text-lightTheme">
                                         <h2 className="tracking-wider text-2xl">
                                             DEPRESIASI/BULAN
                                         </h2>
-                                        <h3 className="font-semibold text-6xl">
+                                        <h3 className="font-semibold text-5xl">
                                             {Intl.NumberFormat("en-DE").format(
-                                                111111111
-                                            )}
+                                                Math.floor(depreciation_per_month)/1000000000
+                                            )} M
                                         </h3>
                                     </div>
                                     <div className="w-72 grow bg-transparent rounded-lg flex items-center justify-center gap-2 flex-col text-lightTheme">

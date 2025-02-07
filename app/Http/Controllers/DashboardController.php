@@ -13,8 +13,25 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $years = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
-        $items = Item::select("no_asset", "service_date", "disposal_date", "nbv", "categories.name AS category")->leftJoin('categories', 'categories.id', '=', 'items.category_id')->whereYearIn($years);
+
+        
+        $items = Item::select("no_asset", "service_date", "disposal_date", "nbv", "categories.name AS category")->leftJoin('categories', 'categories.id', '=', 'items.category_id');
+        if (request("years")) {
+            $years = request("years");
+            $years = [$years];
+            // dd($years);
+            $items = $items->whereYearIn($years);
+            // $query->where("no_asset", "like", "%" . request("no_asset") . "%");
+        }
+        if (request("category_id")) {
+            $category_id = request("category_id");
+            // $years = [$years];
+            // dd($years);
+            $items = $items->where("category_id",$category_id);
+            // $query->where("no_asset", "like", "%" . request("no_asset") . "%");
+        }
+
+        // $years = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
         $categories = Category::select("name")->get();
         $items_number = (clone $items)->count();
         $activeItems_query = (clone $items)->whereNull('disposal_date');
@@ -22,7 +39,19 @@ class DashboardController extends Controller
 
         $activeItems = (clone $activeItems_query)->count();
         $deactiveItems = (clone $items)->whereNotNull('disposal_date')->count();
+
+        //TOTAL NBV
         $totalNBVAssets = (clone $items)->whereNull('disposal_date')->sum('nbv');
+
+        //DEPRESIASI
+        $depreciation = floor((clone $activeItems_query)->sum('depreciation'));
+        // dd($depreciation);        
+        
+        //DEPRESIASI PER BULAN
+        $depreciation_per_month = (clone $items)->sum('depreciation_per_month');
+        // dd($depreciation_per_month);
+
+
 
         //PENAMBAHAN ASET MONTHLY
         $penambahan_januari = (clone $items)->whereMonth('service_date', 1)->count();
@@ -130,7 +159,10 @@ class DashboardController extends Controller
             "disposal_aset_monthly" => $disposal_aset_monthly,
             "months_label" => $months_label,
             "cost_per_categories" => $costPerCategories,
-            "nbv_cost_category" => $nbv_cost_category
+            "nbv_cost_category" => $nbv_cost_category,
+            "depreciation"=> $depreciation,
+            "depreciation_per_month"=> $depreciation_per_month,
+            "queryParams" => request()->query() ?: null,
             // "items" => ItemResource::collection($items),
             // "queryParams" => request()->query() ?: null,
             // "success" => session('success'),

@@ -94,6 +94,7 @@ class WsaService
             $xmlResp = simplexml_load_string($qdocResponse);
             $xmlResp->registerXPathNamespace('ns1', $wsa->qxwsa_wsa_path);
         }catch(Exception $e){
+            // dd($e);
             return false;
         }
         // dd($qdocResponse);

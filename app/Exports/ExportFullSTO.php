@@ -28,7 +28,6 @@ class ExportFullSTO implements FromView
             if ($this->dateStart == $this->dateEnd) {
                 $query = Transaction::query()->whereDate('transactions.created_at', Carbon::parse($this->dateStart))->get();
             } else {
-
                 $query = Transaction::select()->whereBetween('transactions.created_at', [Carbon::parse($this->dateStart), Carbon::parse($this->dateEnd)])->get();
             }
         } else if (!empty($this->dateStart) && !empty($this->category_id)) {
