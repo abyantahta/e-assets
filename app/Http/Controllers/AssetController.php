@@ -10,12 +10,14 @@ use App\Models\Category;
 use App\Models\Item;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 use session;
+use Illuminate\Support\Str;
 // use DB;
 use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isNull;
-
+set_time_limit(300);
 class AssetController extends Controller
 {
     //
@@ -43,7 +45,8 @@ class AssetController extends Controller
                     $items->nbv  = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
                     $items->disposal_date  = ($datas->t_fa_disp_dt == "") ?  null : Carbon::parse($datas->t_fa_disp_dt);
                     $items->service_date  = Carbon::parse($datas->t_fa_startdt);
-                    $items->encrypted_no_asset  = Crypt::encryptString($datas->t_fa_id);
+                    // $items->encrypted_no_asset  = Crypt::encryptString($datas->t_fa_id);
+                	$items->encrypted_no_asset = $this->handleHashing($datas->t_fa_id);
                     $items->lokasi  = $datas->t_fa_faloc_id;
                     switch ($datas->t_fa_facls_id) {
                         case "TOOLING":
@@ -110,4 +113,18 @@ class AssetController extends Controller
 
         //
     }
+
+	private function handleHashing($plaintext){
+    
+    $hashed = Hash::make($plaintext);
+
+    while (Str::contains($hashed,"/")) {
+       $hashed = Hash::make($plaintext);
+    };
+    if(Str::contains($hashed,"_")){
+    	dd("halo");
+    };
+
+    return $hashed;
+	}
 }

@@ -11,6 +11,7 @@ use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Hash;
 
 class ItemController extends Controller
 {
@@ -62,7 +63,18 @@ class ItemController extends Controller
      */
     public function show($encryptedId)
     {
-        $no_asset = Crypt::decryptString($encryptedId);
+    	$output = explode('_',$encryptedId);
+    	$key = $output[0];
+    	$no_asset = $output[1];
+    	
+    // dd(Hash::check($no_asset, $key));
+    	if (!(Hash::check($no_asset, $key))) {
+        	abort(404);
+    // The passwords match...
+		}
+    
+    	// dd($encryptedId);
+        // $no_asset = Crypt::decryptString($encryptedId);
         // dd($encryptedId,$id);
         $item = Item::query()->where('no_asset',$no_asset)->get();
         $transactions = Transaction::query()->where('item_id', $no_asset)->get();

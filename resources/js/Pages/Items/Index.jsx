@@ -322,7 +322,7 @@ export default function Index({
                                                         <Link
                                                             href={route(
                                                                 "items.show",
-                                                                item.encrypted_no_asset
+                                                                `${item.encrypted_no_asset}_${item.no_asset}`
                                                             )}
                                                             className="bg-orangeTheme hover:brightness-110 duration-200 p-1 w-fit font-bold text-white rounded-[0.25rem] flex items-center justify-center"
                                                         >
