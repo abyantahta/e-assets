@@ -68,10 +68,15 @@ class ItemController extends Controller
     	$no_asset = $output[1];
     	
     // dd(Hash::check($no_asset, $key));
+    try {
     	if (!(Hash::check($no_asset, $key))) {
         	abort(404);
-    // The passwords match...
 		}
+        //code...
+    } catch (\Exception $e) {
+        abort(404);
+        //throw $th;
+    }
     
     	// dd($encryptedId);
         // $no_asset = Crypt::decryptString($encryptedId);
