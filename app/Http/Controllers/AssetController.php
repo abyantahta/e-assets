@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Exception;
 use App\Models\Asset;
 use App\Models\Category;
+use App\Models\Depreciation;
 use App\Models\Item;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
@@ -17,7 +18,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isNull;
-set_time_limit(300);
+set_time_limit(600);
 class AssetController extends Controller
 {
     //
@@ -34,7 +35,7 @@ class AssetController extends Controller
             ]);
         } else {
             // dd($itemwsa[0][0]);
-            DB::begintransaction();
+            // DB::begintransaction();
             try {
                 foreach ($itemwsa[0] as $datas) {
                     $items = Item::firstOrNew(['no_asset' => $datas->t_fa_id]);
@@ -48,6 +49,11 @@ class AssetController extends Controller
                     // $items->encrypted_no_asset  = Crypt::encryptString($datas->t_fa_id);
                 	$items->encrypted_no_asset = $this->handleHashing($datas->t_fa_id);
                     $items->lokasi  = $datas->t_fa_faloc_id;
+
+
+                    // Depreciation::create()
+                    // $depreciations_data->no_asset = $datas->t_fa_id;
+
                     switch ($datas->t_fa_facls_id) {
                         case "TOOLING":
                             // dd('heyoo');
@@ -59,11 +65,13 @@ class AssetController extends Controller
                             $category = Category::select('id','lifetime')->where('name','=','Tooling')->get();
                             $items->category_id  = $category[0]->id;
                             $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
+
                             break;
                         case "TOOLING3":
                             $category = Category::select('id')->where('name','=','Tooling')->get();
                             $items->category_id  = $category[0]->id;
                             $items->depreciation_per_month = ($datas->t_fa_puramt) / 36;
+
                             // $items->depreciation_per_month = ($datas->t_fa_puramt) / $lifetime[0]->lifetime;
                             break;
                         case "BUILDING":
@@ -92,14 +100,31 @@ class AssetController extends Controller
                         $items->category_id  = $category[0]->id;
                         $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
                 }
+                $running_date = Carbon::parse($datas->t_fa_startdt);
+                $depreciation = 0;
+                // dd($depreciation, $)
+                    while($depreciation < $items->cost ){
+                        $depreciations_data = Depreciation::create([
+                            'no_asset'=> $datas->t_fa_id,
+                            'category_id' => $items->category_id,
+                            'month' => $running_date->month,
+                            'year' => $running_date->year,
+                            'depreciation' => $depreciation
+                        ]);
+                        
+                        $depreciation += $items->depreciation_per_month;
+                        $running_date->addMonth();
+                        $depreciations_data->save();
+                    }
 
+                    // dd($GR_month,$GR_year);
                     $items->save();
                     //   } // if FG / SA / 
                 }
-                DB::commit();
+                // DB::commit();
 
             } catch (Exception $e) {
-                DB::rollback();
+                // DB::rollback();
                 // dd($e);
                 // alert()->error('error', 'Item not loaded');
                 return redirect()->back()->with('success', [!$loadingToggle,"Items failed to load"]);
