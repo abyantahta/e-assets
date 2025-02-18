@@ -9,6 +9,7 @@ use App\Models\Asset;
 use App\Models\Category;
 use App\Models\Depreciation;
 use App\Models\Item;
+use App\Models\NetBookValue;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -49,7 +50,6 @@ class AssetController extends Controller
                     // $items->encrypted_no_asset  = Crypt::encryptString($datas->t_fa_id);
                 	$items->encrypted_no_asset = $this->handleHashing($datas->t_fa_id);
                     $items->lokasi  = $datas->t_fa_faloc_id;
-
 
                     // Depreciation::create()
                     // $depreciations_data->no_asset = $datas->t_fa_id;
@@ -102,6 +102,7 @@ class AssetController extends Controller
                 }
                 $running_date = Carbon::parse($datas->t_fa_startdt);
                 $depreciation = 0;
+                $nbv = $items->cost;
                 // dd($depreciation, $)
                     while($depreciation < $items->cost ){
                         $depreciations_data = Depreciation::create([
@@ -111,10 +112,21 @@ class AssetController extends Controller
                             'year' => $running_date->year,
                             'depreciation' => $depreciation
                         ]);
+                        $nbv_data = NetBookValue::create([
+                            'no_asset'=> $datas->t_fa_id,
+                            'category_id' => $items->category_id,
+                            'month' => $running_date->month,
+                            'year' => $running_date->year,
+                            'net_book_value' => $nbv
+                        ]);
+                        // dd('masuk');
+
                         
                         $depreciation += $items->depreciation_per_month;
+                        $nbv = $items->cost - $depreciation;
                         $running_date->addMonth();
                         $depreciations_data->save();
+                        $nbv_data->save();
                     }
 
                     // dd($GR_month,$GR_year);
@@ -135,7 +147,6 @@ class AssetController extends Controller
             "status" => "success",
             "message" => "Items successfully loaded"
         ]);
-
         //
     }
 
