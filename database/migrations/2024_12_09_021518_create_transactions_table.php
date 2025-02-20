@@ -22,7 +22,8 @@ return new class extends Migration
             $table->foreignId('updated_by')->nullable()->default(null)->constrained('users');
             $table->string('lokasi');
             $table->string('keterangan')->nullable();
-            $table->string('pic');
+            $table->foreignId('pic')->nullable()->default(null)->constrained('users');
+            // $table->string('pic');
             $table->string('kondisi');
             $table->string('image_path')->nullable();
         });

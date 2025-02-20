@@ -24,7 +24,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role_id',
+        'position',
     ];
     public function getActivitylogOptions(): LogOptions
     {
@@ -55,6 +56,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function role()
+    {
+        return $this->belongsTo(Category::class, 'role_id');
     }
 
     

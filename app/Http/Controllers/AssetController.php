@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isNull;
-set_time_limit(600);
+set_time_limit(900);
 class AssetController extends Controller
 {
     //
@@ -39,99 +39,105 @@ class AssetController extends Controller
             // DB::begintransaction();
             try {
                 foreach ($itemwsa[0] as $datas) {
-                    $items = Item::firstOrNew(['no_asset' => $datas->t_fa_id]);
-                    // dd($datas->t_fabd_accamt,$datas->t_fa_puramt);
-                    $items->name  = $datas->t_fa_desc1;
-                    $items->cost  = $datas->t_fa_puramt;
-                    $items->depreciation  = $datas->t_fabd_accamt;
-                    $items->nbv  = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
-                    $items->disposal_date  = ($datas->t_fa_disp_dt == "") ?  null : Carbon::parse($datas->t_fa_disp_dt);
-                    $items->service_date  = Carbon::parse($datas->t_fa_startdt);
-                    // $items->encrypted_no_asset  = Crypt::encryptString($datas->t_fa_id);
-                	$items->encrypted_no_asset = $this->handleHashing($datas->t_fa_id);
-                    $items->lokasi  = $datas->t_fa_faloc_id;
+                    $items = Item::where('no_asset',$datas->t_fa_id)->first();
+                    if($items === null){
+                        $items = new Item(['no_asset' => $datas->t_fa_id]);
+                        $items->name  = $datas->t_fa_desc1;
+                        $items->cost  = $datas->t_fa_puramt;
+                        $items->depreciation  = $datas->t_fabd_accamt;
+                        $items->nbv  = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
+                        $items->disposal_date  = ($datas->t_fa_disp_dt == "") ?  null : Carbon::parse($datas->t_fa_disp_dt);
+                        $items->service_date  = Carbon::parse($datas->t_fa_startdt);
+                        // $items->encrypted_no_asset  = Crypt::encryptString($datas->t_fa_id);
+                        $items->encrypted_no_asset = $this->handleHashing($datas->t_fa_id);
+                        $items->lokasi  = $datas->t_fa_faloc_id;
+                        switch ($datas->t_fa_facls_id) {
+                            case "TOOLING":
+                                // dd('heyoo');
+                                $category = Category::select('id','lifetime')->where('name','=','Tooling')->get();
+                                $items->category_id  = $category[0]->id;
+                                $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
+                                break;
+                                case "TOOLING2":
+                                $category = Category::select('id','lifetime')->where('name','=','Tooling')->get();
+                                $items->category_id  = $category[0]->id;
+                                $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
+                                
+                                break;
+                                case "TOOLING3":
+                                    $category = Category::select('id')->where('name','=','Tooling')->get();
+                                    $items->category_id  = $category[0]->id;
+                                    $items->depreciation_per_month = ($datas->t_fa_puramt) / 36;
+                                    
+                                // $items->depreciation_per_month = ($datas->t_fa_puramt) / $lifetime[0]->lifetime;
+                                break;
+                            case "BUILDING":
+                                $category = Category::select('id','lifetime')->where('name','=','Building')->get();
+                                $items->category_id  = $category[0]->id;
+                                $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
+                                break;
+                            case "VEHICLE":
+                                $category = Category::select('id','lifetime')->where('name','=','Vehicle')->get();
+                                $items->category_id  = $category[0]->id;
+                                $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
+                                break;
+                                case "OFC-EQP":
+                                    $category = Category::select('id','lifetime')->where('name','=','Office Equipment')->get();
+                                    $items->category_id  = $category[0]->id;
+                                    $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
+                                break;
+                            case "MACHINE":
+                                $category = Category::select('id','lifetime')->where('name','=','Machine')->get();
+                                $items->category_id  = $category[0]->id;
+                                $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
+                                break;
+                                default:
+                                // dd($$datas->t_fa_facls_id);
+                                $category = Category::select('id','lifetime')->where('name','=','Vehicle')->get();
+                                $items->category_id  = $category[0]->id;
+                                $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
+                        }
+                        $running_date = Carbon::parse($datas->t_fa_startdt);
+                        $depreciation = 0;
+                        // $nbv = $items->cost;
+                        // dd($depreciation, $)
+                            while($depreciation < $items->cost ){
+                                $depreciations_data = Depreciation::create([
+                                    'no_asset'=> $datas->t_fa_id,
+                                    'category_id' => $items->category_id,
+                                    'month' => $running_date->month,
+                                    'year' => $running_date->year,
+                                    'depreciation' => $depreciation
+                                ]);
+                                $depreciation += $items->depreciation_per_month;
+                                // $nbv = $items->cost - $depreciation;
+                                $running_date->addMonth();
+                                $depreciations_data->save();
+                            }
+                    }
+                    else{
+                        $items->depreciation  = $datas->t_fabd_accamt;
+                        $items->nbv  = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
+                        $items->disposal_date  = ($datas->t_fa_disp_dt == "") ?  null : Carbon::parse($datas->t_fa_disp_dt); 
+                        $isDepreciationExist = Depreciation::where('month',Carbon::now()->month);
+                        if(!$isDepreciationExist){
+                            Depreciation::create([
+                                'no_asset'=> $datas->t_fa_id,
+                                'category_id' => $items->category_id,
+                                'month' => Carbon::now()->month,
+                                'year' => Carbon::now()->year,
+                                'depreciation' => $items->depreciation,
+                            ]);
+                        }
+                        // $depreciation
+                    }
 
+                    $items->save();
+                    // dd($datas->t_fabd_accamt,$datas->t_fa_puramt);
+                    
                     // Depreciation::create()
                     // $depreciations_data->no_asset = $datas->t_fa_id;
 
-                    switch ($datas->t_fa_facls_id) {
-                        case "TOOLING":
-                            // dd('heyoo');
-                            $category = Category::select('id','lifetime')->where('name','=','Tooling')->get();
-                            $items->category_id  = $category[0]->id;
-                            $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
-                            break;
-                        case "TOOLING2":
-                            $category = Category::select('id','lifetime')->where('name','=','Tooling')->get();
-                            $items->category_id  = $category[0]->id;
-                            $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
-
-                            break;
-                        case "TOOLING3":
-                            $category = Category::select('id')->where('name','=','Tooling')->get();
-                            $items->category_id  = $category[0]->id;
-                            $items->depreciation_per_month = ($datas->t_fa_puramt) / 36;
-
-                            // $items->depreciation_per_month = ($datas->t_fa_puramt) / $lifetime[0]->lifetime;
-                            break;
-                        case "BUILDING":
-                            $category = Category::select('id','lifetime')->where('name','=','Building')->get();
-                            $items->category_id  = $category[0]->id;
-                            $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
-                            break;
-                        case "VEHICLE":
-                            $category = Category::select('id','lifetime')->where('name','=','Vehicle')->get();
-                            $items->category_id  = $category[0]->id;
-                            $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
-                            break;
-                        case "OFC-EQP":
-                            $category = Category::select('id','lifetime')->where('name','=','Office Equipment')->get();
-                            $items->category_id  = $category[0]->id;
-                            $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
-                            break;
-                        case "MACHINE":
-                            $category = Category::select('id','lifetime')->where('name','=','Machine')->get();
-                            $items->category_id  = $category[0]->id;
-                            $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
-                            break;
-                        default:
-                        // dd($$datas->t_fa_facls_id);
-                        $category = Category::select('id','lifetime')->where('name','=','Vehicle')->get();
-                        $items->category_id  = $category[0]->id;
-                        $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
-                }
-                $running_date = Carbon::parse($datas->t_fa_startdt);
-                $depreciation = 0;
-                $nbv = $items->cost;
-                // dd($depreciation, $)
-                    while($depreciation < $items->cost ){
-                        $depreciations_data = Depreciation::create([
-                            'no_asset'=> $datas->t_fa_id,
-                            'category_id' => $items->category_id,
-                            'month' => $running_date->month,
-                            'year' => $running_date->year,
-                            'depreciation' => $depreciation
-                        ]);
-                        $nbv_data = NetBookValue::create([
-                            'no_asset'=> $datas->t_fa_id,
-                            'category_id' => $items->category_id,
-                            'month' => $running_date->month,
-                            'year' => $running_date->year,
-                            'net_book_value' => $nbv
-                        ]);
-                        // dd('masuk');
-
-                        
-                        $depreciation += $items->depreciation_per_month;
-                        $nbv = $items->cost - $depreciation;
-                        $running_date->addMonth();
-                        $depreciations_data->save();
-                        $nbv_data->save();
-                    }
-
-                    // dd($GR_month,$GR_year);
-                    $items->save();
-                    //   } // if FG / SA / 
                 }
                 // DB::commit();
 

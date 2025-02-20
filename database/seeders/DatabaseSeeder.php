@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Qxwsas;
+use App\Models\Role;
 use App\Models\Transaction;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,12 +20,19 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        Role::factory()->create([
+            'name' => 'user'
+        ]);        
+        Role::factory()->create([
+            'name' => 'admin'
+        ]);
         User::factory()->create([
             'name' => 'Abyan ',
             'email' => 'abyantahta2002@gmail.com',
             'password' => bcrypt('12345678'),
             'email_verified_at' => time(),
-            'role' => 'admin'
+            'position' => 'IT Staff',
+            'role_id' => 2
         ]);
         Category::factory()->create([
             'name' => 'Tooling',

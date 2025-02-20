@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -21,7 +22,11 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        $roles = Role::select('id','name')->get();
+        // dd($roles);
+        return Inertia::render('Auth/Register',[
+            'roles' => $roles,
+        ]);
     }
 
     /**
@@ -35,13 +40,18 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'position' => 'required|string|max:255',
             'role' => 'required|string|'
         ]);
-        // dd($request->role);
+        // dd($request);
+        // $role = Role::select('id')->where('name',$request->role)->get();
+        // dd($role, $request->role);
+        // dd(intval($request->role));
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
+            'role_id' => intval($request->role),
+            'position' => $request->position,
             'password' => Hash::make($request->password),
         ]);
 
@@ -53,6 +63,6 @@ class RegisteredUserController extends Controller
 
         // Auth::login($user);
 
-        return redirect(route('register', absolute: false));
+        return redirect(route('items.index', absolute: false));
     }
 }

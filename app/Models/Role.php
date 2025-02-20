@@ -9,4 +9,11 @@ class Role extends Model
 {
     /** @use HasFactory<\Database\Factories\RoleFactory> */
     use HasFactory;
+    protected $guarded = [];
+
+    public function users()
+    {
+        return $this->hasMany(Item::class, 'role_id');
+    }
+
 }

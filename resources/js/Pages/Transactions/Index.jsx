@@ -10,6 +10,7 @@ import moment from 'moment';
 
 export default function Index({ auth, transactions, queryParams = null, success }) {
     queryParams = queryParams || {};
+    // console.log(auth.user);
 
     const searchFieldChanged = (name, value) => {
         if (value) {
@@ -118,7 +119,7 @@ export default function Index({ auth, transactions, queryParams = null, success 
                                                 sort_field={queryParams.sort_field}
                                                 sort_direction={queryParams.sort_direction}
                                                 sortChanged={sortChanged}
-                                                className=" bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
+                                                className=" bg-greenTheme text-white w-44 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
                                             >
                                                 Date
                                             </TableHeading>
@@ -181,7 +182,7 @@ export default function Index({ auth, transactions, queryParams = null, success 
                                         {transactions.data.map((transaction, index) => (
                                             <tr className="min-w-full flex text-center gap-3 mt-3" key={transaction.id} >
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}>{index + 1}</td>
-                                                <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{moment(transaction.created_at).format('DD/MM/YYYY')}</td>
+                                                <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-44`}>{moment(transaction.created_at).format('DD/MM/YYYY - hh:mm')}</td>
                                                 <td className={` overflow-visible  h-11 -mr-3 bg-lightTheme text-ellipsis text-nowrap text-center pr-3 w-40`}>
                                                     <span className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} border-greenTheme border-2 rounded-[0.25rem] w-full h-full inline-block px-3 py-2 `}>
                                                         {transaction.item_id?.no_asset}
@@ -191,10 +192,10 @@ export default function Index({ auth, transactions, queryParams = null, success 
                                                 <td className={` ${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}> {transaction.item_id.category_id?.name} </td>
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}>{transaction.kondisi}</td>
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-32`}>{transaction.lokasi}</td>
-                                                <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.pic}</td>
+                                                <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.pic?.name}</td>
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.created_by.name}</td>
                                                 {
-                                                    auth.user.role === 'admin' && (
+                                                    auth.user.role_id === 2 && (
                                                         <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-6 flex h-11 py-1 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>
                                                             <Link href={route("transactions.edit", transaction)} className='bg-yellow-500 hover:brightness-110 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
                                                                 <PencilIcon className='w-5' />

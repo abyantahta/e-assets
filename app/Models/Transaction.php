@@ -35,6 +35,10 @@ class Transaction extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }    
+    public function userPIC()
+    {
+        return $this->belongsTo(User::class, 'pic');
     }
     public function updatedBy()
     {

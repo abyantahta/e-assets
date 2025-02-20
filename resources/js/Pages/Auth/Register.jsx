@@ -6,18 +6,19 @@ import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Cog6ToothIcon, Cog8ToothIcon, EnvelopeIcon, KeyIcon, UserIcon } from '@heroicons/react/16/solid';
+import { Cog6ToothIcon, Cog8ToothIcon, EnvelopeIcon, KeyIcon, UserIcon, UserGroupIcon } from '@heroicons/react/16/solid';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+export default function Register({roles}) {
+    const {data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
         password: '',
+        position: '',
         password_confirmation: '',
         role: '',
     });
-
+console.log(roles)
     const submit = (e) => {
         e.preventDefault();
 
@@ -117,6 +118,24 @@ export default function Register() {
                             />
 
                         </div>
+                        <div className='flex gap-2 items-center px-3 py-1 mt-4 w-full rounded-xl shadow-md bg-opacity-15 !bg-white'>
+                            {/* <InputLabel htmlFor="email" value="Email" /> */}
+                            <InputLabel htmlFor="position" value="">
+                                <UserGroupIcon className='w-6 text-blackTheme' />
+                            </InputLabel>
+                            <TextInput
+                                id="position"
+                                type="text"
+                                name="position"
+                                value={data.position}
+                                className="bg-transparent w-full outline-none border-none"
+                                placeholder="position"
+                                autoComplete="posiiton"
+                                isFocused={true}
+                                onChange={(e) => setData('position', e.target.value)}
+                            />
+                            <InputError message={errors.name} className="mt-2" />
+                        </div>
                         <div className=" flex gap-2 items-center px-3 mt-5 w-full rounded-xl py-1 shadow-md bg-opacity-15 !bg-white">
                             <InputLabel htmlFor="role" value="">
                                 <Cog8ToothIcon className='w-6 text-blackTheme' />
@@ -133,11 +152,15 @@ export default function Register() {
                                 onChange={(e) => setData('role', e.target.value)}
                             >
                                 <option value="">Select Role</option>
-                                <option value="admin">Admin</option>
-                                <option value="user">User</option>
+                                {
+                                    roles.map(role=>(
+                                        <option key={role.id} value={role.id}>{role.name}</option>
+                                    ))
+                                }
                             </SelectInput>
 
                         </div>
+
                         <InputError message={errors.password} className="mt-2" />
                         <InputError message={errors.password_confirmation} className="mt-2" />
 

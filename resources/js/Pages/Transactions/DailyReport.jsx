@@ -8,12 +8,15 @@ import React, { useState } from "react";
 import SelectInput from "@/Components/SelectInput";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/16/solid";
 
-const DailyReport = () => {
-    const [PIC, setPIC] = useState("");
-    const [divisionInCharge, setdivisionInCharge] = useState("");
+const DailyReport = ({users, categories}) => {
+    // const {users} = props[0]
+    // console.log(users)
+    // dd('users');
+    const [PIC, setPIC] = useState(0);
+    const [divisionInCharge, setdivisionInCharge] = useState(0);
     const [kategori, setKategori] = useState("");
     const [date, setDate] = useState(new Date().toISOString().substr(0, 10));
-    let users = ["Pietra Shafira", "Amrullah", "Muhammad Khoirifan"];
+    // let users = ["Pietra Shafira", "Amrullah", "Muhammad Khoirifan"];
     const onSubmit = (e) => {
         e.preventDefault();
         router.get(route("transactions.dailyreport"), queryParams);
@@ -68,8 +71,8 @@ const DailyReport = () => {
                                             Select Division in Charge Head
                                         </option>
                                         {users.map((user) => (
-                                            <option key={user} value={user}>
-                                                {user}
+                                            <option key={user.id} value={user.id}>
+                                                {user.name}
                                             </option>
                                         ))}
                                     </SelectInput>
@@ -85,8 +88,8 @@ const DailyReport = () => {
                                     >
                                         <option value="PIC">Select PIC</option>
                                         {users.map((user) => (
-                                            <option key={user} value={user}>
-                                                {user}
+                                            <option key={user.id} value={user.id}>
+                                                {user.name}
                                             </option>
                                         ))}
                                     </SelectInput>
@@ -108,23 +111,12 @@ const DailyReport = () => {
                                         <option value="">
                                             Select Kategori
                                         </option>
-                                        <option value="Tooling">Tooling</option>
-                                        <option value="Tooling2">
-                                            {" "}
-                                            Tooling2
-                                        </option>
-                                        <option value="Tooling3">
-                                            Tooling3{" "}
-                                        </option>
-                                        <option value="Building">
-                                            Building
-                                        </option>
-                                        <option value="Vehicle">
-                                            Vehicle{" "}
-                                        </option>
-                                        <option value="Office Equipment">
-                                            Office Equipment
-                                        </option>
+
+                                        {categories.map((category) => (
+                                            <option key={category.id} value={category.id}>
+                                                {category.name}
+                                            </option>
+                                        ))}
                                     </SelectInput>
                                     {/* <InputError message={errors.kategori} className='mt-2' /> */}
                                 </div>

@@ -7,7 +7,7 @@ import { Head, Link, useForm } from '@inertiajs/react'
 import React from 'react'
 import SelectInput from '@/Components/SelectInput'
 
-const Show = ({ auth, item }) => {
+const Show = ({ auth, item , users}) => {
     let { id, no_asset, name, category_id, cost, disposal_date, lokasi, nbv, service_date } = item.data[0]
     const { data, setData, post, errors, reset } = useForm({
         item_id: no_asset,
@@ -19,6 +19,7 @@ const Show = ({ auth, item }) => {
         keterangan: '',
         created_by: auth.user.id,
     })
+    console.log(users)
     const onSubmit = (e) => {
         e.preventDefault();
         post(route('transactions.store'));
@@ -109,10 +110,14 @@ const Show = ({ auth, item }) => {
                                             }
                                         >
                                             <option value="">Select PIC</option>
-                                            <option value="Pietra Shafira">Pietra Shafira</option>
-                                            <option value="Abyan Tahta">Abyan Tahta</option>
+                                            {
+                                                users.map(user=>(
+                                                    <option key={user.id} value={user.id}>{user.name}</option>
+                                                ))
+                                            }
+                                            {/* <option value="Abyan Tahta">Abyan Tahta</option>
                                             <option value="Firdaus Khoirifan">Firdaus Khoirifan</option>
-                                            <option value="Amrullah Solikun">Amrullah Solikun</option>
+                                            <option value="Amrullah Solikun">Amrullah Solikun</option> */}
                                         </SelectInput>
                                         <InputError message={errors.pic} className='mt-2' />
                                     </div>

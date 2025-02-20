@@ -12,6 +12,7 @@
 <body>
     @php
         $transactionsDecode = json_decode($transactions);
+        // dd($transactionsDecode)
     @endphp;
     <table>
     <thead>
@@ -38,7 +39,7 @@
             <td>{{ $transaction->item_id->category_id->name }}</td>
             <td>{{ $transaction->kondisi }}</td>
             <td>{{ $transaction->lokasi }}</td>
-            <td>{{ $transaction->pic }}</td>
+            <td>{{ $transaction->pic->name }}</td>
             <td>{{ $transaction->created_by->name }}</td>
             {{-- @if (isset($transaction->c))
                 

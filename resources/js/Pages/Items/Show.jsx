@@ -147,7 +147,7 @@ export default function Show({ auth, item, transactions }) {
 
                             )
                         }
-                        <Link href={route("transactions.show", `${encrypted_no_asset}`)} className="py-2 mt-3 md:mt-0 md:py-1 w-full md:w-48 text-center hover:brightness-110 duration-150 bg-brownTheme text-white font-semibold flex items-center justify-center gap-2  rounded-md">
+                        <Link href={route("transactions.show", `${encrypted_no_asset}_${no_asset}`)} className="py-2 mt-3 md:mt-0 md:py-1 w-full md:w-48 text-center hover:brightness-110 duration-150 bg-brownTheme text-white font-semibold flex items-center justify-center gap-2  rounded-md">
                             <PlusIcon className="w-8" />
                             Add STO
                         </Link>

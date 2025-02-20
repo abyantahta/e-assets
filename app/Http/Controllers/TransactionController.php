@@ -14,9 +14,12 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\TransactionResource;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Models\User;
+use App\Models\Category;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use Spatie\Activitylog\Models\Activity;
@@ -50,6 +53,7 @@ class TransactionController extends Controller
             $start = Carbon::parse(request("dateStart"));
             $query->whereDate("transactions.created_at",$start)->get();
         }
+        // dd('halo');
         $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10);
         // dd($transactions);
         return inertia("Transactions/Index", [
@@ -78,6 +82,7 @@ class TransactionController extends Controller
     {
         // activity()
         $data = $request->validated();
+        // dd($data);
         $image = $data['image_path'] ?? null;
         if ($image) {
             $filename = Str::random(20) . $image->getClientOriginalName();
@@ -108,12 +113,28 @@ class TransactionController extends Controller
      */
     public function show($encrypted_no_asset)
     {
-        $no_asset = Crypt::decryptString($encrypted_no_asset);
-        // dd($no_asset);
-        // $no_asset = substr($id, -9);
+        $output = explode('_',$encrypted_no_asset);
+        // dd($output);
+    	$key = $output[0];
+    	$no_asset = $output[1];
+        $users = User::select('id','name')->get();
+        // dd($users);
+    	
+    // dd(Hash::check($no_asset, $key));
+    try {
+    	if (!(Hash::check($no_asset, $key))) {
+        	abort(404);
+		}
+        //code...
+    } catch (\Exception $e) {
+        abort(404);
+        //throw $th;
+    }
         $item = Item::query()->where('no_asset', $no_asset)->get();
         return inertia("Transactions/Show", [
             "item" => ItemResource::collection($item),
+            "users"=> $users
+
         ]);
     }
 
@@ -187,22 +208,31 @@ class TransactionController extends Controller
     }
     public function dailyReportPage(){
         // dd('kesini');
+        $users = User::select('id','name','position')->get();
+        $categories = Category::all();
+        // dd($users);
         return inertia("Transactions/DailyReport", [
+            "users" => $users,
+            "categories" => $categories,
         ]);
     }
     public function dailyreport(){
-        $pic = [
-            'name' => request("PIC"),
-            'role' => $this->role(request("PIC"))
-        ];
-        $divisionInCharge = [
-            'name' => request("divisionInCharge"),
-            'role' => $this->role(request("divisionInCharge"))
-        ];
-        $stoAdmin = [
-            'name' => request("stoAdmin"),
-            'role' => $this->role(request("stoAdmin"))
-        ];
+        // dd(request("PIC"));
+        $pic = User::select('name','position')->where('id',request("PIC"))->first();
+        $divisionInCharge = User::select('name','position')->where('id',request("divisionInCharge"))->first();
+        // $pic = [
+        //     'name' => request("PIC"),
+        //     'role' => $this->role(request("PIC"))
+        // ];
+        // $divisionInCharge = [
+        //     'name' => request("divisionInCharge"),
+        //     'role' => $this->role(request("divisionInCharge"))
+        // ];
+        // $stoAdmin = [
+        //     'name' => request("stoAdmin"),
+        //     'role' => $this->role(request("stoAdmin"))
+        // ];
+        // dd($pic, $divisionInCharge);
         $date = request("date");
             // 'role' => $this->role(request("stoAdmin"))
         
@@ -213,7 +243,7 @@ class TransactionController extends Controller
             "transactions" => TransactionResource::collection($transactions)->toJson(),
             "pic" => $pic,
             "divisionInCharge" => $divisionInCharge,
-            "stoAdmin" => $stoAdmin,
+            // "stoAdmin" => $stoAdmin,
             "kategori" => $kategori,
             "date" => $date,
         ])->setOption(['dpi=>150'])->setPaper('a4', 'landscape')->setWarnings(false);
