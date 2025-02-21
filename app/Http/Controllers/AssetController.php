@@ -97,14 +97,17 @@ class AssetController extends Controller
                                 $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
                         }
                         $running_date = Carbon::parse($datas->t_fa_startdt);
+                        $endOfMonth = Carbon::now()->endOfMonth();
+                        $running_date->endOfMonth();
+                        // dd($running_date>$endOfMonth);
                         $depreciation = 0;
                         $nbv = $items->cost;
-                        
+                        // dd($running_date->isPast());
                         // $date_now = Carbon::now()->addMonth();
                         
                         
                         // dd($depreciation, $)
-                            while($depreciation < $items->cost && $running_date->isPast() ){
+                            while($depreciation < $items->cost && $running_date<$endOfMonth ){
                                 Depreciation::create([
                                     'no_asset'=> $datas->t_fa_id,
                                     'category_id' => $items->category_id,
