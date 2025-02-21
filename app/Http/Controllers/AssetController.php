@@ -35,8 +35,7 @@ class AssetController extends Controller
                 "message" => "Can't load data, WSA Problem"
             ]);
         } else {
-            // dd($itemwsa[0][0]);
-            // DB::begintransaction();
+            DB::begintransaction();
             try {
                 foreach ($itemwsa[0] as $datas) {
                     $items = Item::where('no_asset',$datas->t_fa_id)->first();
@@ -99,20 +98,29 @@ class AssetController extends Controller
                         }
                         $running_date = Carbon::parse($datas->t_fa_startdt);
                         $depreciation = 0;
-                        // $nbv = $items->cost;
+                        $nbv = $items->cost;
                         // dd($depreciation, $)
                             while($depreciation < $items->cost ){
-                                $depreciations_data = Depreciation::create([
+                                Depreciation::create([
                                     'no_asset'=> $datas->t_fa_id,
                                     'category_id' => $items->category_id,
                                     'month' => $running_date->month,
                                     'year' => $running_date->year,
                                     'depreciation' => $depreciation
                                 ]);
+                                NetBookValue::create([
+                                    'no_asset'=> $datas->t_fa_id,
+                                    'category_id' => $items->category_id,
+                                    'month' => $running_date->month,
+                                    'year' => $running_date->year,
+                                    'net_book_value' => $nbv
+                                ]);
+                                // dd($nbv);
                                 $depreciation += $items->depreciation_per_month;
-                                // $nbv = $items->cost - $depreciation;
+                                $nbv = $items->cost - $depreciation;
                                 $running_date->addMonth();
-                                $depreciations_data->save();
+                                // $depreciations_data->save();
+                                // $nbv_data->save();
                             }
                     }
                     else{
@@ -139,10 +147,10 @@ class AssetController extends Controller
                     // $depreciations_data->no_asset = $datas->t_fa_id;
 
                 }
-                // DB::commit();
-
+                DB::commit();
+                // dd()
             } catch (Exception $e) {
-                // DB::rollback();
+                DB::rollback();
                 // dd($e);
                 // alert()->error('error', 'Item not loaded');
                 return redirect()->back()->with('success', [!$loadingToggle,"Items failed to load"]);
