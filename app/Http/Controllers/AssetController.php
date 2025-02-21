@@ -99,8 +99,12 @@ class AssetController extends Controller
                         $running_date = Carbon::parse($datas->t_fa_startdt);
                         $depreciation = 0;
                         $nbv = $items->cost;
+                        
+                        // $date_now = Carbon::now()->addMonth();
+                        
+                        
                         // dd($depreciation, $)
-                            while($depreciation < $items->cost ){
+                            while($depreciation < $items->cost && $running_date->isPast() ){
                                 Depreciation::create([
                                     'no_asset'=> $datas->t_fa_id,
                                     'category_id' => $items->category_id,
