@@ -29,7 +29,7 @@
             <td>{{ ($loop->index)+1 }}</td>
             <td>{{ $item->no_asset }}</td>
             <td>{{ $item->name }}</td>
-            <td>https://e-asset.sankei-dharma.co.id/items/{{ $item->encrypted_no_asset }}</td>
+            <td>https://e-asset.sankei-dharma.co.id/items/{{ $item->encrypted_no_asset }}_{{$item->no_asset}}</td>
         </tr>
         @endforeach
     </tbody>
