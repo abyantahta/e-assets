@@ -181,7 +181,7 @@ export default function Index({ auth, transactions, queryParams = null, success 
                                     <tbody className='overflow-auto box-border no-scrollbar'>
                                         {transactions.data.map((transaction, index) => (
                                             <tr className="min-w-full flex text-center gap-3 mt-3" key={transaction.id} >
-                                                <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}>{index + 1}</td>
+                                                <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}>{(transactions.meta.current_page-1)*transactions.meta.per_page+(index+1)}</td>
                                                 <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-44`}>{moment(transaction.created_at).format('DD/MM/YYYY - hh:mm')}</td>
                                                 <td className={` overflow-visible  h-11 -mr-3 bg-lightTheme text-ellipsis text-nowrap text-center pr-3 w-40`}>
                                                     <span className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} border-greenTheme border-2 rounded-[0.25rem] w-full h-full inline-block px-3 py-2 `}>

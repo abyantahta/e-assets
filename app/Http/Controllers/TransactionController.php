@@ -31,6 +31,8 @@ class TransactionController extends Controller
      */
     public function index()
     {
+        //         $dnsoadas = "amin paling serius";
+        // dd(str_replace(" ","",$dnsoadas));
 
         $query = Transaction::select('transactions.*', 'items.id AS it_id', 'items.created_at AS it_created_at')->leftJoin('items', 'items.no_asset', '=', 'transactions.item_id'); 
         $sortField = request("sort_field", "transactions.created_at");
@@ -54,7 +56,7 @@ class TransactionController extends Controller
             $query->whereDate("transactions.created_at",$start)->get();
         }
         // dd('halo');
-        $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10);
+        $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10)->withQueryString();
         // dd($transactions);
         return inertia("Transactions/Index", [
             "transactions" => TransactionResource::collection($transactions),
@@ -83,9 +85,11 @@ class TransactionController extends Controller
         // activity()
         $data = $request->validated();
         // dd($data);
+        // $dnsoadas = "amin paling serius";
+        // dd(trim($dnsoadas));
         $image = $data['image_path'] ?? null;
         if ($image) {
-            $filename = Str::random(20) . $image->getClientOriginalName();
+            $filename = Str::random(20) . str_replace(" ","",$image->getClientOriginalName());
             $foldername = Str::random(10);
             Storage::disk('public')->makeDirectory('transactions/'.$foldername);
             $imgManager = new ImageManager(new Driver());

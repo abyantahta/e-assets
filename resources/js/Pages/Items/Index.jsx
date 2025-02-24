@@ -336,7 +336,7 @@ export default function Index({
                                                                 : "bg-white"
                                                         } px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}
                                                     >
-                                                        {item.id}
+                                                        {(items.meta.current_page-1)*items.meta.per_page+(index+1)}
                                                     </td>
                                                     <td
                                                         className={` overflow-visible sticky left-12 h-11 -mr-3 bg-lightTheme text-ellipsis text-nowrap text-center pr-3 w-40`}
