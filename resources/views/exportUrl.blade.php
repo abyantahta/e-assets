@@ -18,6 +18,7 @@
     <thead>
         <tr>
             <th>No</th>
+            <th>Year</th>
             <th>No Asset</th>
             <th>Nama Asset</th>
             <th>Url</th>
@@ -27,6 +28,7 @@
         @foreach ($items as $item)
         <tr>
             <td>{{ ($loop->index)+1 }}</td>
+            <td>{{ Carbon\Carbon::parse($item->service_date)->year }}</td>
             <td>{{ $item->no_asset }}</td>
             <td>{{ $item->name }}</td>
             <td>https://e-asset.sankei-dharma.co.id/items/{{ $item->encrypted_no_asset }}_{{$item->no_asset}}</td>
