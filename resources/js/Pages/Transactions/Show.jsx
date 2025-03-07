@@ -133,8 +133,8 @@ const Show = ({ auth, item , users}) => {
                                         >
                                             <option value="">Select Kondisi</option>
                                             <option value="baik">Baik</option>
-                                            <option value="kureng">Kureng</option>
-                                            <option value="rusak">Rusak</option>
+                                            <option value="Baik (tidak digunakan)">Baik (tidak digunakan)</option>
+                                            <option value="Hilang atau Rusak">Hilang atau Rusak</option>
                                         </SelectInput>
                                         <InputError message={errors.kondisi} className='mt-2' />
                                     </div>
