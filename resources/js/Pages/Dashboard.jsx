@@ -401,22 +401,7 @@ export default function Dashboard({
                                             </div>
                                         </div>
                                         <div className="flex gap-2 h-72 mt-3">
-                                            <div className="bg-pink-100 rounded-md pt-3 shadow-md grow h-full ">
-                                                <h4 className="font-semibold text-center text-xl uppercase mb-2 text-brownTheme">
-                                                    DISPOSAL ASET
-                                                </h4>
-                                                <Chart
-                                                    options={
-                                                        disposalDateByMonth.options
-                                                    }
-                                                    series={
-                                                        disposalDateByMonth.series
-                                                    }
-                                                    type="bar"
-                                                    height="88%"
-                                                />
-                                            </div>
-                                            <div className="rounded-md py-3 shadow-md bg-green-100 w-fit px-4">
+                                        <div className="rounded-md py-3 shadow-md bg-green-100 w-fit px-4">
                                                 <h4 className="font-semibold text-center text-xl uppercase mb-2 text-brownTheme">
                                                     Presentase jenis aset aktif
                                                 </h4>
@@ -433,7 +418,23 @@ export default function Dashboard({
                                                     type="pie"
                                                     height="240"
                                                 />
+                                            </div>  
+                                            <div className="bg-pink-100 rounded-md pt-3 shadow-md grow h-full ">
+                                                <h4 className="font-semibold text-center text-xl uppercase mb-2 text-brownTheme">
+                                                    DISPOSAL ASET
+                                                </h4>
+                                                <Chart
+                                                    options={
+                                                        disposalDateByMonth.options
+                                                    }
+                                                    series={
+                                                        disposalDateByMonth.series
+                                                    }
+                                                    type="bar"
+                                                    height="88%"
+                                                />
                                             </div>
+
                                         </div>
                                     </div>
                                     <div className="bg-yellow-50 rounded-md shadow-md w-1/6 flex flex-col">

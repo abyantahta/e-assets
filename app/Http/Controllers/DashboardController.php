@@ -54,34 +54,34 @@ class DashboardController extends Controller
 
 
         //PENAMBAHAN ASET MONTHLY
-        $penambahan_januari = (clone $items)->whereMonth('service_date', 1)->count();
-        $penambahan_februari = (clone $items)->whereMonth('service_date', 2)->count();
-        $penambahan_maret = (clone $items)->whereMonth('service_date', 3)->count();
-        $penambahan_april = (clone $items)->whereMonth('service_date', 4)->count();
-        $penambahan_mei = (clone $items)->whereMonth('service_date', 5)->count();
-        $penambahan_juni = (clone $items)->whereMonth('service_date', 6)->count();
-        $penambahan_juli = (clone $items)->whereMonth('service_date', 7)->count();
-        $penambahan_agustus = (clone $items)->whereMonth('service_date', 8)->count();
-        $penambahan_september = (clone $items)->whereMonth('service_date', 9)->count();
-        $penambahan_oktober = (clone $items)->whereMonth('service_date', 10)->count();
-        $penambahan_november = (clone $items)->whereMonth('service_date', 11)->count();
-        $penambahan_desember = (clone $items)->whereMonth('service_date', 12)->count();
+        $penambahan_januari = ((clone $items)->whereMonth('service_date', 1)->sum('cost'))/1000000000;
+        $penambahan_februari = ((clone $items)->whereMonth('service_date', 2)->sum('cost'))/1000000000;
+        $penambahan_maret = ((clone $items)->whereMonth('service_date', 3)->sum('cost'))/1000000000;
+        $penambahan_april = ((clone $items)->whereMonth('service_date', 4)->sum('cost'))/1000000000;
+        $penambahan_mei = ((clone $items)->whereMonth('service_date', 5)->sum('cost'))/1000000000;
+        $penambahan_juni = ((clone $items)->whereMonth('service_date', 6)->sum('cost'))/1000000000;
+        $penambahan_juli = ((clone $items)->whereMonth('service_date', 7)->sum('cost'))/1000000000;
+        $penambahan_agustus = ((clone $items)->whereMonth('service_date', 8)->sum('cost'))/1000000000;
+        $penambahan_september = ((clone $items)->whereMonth('service_date', 9)->sum('cost'))/1000000000;
+        $penambahan_oktober = ((clone $items)->whereMonth('service_date', 10)->sum('cost'))/1000000000;
+        $penambahan_november = ((clone $items)->whereMonth('service_date', 11)->sum('cost'))/1000000000;
+        $penambahan_desember = ((clone $items)->whereMonth('service_date', 12)->sum('cost'))/1000000000;
         $months_label = ["JAN", "FEB", "MAR", "APR", "MEI", "JUNI", "JULI", "AUG", "SEP", "OKT", "NOV", "DES"];
         $penambahan_aset_monthly = [$penambahan_januari, $penambahan_februari, $penambahan_maret, $penambahan_april, $penambahan_mei, $penambahan_juni, $penambahan_juli, $penambahan_agustus, $penambahan_september, $penambahan_oktober, $penambahan_november, $penambahan_desember];
 
         //DISPOSAL ASET MONTHLY
-        $disposal_januari = (clone $items)->whereMonth('disposal_date', 1)->count();
-        $disposal_februari = (clone $items)->whereMonth('disposal_date', 2)->count();
-        $disposal_maret = (clone $items)->whereMonth('disposal_date', 3)->count();
-        $disposal_april = (clone $items)->whereMonth('disposal_date', 4)->count();
-        $disposal_mei = (clone $items)->whereMonth('disposal_date', 5)->count();
-        $disposal_juni = (clone $items)->whereMonth('disposal_date', 6)->count();
-        $disposal_juli = (clone $items)->whereMonth('disposal_date', 7)->count();
-        $disposal_agustus = (clone $items)->whereMonth('disposal_date', 8)->count();
-        $disposal_september = (clone $items)->whereMonth('disposal_date', 9)->count();
-        $disposal_oktober = (clone $items)->whereMonth('disposal_date', 10)->count();
-        $disposal_november = (clone $items)->whereMonth('disposal_date', 11)->count();
-        $disposal_desember = (clone $items)->whereMonth('disposal_date', 12)->count();
+        $disposal_januari = ((clone $items)->whereMonth('disposal_date', 1)->sum('cost'))/1000000000;
+        $disposal_februari = ((clone $items)->whereMonth('disposal_date', 2)->sum('cost'))/1000000000;
+        $disposal_maret = ((clone $items)->whereMonth('disposal_date', 3)->sum('cost'))/1000000000;
+        $disposal_april = ((clone $items)->whereMonth('disposal_date', 4)->sum('cost'))/1000000000;
+        $disposal_mei = ((clone $items)->whereMonth('disposal_date', 5)->sum('cost'))/1000000000;
+        $disposal_juni = ((clone $items)->whereMonth('disposal_date', 6)->sum('cost'))/1000000000;
+        $disposal_juli = ((clone $items)->whereMonth('disposal_date', 7)->sum('cost'))/1000000000;
+        $disposal_agustus = ((clone $items)->whereMonth('disposal_date', 8)->sum('cost'))/1000000000;
+        $disposal_september = ((clone $items)->whereMonth('disposal_date', 9)->sum('cost'))/1000000000;
+        $disposal_oktober = ((clone $items)->whereMonth('disposal_date', 10)->sum('cost'))/1000000000;
+        $disposal_november = ((clone $items)->whereMonth('disposal_date', 11)->sum('cost'))/1000000000;
+        $disposal_desember = ((clone $items)->whereMonth('disposal_date', 12)->sum('cost'))/1000000000;
         $months_label = ["JAN", "FEB", "MAR", "APR", "MEI", "JUNI", "JULI", "AUG", "SEP", "OKT", "NOV", "DES"];
         $disposal_aset_monthly = [$disposal_januari, $disposal_februari, $disposal_maret, $disposal_april, $disposal_mei, $disposal_juni, $disposal_juli, $disposal_agustus, $disposal_september, $disposal_oktober, $disposal_november, $disposal_desember];
 
