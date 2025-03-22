@@ -17,9 +17,10 @@ export default function Dashboard({
     cost_per_categories,
     nbv_cost_category,
     depreciation,
-    depreciation_per_month
+    depreciation_per_month,
+    depreciationByMonths,
 }) {
-    console.log(depreciation,depreciation_per_month)
+    console.log(depreciation, depreciation_per_month);
     //PIE CHART NBV_COST_CATEGORY_OPTIONS
     // let numOfItemsOptions = {
     //     series: [numberOfActiveItems,numberOfDeactiveItems],
@@ -47,6 +48,12 @@ export default function Dashboard({
             },
             xaxis: {
                 categories: months_label,
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function (val) {
+                    return val + "M";
+                },
             },
         },
         series: [
@@ -81,6 +88,10 @@ export default function Dashboard({
                     borderWidth: 2,
                     borderColor: "#fff",
                 },
+                formatter: function (val) {
+                    return val + "M";
+                },
+
                 // offsetX: 0, // decide on a value which looks right to you
             },
         },
@@ -88,6 +99,45 @@ export default function Dashboard({
             {
                 name: "Disposal Aset",
                 data: disposal_aset_monthly,
+            },
+        ],
+    };
+    let depreciationByMonthOptions = {
+        options: {
+            chart: {
+                id: "basic-bar",
+            },
+            xaxis: {
+                categories: depreciationByMonths.label,
+            },
+            dataLabels: {
+                enabled: true,
+                // position: 'top',
+                // textAnchor: 'start',
+                style: {
+                    //   colors: ['#333'],
+                    //   backgroundColor : ['#333']
+                },
+                background: {
+                    enabled: true,
+                    foreColor: "#444",
+                    borderRadius: 3,
+                    padding: 4,
+                    opacity: 0.5,
+                    borderWidth: 2,
+                    borderColor: "#fff",
+                },
+                formatter: function (val) {
+                    return val + "M";
+                },
+
+                // offsetX: 0, // decide on a value which looks right to you
+            },
+        },
+        series: [
+            {
+                name: "Depresiasi Aset",
+                data: depreciationByMonths.data,
             },
         ],
     };
@@ -196,15 +246,15 @@ export default function Dashboard({
                             offsetY: -12,
                             show: true,
                             color: "#666",
-                            fontSize: "19px",
+                            fontSize: "14px",
                         },
                         value: {
                             formatter: function (val) {
                                 return parseInt(val);
                             },
-                            offsetY: 20,
+                            offsetY: 8,
                             color: "#444",
-                            fontSize: "50px",
+                            fontSize: "40px",
                             fontWeight: "bold",
                             show: true,
                         },
@@ -253,9 +303,9 @@ export default function Dashboard({
             <div className="py-12">
                 <div className="mx-auto max-w-[100rem] sm:px-6 lg:px-8">
                     <div className="shadow-sm sm:rounded-lg ">
-                        <div className="p-6 text-gray-900 ">
+                        <div className="p-6 text-gray-900">
                             <div className="bg-yellow-400 flex items-center justify-center gap-4 mb-4">
-                            <ShieldExclamationIcon
+                                <ShieldExclamationIcon
                                     className={"h-12 text-red-500 "}
                                 />
                                 <h1 className=" font-bold text-4xl text-[#444] text-center">
@@ -303,8 +353,96 @@ export default function Dashboard({
                                     {/* <option value="6">Office Equipment</option> */}
                                 </SelectInput>
                             </div>
-                            <div className="w-full h-fit mt-6 ">
-                                <div className="w-full flex gap-8">
+
+                            <div className="w-full gap-4 flex mt-6">
+                                <div className="flex flex-col gap-4  min-w-80 justify-between ">
+                                    <div className="w-full flex flex-col bg-greenTheme text-white text-center h-32 rounded-xl justify-center">
+                                        <h2 className="tracking-wider text-2xl">
+                                            JUMLAH ASSET
+                                        </h2>
+                                        <h3 className="font-semibold text-6xl">
+                                            {Intl.NumberFormat("en-DE").format(
+                                                numberOfItems
+                                            )}
+                                        </h3>
+                                    </div>
+                                    <div className="flex flex-col gap-2 h-56 w-full">
+                                        <div className="h-[50%] gap-2 flex flex-col">
+                                            <h2 className="bg-green-100 h-1/2 flex items-center justify-center font-bold text-xl rounded-t-lg text-green-800">
+                                                Active : {numberOfActiveItems}
+                                            </h2>
+                                            <h2 className="bg-red-100 h-1/2 flex items-center justify-center font-bold text-xl text-red-700">
+                                                Deactive :{" "}
+                                                {numberOfDeactiveItems}
+                                            </h2>
+                                        </div>
+                                        <Chart
+                                            options={
+                                                sto_progress_options.options
+                                            }
+                                            series={sto_progress_options.series}
+                                            type="radialBar"
+                                            className="bg-indigo-50 rounded-b-lg "
+                                            height={"70%"}
+                                        />
+                                    </div>
+                                    <div className="rounded-md py-3 shadow-md bg-green-200 w-full px-4">
+                                        <h4 className="font-semibold text-center text-xl uppercase mb-2 text-brownTheme">
+                                            Jenis aset aktif
+                                        </h4>
+                                        <Chart
+                                            options={itemsByCategoriesOptions}
+                                            series={
+                                                itemsByCategoriesOptions.series
+                                            }
+                                            labels={
+                                                itemsByCategoriesOptions.labels
+                                            }
+                                            type="pie"
+                                            height="200"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="w-full shrink flex box-border h-full flex-col gap-3 ">
+                                    <div className="bg-pink-100 rounded-md pt-3 shadow-md grow h-1/3">
+                                        <h4 className="font-semibold text-center text-xl uppercase mb-2 text-brownTheme">
+                                            DEPRESIASI ASET
+                                        </h4>
+                                        <Chart
+                                            options={
+                                                depreciationByMonthOptions.options
+                                            }
+                                            series={depreciationByMonthOptions.series}
+                                            type="bar"
+                                            height="88%"
+                                        />
+                                    </div>
+                                    <div className="bg-red-100 rounded-lg pt-2 shadow-md grow h-1/3 pb-4 ">
+                                        <h4 className="font-semibold text-center text-xl uppercase mb-2 text-brownTheme">
+                                            PENAMBAHAN ASET
+                                        </h4>
+                                        <Chart
+                                            options={serviceDateByMonth.options}
+                                            series={serviceDateByMonth.series}
+                                            type="bar"
+                                            height="88%"
+                                        />
+                                    </div>
+                                    <div className="bg-pink-100 rounded-md pt-3 shadow-md grow h-1/3 ">
+                                        <h4 className="font-semibold text-center text-xl uppercase mb-2 text-brownTheme">
+                                            DISPOSAL ASET
+                                        </h4>
+                                        <Chart
+                                            options={
+                                                disposalDateByMonth.options
+                                            }
+                                            series={disposalDateByMonth.series}
+                                            type="bar"
+                                            height="88%"
+                                        />
+                                    </div>
+                                </div>
+                                {/* <div className="w-full flex gap-8 bg-blue-400">
                                     <div className="w-72 py-6 bg-greenTheme rounded-lg flex items-center justify-center gap-2 flex-col text-lightTheme">
                                         <h2 className="tracking-wider text-2xl">
                                             JUMLAH ASSET
@@ -358,7 +496,7 @@ export default function Dashboard({
                                         <div className="bg-[#E19922] rounded-lg w-full grow"></div>
                                     </div>
                                 </div>
-                                <div className=" flex mt-4 gap-2 w-full ">
+                                <div className=" flex mt-4 gap-2 w-full bg-orange-600">
                                     <div className="w-5/6 ">
                                         <div className="flex gap-2 h-72">
                                             <div className="flex flex-col gap-2 w-72">
@@ -451,7 +589,7 @@ export default function Dashboard({
                                             height={"87%"}
                                         />
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

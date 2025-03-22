@@ -37,6 +37,7 @@ class AssetController extends Controller
         } else {
             DB::begintransaction();
             try {
+                dd($itemwsa[0][0]);
                 foreach ($itemwsa[0] as $datas) {
                     $items = Item::where('no_asset',$datas->t_fa_id)->first();
                     if($items === null){
@@ -98,16 +99,11 @@ class AssetController extends Controller
                         }
                         $running_date = Carbon::parse($datas->t_fa_startdt);
                         $endOfMonth = Carbon::now()->endOfMonth();
+                        // dd($endOfMonth);
                         $running_date->endOfMonth();
-                        // dd($running_date>$endOfMonth);
                         $depreciation = 0;
-                        $nbv = $items->cost;
-                        // dd($running_date->isPast());
-                        // $date_now = Carbon::now()->addMonth();
-                        
-                        
-                        // dd($depreciation, $)
-                            while($depreciation < $items->cost && $running_date<$endOfMonth ){
+                        // $nbv = $items->cost;
+                            while(($depreciation < $items->cost) && $running_date < $endOfMonth ){
                                 Depreciation::create([
                                     'no_asset'=> $datas->t_fa_id,
                                     'category_id' => $items->category_id,
@@ -115,16 +111,17 @@ class AssetController extends Controller
                                     'year' => $running_date->year,
                                     'depreciation' => $depreciation
                                 ]);
-                                NetBookValue::create([
-                                    'no_asset'=> $datas->t_fa_id,
-                                    'category_id' => $items->category_id,
-                                    'month' => $running_date->month,
-                                    'year' => $running_date->year,
-                                    'net_book_value' => $nbv
-                                ]);
+                                
+                                // NetBookValue::create([
+                                //     'no_asset'=> $datas->t_fa_id,
+                                //     'category_id' => $items->category_id,
+                                //     'month' => $running_date->month,
+                                //     'year' => $running_date->year,
+                                //     'net_book_value' => $nbv
+                                // ]);
                                 // dd($nbv);
                                 $depreciation += $items->depreciation_per_month;
-                                $nbv = $items->cost - $depreciation;
+                                // $nbv = $items->cost - $depreciation;
                                 $running_date->addMonth();
                                 // $depreciations_data->save();
                                 // $nbv_data->save();
@@ -134,7 +131,7 @@ class AssetController extends Controller
                         $items->depreciation  = $datas->t_fabd_accamt;
                         $items->nbv  = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
                         $items->disposal_date  = ($datas->t_fa_disp_dt == "") ?  null : Carbon::parse($datas->t_fa_disp_dt); 
-                        $isDepreciationExist = Depreciation::where('month',Carbon::now()->month);
+                        $isDepreciationExist = Depreciation::where('month',Carbon::now()->month)->where('year', Carbon::now()->year);
                         if(!$isDepreciationExist){
                             Depreciation::create([
                                 'no_asset'=> $datas->t_fa_id,
