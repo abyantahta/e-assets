@@ -37,7 +37,8 @@ class AssetController extends Controller
         } else {
             DB::begintransaction();
             try {
-                dd($itemwsa[0][0]);
+                // dd($itemwsa[0][0]);
+                // $arra = [$itemwsa[0][0],$itlemwsa[0][1],$itemwsa[0][2],$itemwsa[0][3],$itemwsa[0][4],$itemwsa[0][5]];
                 foreach ($itemwsa[0] as $datas) {
                     $items = Item::where('no_asset',$datas->t_fa_id)->first();
                     if($items === null){
@@ -45,7 +46,7 @@ class AssetController extends Controller
                         $items->name  = $datas->t_fa_desc1;
                         $items->cost  = $datas->t_fa_puramt;
                         $items->depreciation  = $datas->t_fabd_accamt;
-                        $items->nbv  = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
+                        $items->nbv = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
                         $items->disposal_date  = ($datas->t_fa_disp_dt == "") ?  null : Carbon::parse($datas->t_fa_disp_dt);
                         $items->service_date  = Carbon::parse($datas->t_fa_startdt);
                         // $items->encrypted_no_asset  = Crypt::encryptString($datas->t_fa_id);
@@ -109,7 +110,8 @@ class AssetController extends Controller
                                     'category_id' => $items->category_id,
                                     'month' => $running_date->month,
                                     'year' => $running_date->year,
-                                    'depreciation' => $depreciation
+                                    'depreciation' => $depreciation,
+                                    'depreciation_per_month' => $items->depreciation_per_month
                                 ]);
                                 
                                 // NetBookValue::create([

@@ -5,6 +5,7 @@ import { Head, router } from "@inertiajs/react";
 import { ShieldExclamationIcon } from "@heroicons/react/16/solid";
 import Chart from "react-apexcharts";
 export default function Dashboard({
+    years,
     numberOfItems,
     numberOfActiveItems,
     numberOfDeactiveItems,
@@ -20,7 +21,8 @@ export default function Dashboard({
     depreciation_per_month,
     depreciationByMonths,
 }) {
-    console.log(depreciation, depreciation_per_month);
+    // console.log(depreciation, depreciation_per_month);
+    console.log(depreciationByMonths);
     //PIE CHART NBV_COST_CATEGORY_OPTIONS
     // let numOfItemsOptions = {
     //     series: [numberOfActiveItems,numberOfDeactiveItems],
@@ -345,11 +347,16 @@ export default function Dashboard({
                                     }
                                 >
                                     <option value="">All Year</option>
-                                    <option value="2025">2025</option>
+                                    {
+                                        years.map(year=>(
+                                            <option value={year}>{year}</option>
+                                        ))
+                                    }
+                                    {/* <option value="2025">2025</option>
                                     <option value="2024">2024</option>
                                     <option value="2023">2023</option>
                                     <option value="2022">2022</option>
-                                    <option value="2021">2021</option>
+                                    <option value="2021">2021</option> */}
                                     {/* <option value="6">Office Equipment</option> */}
                                 </SelectInput>
                             </div>
