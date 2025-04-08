@@ -35,6 +35,8 @@ class DashboardController extends Controller
             // dd(Item::query()->whereYear('service_date',2012)->count());
             
         $deactiveItemsQuery = (clone $itemsQuery)->whereNotNull('disposal_date');
+        // $depreciationByMonth = Depreciation::select('depreciations.*', 'items.created_at AS it_created_at,','items.depreciation_per_month as depreciation_per_month')->leftJoin('items', 'items.id', '=', 'depreciations.item_id')->where('year', request('years') ?: Carbon::now()->year); 
+
         $depreciationByMonth = Depreciation::query()->where('year', request('years') ?: Carbon::now()->year);
         // $depreciation_per_month = Depreciation::query()->get();
         // dd($depreciation_per_month);
@@ -56,7 +58,6 @@ class DashboardController extends Controller
             $items_for_disposal->where("category_id",$category_id);
             $itemsQuery = $itemsQuery->where("category_id",$category_id);
             $depreciationByMonth = $depreciationByMonth->where("category_id",$category_id);
-            
         }
         
         // $years = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
@@ -100,36 +101,36 @@ class DashboardController extends Controller
         $penambahan_aset_monthly = [$penambahan_januari, $penambahan_februari, $penambahan_maret, $penambahan_april, $penambahan_mei, $penambahan_juni, $penambahan_juli, $penambahan_agustus, $penambahan_september, $penambahan_oktober, $penambahan_november, $penambahan_desember];
 
         //DISPOSAL ASET MONTHLY
-        $disposal_januari = round((((clone $items_for_disposal)->whereMonth('disposal_date', 1)->sum('cost'))/1000000000)*100)/100;
-        $disposal_februari = round((((clone $items_for_disposal)->whereMonth('disposal_date', 2)->sum('cost'))/1000000000)*100)/100;
-        $disposal_maret = round((((clone $items_for_disposal)->whereMonth('disposal_date', 3)->sum('cost'))/1000000000)*100)/100;
-        $disposal_april = round((((clone $items_for_disposal)->whereMonth('disposal_date', 4)->sum('cost'))/1000000000)*100)/100;
-        $disposal_mei = round((((clone $items_for_disposal)->whereMonth('disposal_date', 5)->sum('cost'))/1000000000)*100)/100;
-        $disposal_juni = round((((clone $items_for_disposal)->whereMonth('disposal_date', 6)->sum('cost'))/1000000000)*100)/100;
-        $disposal_juli = round((((clone $items_for_disposal)->whereMonth('disposal_date', 7)->sum('cost'))/1000000000)*100)/100;
-        $disposal_agustus = round((((clone $items_for_disposal)->whereMonth('disposal_date', 8)->sum('cost'))/1000000000)*100)/100;
-        $disposal_september = round((((clone $items_for_disposal)->whereMonth('disposal_date', 9)->sum('cost'))/1000000000)*100)/100;
-        $disposal_oktober = round((((clone $items_for_disposal)->whereMonth('disposal_date', 10)->sum('cost'))/1000000000)*100)/100;
-        $disposal_november = round((((clone $items_for_disposal)->whereMonth('disposal_date', 11)->sum('cost'))/1000000000)*100)/100;
-        $disposal_desember = round((((clone $items_for_disposal)->whereMonth('disposal_date', 12)->sum('cost'))/1000000000)*100)/100;
+        $disposal_januari = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 1)->sum('nbv'))/1000000)*100)/100;
+        $disposal_februari = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 2)->sum('nbv'))/1000000)*100)/100;
+        $disposal_maret = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 3)->sum('nbv'))/1000000)*100)/100;
+        $disposal_april = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 4)->sum('nbv'))/1000000)*100)/100;
+        $disposal_mei = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 5)->sum('nbv'))/1000000)*100)/100;
+        $disposal_juni = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 6)->sum('nbv'))/1000000)*100)/100;
+        $disposal_juli = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 7)->sum('nbv'))/1000000)*100)/100;
+        $disposal_agustus = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 8)->sum('nbv'))/1000000)*100)/100;
+        $disposal_september = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 9)->sum('nbv'))/1000000)*100)/100;
+        $disposal_oktober = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 10)->sum('nbv'))/1000000)*100)/100;
+        $disposal_november = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 11)->sum('nbv'))/1000000)*100)/100;
+        $disposal_desember = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 12)->sum('nbv'))/1000000)*100)/100;
         $months_label = ["JAN", "FEB", "MAR", "APR", "MEI", "JUNI", "JULI", "AUG", "SEP", "OKT", "NOV", "DES"];
         $disposal_aset_monthly = [$disposal_januari, $disposal_februari, $disposal_maret, $disposal_april, $disposal_mei, $disposal_juni, $disposal_juli, $disposal_agustus, $disposal_september, $disposal_oktober, $disposal_november, $disposal_desember];
         
 
         //DEPRESIASI ASET MONTHLY
-        $depreciation_januari = round((((clone $depreciationByMonth)->where('month', 1)->sum('depreciation'))/1000000000)*100)/100;
-        $depreciation_februari = round((((clone $depreciationByMonth)->where('month', 2)->sum('depreciation'))/1000000000)*100)/100;
-        $depreciation_maret = round((((clone $depreciationByMonth)->where('month', 3)->sum('depreciation'))/1000000000)*100)/100;
-        $depreciation_april = round((((clone $depreciationByMonth)->where('month', 4)->sum('depreciation'))/1000000000)*100)/100;
+        $depreciation_januari = ceil((((clone $depreciationByMonth)->where('month', 1)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
+        $depreciation_februari = ceil((((clone $depreciationByMonth)->where('month', 2)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
+        $depreciation_maret = ceil((((clone $depreciationByMonth)->where('month', 3)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
+        $depreciation_april = ceil((((clone $depreciationByMonth)->where('month', 4)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
         // dd($depreciation_april);
-        $depreciation_mei = round((((clone $depreciationByMonth)->where('month', 5)->sum('depreciation'))/1000000000)*100)/100;
-        $depreciation_juni = round((((clone $depreciationByMonth)->where('month', 6)->sum('depreciation'))/1000000000)*100)/100;
-        $depreciation_juli = round((((clone $depreciationByMonth)->where('month', 7)->sum('depreciation'))/1000000000)*100)/100;
-        $depreciation_agustus = round((((clone $depreciationByMonth)->where('month', 8)->sum('depreciation'))/1000000000)*100)/100;
-        $depreciation_september = round((((clone $depreciationByMonth)->where('month', 9)->sum('depreciation'))/1000000000)*100)/100;
-        $depreciation_oktober = round((((clone $depreciationByMonth)->where('month', 10)->sum('depreciation'))/1000000000)*100)/100;
-        $depreciation_november = round((((clone $depreciationByMonth)->where('month', 11)->sum('depreciation'))/1000000000)*100)/100;
-        $depreciation_desember = round((((clone $depreciationByMonth)->where('month', 12)->sum('depreciation'))/1000000000)*100)/100;
+        $depreciation_mei = ceil((((clone $depreciationByMonth)->where('month', 5)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
+        $depreciation_juni = ceil((((clone $depreciationByMonth)->where('month', 6)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
+        $depreciation_juli = ceil((((clone $depreciationByMonth)->where('month', 7)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
+        $depreciation_agustus = ceil((((clone $depreciationByMonth)->where('month', 8)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
+        $depreciation_september = ceil((((clone $depreciationByMonth)->where('month', 9)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
+        $depreciation_oktober = ceil((((clone $depreciationByMonth)->where('month', 10)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
+        $depreciation_november = ceil((((clone $depreciationByMonth)->where('month', 11)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
+        $depreciation_desember = ceil((((clone $depreciationByMonth)->where('month', 12)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
         $months_label = ["JAN", "FEB", "MAR", "APR", "MEI", "JUNI", "JULI", "AUG", "SEP", "OKT", "NOV", "DES"];
         $depreciation_aset_monthly = [$depreciation_januari, $depreciation_februari, $depreciation_maret, $depreciation_april, $depreciation_mei, $depreciation_juni, $depreciation_juli, $depreciation_agustus, $depreciation_september, $depreciation_oktober, $depreciation_november, $depreciation_desember];
 

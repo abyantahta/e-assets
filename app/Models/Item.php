@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PHPUnit\Framework\TestStatus\Deprecation;
 
 class Item extends Model
 {
@@ -20,6 +21,10 @@ class Item extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class, 'item_id');
+    }
+    public function depreciations()
+    {
+        return $this->hasMany(Deprecation::class, 'item_id');
     }
     public function scopeWhereYearIn($query, array $years)
 {

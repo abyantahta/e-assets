@@ -9,6 +9,7 @@ import { Head, router, Link } from '@inertiajs/react';
 import moment from 'moment';
 
 export default function Index({ auth, transactions, queryParams = null, success }) {
+    console.log(transactions)
     queryParams = queryParams || {};
     // console.log(auth.user);
 

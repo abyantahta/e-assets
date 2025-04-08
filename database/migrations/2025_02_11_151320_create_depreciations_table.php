@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('depreciations', function (Blueprint $table) {
             $table->id();
-            $table->string('no_asset');
             $table->year('year')->nullable();
             $table->integer('month')->nullable();
             $table->float('depreciation')->nullable();
+            $table->float('depreciation_per_month')->nullable();
+            $table->float('nbv')->nullable();
             $table->integer('category_id')->nullable();
-            // $table->foreignId('item_id')->nullable()->default(null)->constrained('items');
+            $table->foreignId('item_id')->constrained('items');
             $table->timestamps();
+            // $table->string('no_asset');
+            // $table->foreignId('item_id')->nullable()->default(null)->constrained('items');
         });
     }
 

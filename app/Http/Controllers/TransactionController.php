@@ -66,7 +66,7 @@ class TransactionController extends Controller
     }
     public function cobacoba(){
         $transaction = Transaction::all();
-        dd($transaction->toJson());
+        // dd($transaction->toJson());
     }
     /**
      * Show the form for creating a new resource.

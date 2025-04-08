@@ -30,7 +30,7 @@ class Transaction extends Model
     }
     public function item()
     {
-        return $this->belongsTo(Item::class, 'item_id','no_asset');
+        return $this->belongsTo(Item::class, 'item_id','id');
     }
     public function createdBy()
     {

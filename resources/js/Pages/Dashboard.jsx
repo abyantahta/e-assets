@@ -91,7 +91,7 @@ export default function Dashboard({
                     borderColor: "#fff",
                 },
                 formatter: function (val) {
-                    return val + "M";
+                    return val + " JT";
                 },
 
                 // offsetX: 0, // decide on a value which looks right to you

@@ -15,17 +15,19 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('created_by')->constrained('users');
-            $table->string('item_id');
-            $table->foreign('item_id')->references('no_asset')->on('items');
-            // $table->string('no_asset')->unique();
-            // $table->string('asset_name');
+            $table->foreignId('item_id')->constrained('items');
             $table->foreignId('updated_by')->nullable()->default(null)->constrained('users');
             $table->string('lokasi');
             $table->string('keterangan')->nullable();
             $table->foreignId('pic')->nullable()->default(null)->constrained('users');
-            // $table->string('pic');
             $table->string('kondisi');
             $table->string('image_path')->nullable();
+            // $table->string('pic');
+            // $table->string('item_id');
+            // $table->foreign('item_id')->references('no_asset')->on('items');
+            
+            // $table->string('no_asset')->unique();
+            // $table->string('asset_name');
         });
     }
 

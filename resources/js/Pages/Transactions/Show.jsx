@@ -10,7 +10,7 @@ import SelectInput from '@/Components/SelectInput'
 const Show = ({ auth, item , users}) => {
     let { id, no_asset, name, category_id, cost, disposal_date, lokasi, nbv, service_date } = item.data[0]
     const { data, setData, post, errors, reset } = useForm({
-        item_id: no_asset,
+        item_id: id,
         lokasi: lokasi,
         image_path: '',
         kategori: category_id.name,
