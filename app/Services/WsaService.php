@@ -44,7 +44,7 @@ class WsaService
                 <Body>
                     <SDI_getFixedAsset xmlns="' . $wsa->qxwsa_wsa_path . '"/>
                 </Body>
-        </Envelope> 
+            </Envelope> 
 
             ';
 

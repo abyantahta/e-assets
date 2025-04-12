@@ -19,7 +19,7 @@ const Show = ({ auth, item , users}) => {
         keterangan: '',
         created_by: auth.user.id,
     })
-    console.log(users)
+    // console.log(users)
     const onSubmit = (e) => {
         e.preventDefault();
         post(route('transactions.store'));

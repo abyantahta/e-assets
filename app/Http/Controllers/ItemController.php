@@ -82,8 +82,9 @@ class ItemController extends Controller
         // $no_asset = Crypt::decryptString($encryptedId);
         // dd($encryptedId,$id);
         $item = Item::query()->where('no_asset',$no_asset)->get();
-        $transactions = Transaction::query()->where('item_id', $no_asset)->get();
-
+        // dd($item);
+        $transactions = Transaction::query()->where('item_id', $item[0]->id)->get();
+        // dd($transactions);
         return inertia("Items/Show", [
             "item" => ItemResource::collection($item),
             "transactions" => TransactionResource::collection($transactions),

@@ -16,6 +16,7 @@ use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\CutoffHistory;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
@@ -98,7 +99,8 @@ class TransactionController extends Controller
             $thumbImage->scaleDown(height:400);
             $thumbImage->save(storage_path('app/public/transactions/'.$foldername.'/'.$filename));
             $data['image_path'] = 'transactions/'.$foldername.'/'.$filename;
-
+            $cutoffNow = CutoffHistory::all()->last();
+            $data['cutoff_counter'] = $cutoffNow->cutoff_counter;
         }
         $data['updated_by'] = null;
         Transaction::create($data);
@@ -106,6 +108,11 @@ class TransactionController extends Controller
         $activity->description;
         $activity->subject;
         $activity->changes;
+        // dd((int)$data["item_id"]);
+        $item = Item::where('id',(int)$data["item_id"]);
+        $item->update([
+            'isSTO'=> true
+        ]);
         // $activity->log_name = $data["item_id"]."was created";
         return to_route('items.index')
         ->with('success', 'Transaction was created');
@@ -147,9 +154,10 @@ class TransactionController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        
+        $users = User::select('id','name')->get();
         return inertia("Transactions/Edit", [
             "transaction" => TransactionResource::make($transaction),
+            "users"=> $users
         ]);
     }
 
@@ -182,6 +190,9 @@ class TransactionController extends Controller
         $activity->description;
         $activity->subject;
         $activity->changes;
+
+
+
         return to_route('transactions.index')
         ->with('success', "Transaction \"$transaction->name\" was updated");
         //

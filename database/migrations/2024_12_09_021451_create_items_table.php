@@ -25,6 +25,8 @@ return new class extends Migration
             $table->float('depreciation_per_month')->nullable();
             $table->unsignedBigInteger('nbv')->nullable();
             $table->string('lokasi');
+            $table->boolean('isSTO')->default(false);
+            $table->boolean('isNew')->default(true);
             // $table->string('description');
         });
     }

@@ -21,13 +21,11 @@ return new class extends Migration
             $table->string('keterangan')->nullable();
             $table->foreignId('pic')->nullable()->default(null)->constrained('users');
             $table->string('kondisi');
+            $table->boolean('isEditable')->default(true);
             $table->string('image_path')->nullable();
-            // $table->string('pic');
-            // $table->string('item_id');
-            // $table->foreign('item_id')->references('no_asset')->on('items');
-            
-            // $table->string('no_asset')->unique();
-            // $table->string('asset_name');
+            $table->unsignedBigInteger('cutoff_counter');
+            $table->foreign('cutoff_counter')->references('cutoff_counter')->on('cutoff_histories');
+
         });
     }
 

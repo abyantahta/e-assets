@@ -12,7 +12,7 @@ import SelectInput from "@/Components/SelectInput";
 export default function Show({ auth, item, transactions }) {
     let [showHistory, setShowHistory] = useState(null);
     let { id, encrypted_no_asset, no_asset, name, category_id, cost, disposal_date, lokasi, nbv, service_date } = item.data[0]
-
+    console.log(transactions)
     const viewHistory = () => {
         // if(!auth) return to_route('items.index');
         if(auth.user){
@@ -99,21 +99,27 @@ export default function Show({ auth, item, transactions }) {
                                                     PIC
                                                 </th>
                                                 <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">Created By</th>
-                                                <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">Aksi</th>
+                                                <th className=" bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">Cutoff</th>
+                                                {(auth.user && auth.user?.role === 'admin') && (
+                                                    <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">Aksi</th>
+                                                        )}
                                             </tr>
                                         </thead>
                                         <tbody className='overflow-auto box-border no-scrollbar'>
-                                            {transactions.data.map((transaction, index) => (
-                                                <tr className="min-w-full flex text-center gap-3 mt-3" key={transaction.id} >
-                                                    <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}>{transaction.id}</td>
-                                                    <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{new Date(transaction.created_at).toLocaleDateString()}</td>
-                                                
-                                                    <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}>{transaction.kondisi}</td>
-                                                    <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-32`}>{transaction.lokasi}</td>
-                                                    <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.pic}</td>
-                                                    <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.created_by.name}</td> 
-                                                    {
-                                                        (auth.user && auth.user?.role === 'admin') && (
+                                            {(transactions.data).map((transaction, index) => {
+                                                console.log(transaction)
+                                                return (
+                                                    <tr className="min-w-full flex text-center gap-3 mt-3" key={transaction.id}>
+                                                        <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}>{index+1}</td>
+                                                        {/* <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}>{index+1}</td> */}
+                                                        <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{new Date(transaction.created_at).toLocaleDateString()}</td>
+
+                                                        <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}>{transaction.kondisi}</td>
+                                                        <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-32`}>{transaction.lokasi}</td>
+                                                        <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.pic.name}</td>
+                                                        <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.created_by.name}</td>
+                                                        <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.cutoff_counter}</td>
+                                                        {(auth.user && auth.user?.role === 'admin') && (
                                                             <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-6 flex h-11 py-1 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>
                                                                 <Link href={route("transactions.edit", transaction)} className='bg-yellow-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
 
@@ -124,9 +130,9 @@ export default function Show({ auth, item, transactions }) {
                                                                     <XMarkIcon className='w-5' />
                                                                 </button>
                                                             </td>
-                                                        )
-                                                    }
-                                                </tr>))}
+                                                        )}
+                                                    </tr>);
+                                            })}
                                             {/* </tr> */}
                                         </tbody>
                                     </table>

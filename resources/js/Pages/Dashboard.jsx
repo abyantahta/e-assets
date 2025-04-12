@@ -20,9 +20,10 @@ export default function Dashboard({
     depreciation,
     depreciation_per_month,
     depreciationByMonths,
+    sto_progress,
 }) {
     // console.log(depreciation, depreciation_per_month);
-    console.log(depreciationByMonths);
+    console.log(sto_progress);
     //PIE CHART NBV_COST_CATEGORY_OPTIONS
     // let numOfItemsOptions = {
     //     series: [numberOfActiveItems,numberOfDeactiveItems],
@@ -200,7 +201,7 @@ export default function Dashboard({
         //   },
     };
     let sto_progress_options = {
-        series: [90],
+        series: [sto_progress],
         options: {
             chart: {
                 height: 350,

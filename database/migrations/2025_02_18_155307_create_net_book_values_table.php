@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('month')->nullable();
             $table->float('net_book_value')->nullable();
             $table->integer('category_id')->nullable();
-            // $table->foreignId('item_id')->nullable()->default(null)->constrained('items');
             $table->timestamps();
+            // $table->foreignId('item_id')->nullable()->default(null)->constrained('items');
         });
     }
 

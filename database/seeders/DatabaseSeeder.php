@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
             'lifetime'=> 96
         ]);
         
-        // Qxwsas::factory()->create();
+        Qxwsas::factory()->create();
 
         // Item::factory()->count(200)->create();
         // Transaction::factory()->count(100)->create();

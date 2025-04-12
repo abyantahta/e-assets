@@ -28,6 +28,8 @@ class ItemResource extends JsonResource
             'cost'=> $this->cost,
             'nbv'=> $this->nbv,
             'lokasi'=> $this->lokasi,
+            'isNew'=> $this->isNew,
+            'isSTO'=> $this->isSTO,
         ];
     }
 }

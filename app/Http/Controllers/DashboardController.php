@@ -187,6 +187,12 @@ class DashboardController extends Controller
             ],
         ];
 
+        $totalActiveItems = Item::where('disposal_date',null)->where('isNew',false)->count();
+        $sto_count = Item::where('disposal_date',null)->where('isNew',false)->where('isSTO',true)->count();
+        $sto_progress = $totalActiveItems? (int)ceil(($sto_count/$totalActiveItems)*100) : 0;
+        // dd($totalActiveItems,$sto_count,$sto_progress);
+        
+
         return inertia("Dashboard", [
             "years"=> $year_name,
             "numberOfItems" => $items_number,
@@ -203,6 +209,7 @@ class DashboardController extends Controller
             "depreciation_per_month"=> $depreciation_per_month,
             "depreciationByMonths"=> $depreciationByMonths,
             "queryParams" => request()->query() ?: null,
+            "sto_progress" => $sto_progress,
             // "items" => ItemResource::collection($items),
             // "queryParams" => request()->query() ?: null,
             // "success" => session('success'),

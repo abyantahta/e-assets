@@ -24,6 +24,37 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
+
+        // <>
+        // <div className="bg-red-400 w-full h-lvh flex p-14 gap-48">
+        //     <div className="w-1/2 h-full bg-blue-400 p-36 flex flex-col gap-12">
+        //         <div className="w-full bg-white h-1/5 flex items-center justify-center">
+        //             <h2 className='font-bold text-6xl'>HEADING</h2>
+        //         </div>
+        //         <div className="w-full bg-white h-1/5 flex items-center justify-center">
+        //             <p className='font-bold text-6xl'>PARAGRAPH</p>
+        //         </div>
+        //         <div className=" bg-white w-full h-3/5 flex gap-4">
+        //             <div className="bg-red-400 h-full pl-4 w-1/2 flex flex-col gap-6">
+        //                 <div className="bg-yellow-300 w-full h-1/3"></div>
+        //                 <div className="bg-yellow-300 w-full h-1/3"></div>
+        //                 <div className="bg-yellow-300 w-full h-1/3"></div>
+        //             </div>
+        //             <div className="bg-red-400 h-full pr-4 w-1/2 flex flex-col gap-6">
+        //                 <div className="bg-yellow-300 w-full h-1/3"></div>
+        //                 <div className="bg-yellow-300 w-full h-1/3"></div>
+        //                 <div className="bg-yellow-300 w-full h-1/3"></div>
+        //             </div>
+        //         </div>
+        //     </div>
+        //     <div className="w-1/2 h-full bg-blue-400 p-12">
+        //         {/* <img src="" alt="" /> */}
+        //         <div className="bg-yellow-400 w-full h-full flex items-center justify-center">
+        //             <p className='text-4xl text-center text-brownTheme font-bold'>IMAGE</p>
+        //         </div>
+        //     </div>
+        // </div>
+        // </>
         <GuestLayout>
             <div className="-mt-6 px-4  w-full h-lvh flex items-center justify-center ">
                 <div className="relative  z-10 backdrop-blur-md flex flex-col items-center rounded-xl bg-lightTheme py-12 min-w-[21rem] px-5 shadow-md">

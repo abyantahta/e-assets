@@ -31,6 +31,7 @@ class TransactionResource extends JsonResource
             // 'pic' => $this->PIC?? $this->pic,
             'updated_by' => new UserResource($this->updatedBy),
             'keterangan' => $this->keterangan,
+            'cutoff_counter' => $this->cutoff_counter,
             'item_id' => new ItemResource($this->item),
             'lokasi' => $this->lokasi,
             'created_at' => $this->created_at,

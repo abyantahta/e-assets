@@ -38,17 +38,10 @@ class AssetController extends Controller
         } else {
             DB::begintransaction();
             try {
-                // dd($itemwsa[0][0]);
+                $arra = array_slice($itemwsa[0],0,20);
 
-                // $arra = [$itemwsa[0][11106]];
-                // $arra[0]->
-                // $arra = array_slice($itemwsa[0],531,532);
-                // dd($itemwsa[0][532]);
-                // dd($arra);
-                // dd($arra);
-
-                // foreach ($arra as $datas) {
-                foreach ($itemwsa[0] as $datas) {
+                foreach ($arra as $datas) {
+                // foreach ($itemwsa[0] as $datas) {
                     $items = Item::where('no_asset',$datas->t_fa_id)->first();
                     if($items === null){
                         // dd
@@ -170,7 +163,11 @@ class AssetController extends Controller
                         // dd($items->id);
                         $isDepreciationExist = Depreciation::where('item_id',$items->id)->where('month',Carbon::now()->month)->where('year', Carbon::now()->year)->first();
                         // dd(!$isDepreciationExist);
-                        if(!$isDepreciationExist && floor($items->nbv)!=0 && $items->disposal_date = null ){
+                        // if($items->id == 2602){
+                        //     dd($isDepreciationExist);
+                        // }
+                        if(!$isDepreciationExist && floor($items->nbv)!=0 && $items->disposal_date == null ){
+                            // dd('halo');
                             Depreciation::create([
                                 'item_id'=> $items->id,
                                 'category_id' => $items->category_id,

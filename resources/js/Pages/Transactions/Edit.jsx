@@ -7,18 +7,19 @@ import { Head, Link, useForm } from '@inertiajs/react'
 import React from 'react'
 import SelectInput from '@/Components/SelectInput'
 
-const Edit = ({ auth, transaction }) => {
+const Edit = ({ auth, transaction,users }) => {
     let { id, image_path, kondisi, lokasi, pic, created_at, updated_by, updated_at, keterangan} = transaction.data
     let { no_asset, name } = transaction.data.item_id
     let category = transaction.data.item_id.category_id.name
     let createdBy = transaction.data.created_by
+    console.log(transaction.data)
     const { data, setData, post, errors, reset } = useForm({
-        item_id: no_asset || "",
+        item_id: id || "",
         image_path: "",
         lokasi: lokasi || "",
         kondisi: kondisi || "",
         keterangan: keterangan || "",
-        pic: pic || "",
+        pic: pic.id || "",
         created_by: createdBy.id || "",
         updated_by : auth.user.id,
         _method: "PUT"
@@ -116,10 +117,11 @@ const Edit = ({ auth, transaction }) => {
                                             value={data.pic}
                                         >
                                             <option value="">Select PIC</option>
-                                            <option value="Pietra Shafira">Pietra Shafira</option>
-                                            <option value="Abyan Tahta">Abyan Tahta</option>
-                                            <option value="Firdaus Khoirifan">Firdaus Khoirifan</option>
-                                            <option value="Amrullah Solikun">Amrullah Solikun</option>
+                                            {
+                                                users.map(user=>(
+                                                    <option key={user.id} value={user.id}>{user.name}</option>
+                                                ))
+                                            }
                                         </SelectInput>
                                         <InputError message={errors.pic} className='mt-2' />
                                     </div>
@@ -136,8 +138,8 @@ const Edit = ({ auth, transaction }) => {
                                         >
                                             <option value="">Select Kondisi</option>
                                             <option value="baik">Baik</option>
-                                            <option value="kureng">Kureng</option>
-                                            <option value="rusak">Rusak</option>
+                                            <option value="Baik (tidak digunakan)">Baik (tidak digunakan)</option>
+                                            <option value="Hilang atau Rusak">Hilang atau Rusak</option>
                                         </SelectInput>
                                         <InputError message={errors.kondisi} className='mt-2' />
                                     </div>

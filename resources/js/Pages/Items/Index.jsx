@@ -29,7 +29,7 @@ export default function Index({
     const [successInfo, setSuccessInfo] = useState(null);
     const [syncStatus, setSyncStatus] = useState();
     const [syncMessage, setSyncMessage] = useState();
-
+    console.log(items);
     useEffect(() => {
         setLoadingSync(false);
         if (success) {
@@ -324,7 +324,7 @@ export default function Index({
                                                                 "items.show",
                                                                 `${item.encrypted_no_asset}_${item.no_asset}`
                                                             )}
-                                                            className="bg-orangeTheme hover:brightness-110 duration-200 p-1 w-fit font-bold text-white rounded-[0.25rem] flex items-center justify-center"
+                                                            className={` ${item.isSTO? 'bg-greenTheme': item.disposal_date? 'bg-gray-400' : 'bg-red-400'} hover:brightness-110 duration-200 p-1 w-fit font-bold text-white rounded-[0.25rem] flex items-center justify-center`}
                                                         >
                                                             <Squares2X2Icon className="w-7 text-white" />
                                                         </Link>
