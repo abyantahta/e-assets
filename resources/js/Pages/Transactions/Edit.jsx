@@ -99,11 +99,46 @@ const Edit = ({ auth, transaction,users }) => {
                                             value={data.lokasi}
                                         >
                                             <option value="">Select Lokasi</option>
-                                            <option value="Taruma">Taruma</option>
-                                            <option value="Dojo"> Dojo</option>
-                                            <option value="Pos Satpam">Pos Satpam </option>
-                                            <option value="Gedung Baru">Gedung Baru </option>
-                                            <option value="Gedung Lama">Gedung Lama </option>
+                                            <option value="LOBBY">LOBBY</option>
+                                            <option value="R.SRWJYA">R.SRWJYA</option>
+                                            <option value="R.QA">R.QA</option>
+                                            <option value="R.QC">R.QC</option>
+                                            <option value="R.Demak">R.Demak</option>
+                                            <option value="R.TRNATE">R.TRNATE</option>
+                                            <option value="PANTRY">PANTRY</option>
+                                            <option value="MUSH BWH">MUSH BWH</option>
+                                            <option value="R.IT">R.IT</option>
+                                            <option value="R.TARUMA">R.TARUMA</option>
+                                            <option value="R.OBEYA">R.OBEYA</option>
+                                            <option value="R.MAJPHT">R.MAJPHT</option>
+                                            <option value="R.MATRAM">R.MATRAM</option>
+                                            <option value="R.SERVER">R.SERVER</option>
+                                            <option value="R.ARSIP">R.ARSIP</option>
+                                            <option value="MUSH ATS">MUSH ATS</option>
+                                            <option value="SECURITY">SECURITY</option>
+                                            <option value="R.LOKER">R.LOKER</option>
+                                            <option value="KLINIK">KLINIK</option>
+                                            <option value="R.DOJO">R.DOJO</option>
+                                            <option value="GUDANG">GUDANG</option>
+                                            <option value="ASSY 1">ASSY 1</option>
+                                            <option value="ASSY 2">ASSY 2</option>
+                                            <option value="ASSY 3">ASSY 3</option>
+                                            <option value="ASSY 5">ASSY 5</option>
+                                            <option value="ASSY 6">ASSY 6</option>
+                                            <option value="BEND GL">BEND GL</option>
+                                            <option value="SPINNING">SPINNING</option>
+                                            <option value="WH 1">WH 1</option>
+                                            <option value="WH 2">WH 2</option>
+                                            <option value="WORKSHOP">WORKSHOP</option>
+                                            <option value="AREA MTC">AREA MTC</option>
+                                            <option value="BEND GB">BEND GB</option>
+                                            <option value="SEAMER">SEAMER</option>
+                                            <option value="ASSY 7">ASSY 7</option>
+                                            <option value="ASSY 8">ASSY 8</option>
+                                            <option value="ASSY 9">ASSY 9</option>
+                                            <option value="KANTIN">KANTIN</option>
+                                            <option value="DELIVERY">DELIVERY</option>
+                                            <option value="MASJID">MASJID</option>
                                         </SelectInput>
                                         <InputError message={errors.lokasi} className='mt-2' />
                                     </div>
