@@ -29,7 +29,7 @@ export default function Index({
     const [successInfo, setSuccessInfo] = useState(null);
     const [syncStatus, setSyncStatus] = useState();
     const [syncMessage, setSyncMessage] = useState();
-    console.log(items);
+    // console.log(items);
     useEffect(() => {
         setLoadingSync(false);
         if (success) {

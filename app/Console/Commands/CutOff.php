@@ -48,12 +48,12 @@ class CutOff extends Command
             $cutoff->sto_progress = $sto_progress;
             $cutoff->save();
         }
-        $transactions = Transaction::where('cutoff_counter',$cutoff->cutoff_counter);
+        $transactions = Transaction::where('cutoff_counter',$cutoff_counter)->get();
         Log::info('halo');
         foreach ($transactions as $transaction){
             $transaction->isEditable = false;
             $transaction->save();
-        }
+    }
 
         // dd($cutoff_counter);
         CutoffHistory::create([

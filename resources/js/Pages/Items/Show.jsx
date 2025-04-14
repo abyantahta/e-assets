@@ -11,8 +11,8 @@ import SelectInput from "@/Components/SelectInput";
 
 export default function Show({ auth, item, transactions }) {
     let [showHistory, setShowHistory] = useState(null);
-    let { id, encrypted_no_asset, no_asset, name, category_id, cost, disposal_date, lokasi, nbv, service_date } = item.data[0]
-    console.log(transactions)
+    let { id, encrypted_no_asset, no_asset, name, category_id, cost, disposal_date, lokasi, nbv, service_date, isNew } = item.data[0]
+    // console.log(auth.user.role_id)
     const viewHistory = () => {
         // if(!auth) return to_route('items.index');
         if(auth.user){
@@ -100,35 +100,72 @@ export default function Show({ auth, item, transactions }) {
                                                 </th>
                                                 <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">Created By</th>
                                                 <th className=" bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">Cutoff</th>
-                                                {(auth.user && auth.user?.role === 'admin') && (
+                                                {(auth.user && auth.user?.role_id === 2) && (
                                                     <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">Aksi</th>
                                                         )}
                                             </tr>
                                         </thead>
                                         <tbody className='overflow-auto box-border no-scrollbar'>
                                             {(transactions.data).map((transaction, index) => {
-                                                console.log(transaction)
+                                                // console.log(transaction)
                                                 return (
                                                     <tr className="min-w-full flex text-center gap-3 mt-3" key={transaction.id}>
                                                         <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}>{index+1}</td>
                                                         {/* <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}>{index+1}</td> */}
                                                         <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{new Date(transaction.created_at).toLocaleDateString()}</td>
-
                                                         <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}>{transaction.kondisi}</td>
                                                         <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-32`}>{transaction.lokasi}</td>
                                                         <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.pic.name}</td>
                                                         <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.created_by.name}</td>
                                                         <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>{transaction.cutoff_counter}</td>
-                                                        {(auth.user && auth.user?.role === 'admin') && (
+                                                        {(auth.user && auth.user?.role_id == 2) && (
+                                                            // <>
+                                                            
+                                                            // </>
                                                             <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-6 flex h-11 py-1 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>
-                                                                <Link href={route("transactions.edit", transaction)} className='bg-yellow-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
-
+                                                                {/* <Link href={route("transactions.edit", transaction)} className='bg-yellow-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
                                                                     <PencilIcon className='w-5' />
                                                                 </Link>
                                                                 <button onClick={(e) => deleteTransaction(transaction)} className='bg-red-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
-
                                                                     <XMarkIcon className='w-5' />
-                                                                </button>
+                                                                </button> */}
+                                                                                                                            {transaction.isEditable ? (
+                                                                <>
+                                                                    <Link
+                                                                        href={route(
+                                                                            "transactions.edit",
+                                                                            transaction
+                                                                        )}
+                                                                        className="bg-yellow-500 hover:brightness-110 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center"
+                                                                    >
+                                                                        <PencilIcon className="w-5" />
+                                                                    </Link>
+                                                                    <button
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            deleteTransaction(
+                                                                                transaction
+                                                                            )
+                                                                        }
+                                                                        className="bg-red-400 hover:brightness-125 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center"
+                                                                    >
+                                                                        <XMarkIcon className="w-5" />
+                                                                    </button>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                <div className="bg-gray-400 hover:brightness-110 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center">
+                                                                    <PencilIcon className="w-5" />
+                                                                </div>
+                                                                <div
+                                                                        className="bg-gray-400 hover:brightness-125 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center"
+                                                                    >
+                                                                        <XMarkIcon className="w-5" />
+                                                                    </div>
+
+                                                                </>
+                                                            )}
                                                             </td>
                                                         )}
                                                     </tr>);
@@ -153,10 +190,14 @@ export default function Show({ auth, item, transactions }) {
 
                             )
                         }
-                        <Link href={route("transactions.show", `${encrypted_no_asset}_${no_asset}`)} className="py-2 mt-3 md:mt-0 md:py-1 w-full md:w-48 text-center hover:brightness-110 duration-150 bg-brownTheme text-white font-semibold flex items-center justify-center gap-2  rounded-md">
-                            <PlusIcon className="w-8" />
-                            Add STO
-                        </Link>
+                        {
+                            !(isNew || disposal_date) &&(
+                                <Link href={route("transactions.show", `${encrypted_no_asset}_${no_asset}`)} className="py-2 mt-3 md:mt-0 md:py-1 w-full md:w-48 text-center hover:brightness-110 duration-150 bg-brownTheme text-white font-semibold flex items-center justify-center gap-2  rounded-md">
+                                    <PlusIcon className="w-8" />
+                                    Add STO
+                                </Link>
+                            )
+                        }
                     </div>
                 </div>
             </div>

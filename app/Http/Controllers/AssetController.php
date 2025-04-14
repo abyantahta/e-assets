@@ -38,7 +38,7 @@ class AssetController extends Controller
         } else {
             DB::begintransaction();
             try {
-                $arra = array_slice($itemwsa[0],0,20);
+                $arra = array_slice($itemwsa[0],0,50);
 
                 foreach ($arra as $datas) {
                 // foreach ($itemwsa[0] as $datas) {

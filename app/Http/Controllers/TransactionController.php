@@ -21,6 +21,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use Spatie\Activitylog\Models\Activity;
@@ -154,6 +155,10 @@ class TransactionController extends Controller
      */
     public function edit(Transaction $transaction)
     {
+        if($transaction->isEditable == false){
+            // dd($transaction);
+            return to_route('transactions.index');
+        }
         $users = User::select('id','name')->get();
         return inertia("Transactions/Edit", [
             "transaction" => TransactionResource::make($transaction),
