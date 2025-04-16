@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\TransactionResource;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Http\Resources\PeriodeSTOResource;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\CutoffHistory;
+use App\Models\Location;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
@@ -33,10 +35,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //         $dnsoadas = "amin paling serius";
-        // dd(str_replace(" ","",$dnsoadas));
-
-        $query = Transaction::select('transactions.*', 'items.id AS it_id', 'items.created_at AS it_created_at')->leftJoin('items', 'items.no_asset', '=', 'transactions.item_id'); 
+        $query = Transaction::select('transactions.*', 'items.id AS it_id', 'items.created_at AS it_created_at')->leftJoin('items', 'items.id', '=', 'transactions.item_id'); 
         $sortField = request("sort_field", "transactions.created_at");
         $sortDirection = request("sort_direction", "desc");
         if (request("no_asset")) {
@@ -45,6 +44,15 @@ class TransactionController extends Controller
         if (request("category_id")) {
             $query->where("items.category_id",  request("category_id") )->get();
         }
+        if (request("location_id")) {
+            $query->where("transactions.location_id",  request("location_id") )->get();
+        }
+        if (request("periode_sto")) {
+            $query->where("transactions.cutoff_counter",  request("periode_sto") )->get();
+        }
+        // if (request("category_id")) {
+        //     $query->where("items.category_id",  request("category_id") )->get();
+        // }
         if(request("dateStart") && request("dateEnd")){
             $start = Carbon::parse(request("dateStart"));
             $end = Carbon::parse(request("dateEnd"));
@@ -60,10 +68,16 @@ class TransactionController extends Controller
         // dd('halo');
         $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10)->withQueryString();
         // dd($transactions);
+        $locations = Location::all();
+        $categories = Category::all();
+        $periode_sto = CutoffHistory::all();
         return inertia("Transactions/Index", [
             "transactions" => TransactionResource::collection($transactions),
             "queryParams" => request()->query() ?: null,
             "success" => session('success'),
+            "locations" => $locations,
+            "categories" => $categories,
+            "periode_sto" => PeriodeSTOResource::collection($periode_sto)
         ]);
     }
     public function cobacoba(){
@@ -75,7 +89,6 @@ class TransactionController extends Controller
      */
     public function create()
     {
-
         //
     }
         
@@ -109,10 +122,14 @@ class TransactionController extends Controller
         $activity->description;
         $activity->subject;
         $activity->changes;
+        
         // dd((int)$data["item_id"]);
+        $locationString = Location::where('id',$data["location_id"])->first();
         $item = Item::where('id',(int)$data["item_id"]);
         $item->update([
-            'isSTO'=> true
+            'isSTO'=> true,
+            'lokasi'=> $locationString->location_name
+            // 'location_id'
         ]);
         // $activity->log_name = $data["item_id"]."was created";
         return to_route('items.index')
@@ -130,6 +147,7 @@ class TransactionController extends Controller
     	$key = $output[0];
     	$no_asset = $output[1];
         $users = User::select('id','name')->get();
+        $locations = Location::all();
         // dd($users);
     	
     // dd(Hash::check($no_asset, $key));
@@ -145,8 +163,9 @@ class TransactionController extends Controller
         $item = Item::query()->where('no_asset', $no_asset)->get();
         return inertia("Transactions/Show", [
             "item" => ItemResource::collection($item),
-            "users"=> $users
-
+            "users"=> $users,
+            "locations"=> $locations
+            
         ]);
     }
 
@@ -159,10 +178,12 @@ class TransactionController extends Controller
             // dd($transaction);
             return to_route('transactions.index');
         }
+        $locations = Location::all();
         $users = User::select('id','name')->get();
         return inertia("Transactions/Edit", [
             "transaction" => TransactionResource::make($transaction),
-            "users"=> $users
+            "users"=> $users,
+            "locations"=> $locations
         ]);
     }
 
@@ -224,7 +245,8 @@ class TransactionController extends Controller
         $dateStart = request("dateStart");
         $dateEnd = request("dateEnd");
         $category_id = request("category_id");
-        return Excel::download(new ExportFullSTO($category_id,$dateStart,$dateEnd), 'users.xlsx');
+        
+        return Excel::download(new ExportFullSTO($category_id,$dateStart,$dateEnd), "STO Transactions.xlsx");
     }
     public function dailyReportPage(){
         // dd('kesini');

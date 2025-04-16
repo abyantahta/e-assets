@@ -7,11 +7,11 @@ import { Head, Link, useForm } from '@inertiajs/react'
 import React from 'react'
 import SelectInput from '@/Components/SelectInput'
 
-const Show = ({ auth, item , users}) => {
+const Show = ({ auth, item , users, locations}) => {
     let { id, no_asset, name, category_id, cost, disposal_date, lokasi, nbv, service_date } = item.data[0]
     const { data, setData, post, errors, reset } = useForm({
         item_id: id,
-        lokasi: lokasi,
+        location_id: '',
         image_path: '',
         kategori: category_id.name,
         pic: '',
@@ -22,6 +22,7 @@ const Show = ({ auth, item , users}) => {
     // console.log(users)
     const onSubmit = (e) => {
         e.preventDefault();
+        // console.log(data)
         post(route('transactions.store'));
     }
     return (
@@ -51,7 +52,7 @@ const Show = ({ auth, item , users}) => {
                                         name="item_id"
                                         isFocused={true}
                                         defaultValue={no_asset}
-                                        disabled="true"
+                                        disabled = {true}
                                         className="mt-1 block cursor-default w-full outline-none border-none bg-lightTheme text-gray-400 shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-3xl text-center   h-16" />
                                     <InputError message={errors.item_id} className='mt-2' />
                                 </div>
@@ -64,7 +65,7 @@ const Show = ({ auth, item , users}) => {
                                             name="name"
                                             isFocused={true}
                                             defaultValue={name}
-                                            disabled="true"
+                                            disabled = {true}
                                             className="mt-1 cursor-default block w-full outline-none border-none bg-lightTheme text-gray-400 shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl   h-12" />
                                         <InputError message={errors.name} className='mt-2' />
                                     </div>
@@ -76,7 +77,7 @@ const Show = ({ auth, item , users}) => {
                                             name="kategori"
                                             isFocused={true}
                                             defaultValue={data.kategori}
-                                            disabled="true"
+                                            disabled = {true}
                                             className="mt-1 block w-full cursor-default outline-none border-none bg-lightTheme text-gray-400 shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl   h-12" />
                                         <InputError message={errors.kategori} className='mt-2' />
                                     </div>
@@ -88,17 +89,23 @@ const Show = ({ auth, item , users}) => {
                                         <InputLabel htmlFor="lokasi" value="Lokasi" />
                                         <SelectInput
                                             className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
+                                            id="lokasi"
+                                            name="lokasi"
                                             onChange={(e) =>
-                                                setData("lokasi", e.target.value)
+                                                setData("location_id", e.target.value)
                                             }
                                         >
                                             <option value="">Select Lokasi</option>
-                                            
-                                            <option value="LOBBY">LOBBY</option>
+                                            {
+                                                locations.map(location=>(
+                                                    <option key={location.location_name} name={location.location_name} value={location.id}>{location.location_name}</option>
+                                                ))
+                                            }
+                                            {/* <option value="LOBBY">LOBBY</option>
                                             <option value="R.SRWJYA">R.SRWJYA</option>
                                             <option value="R.QA">R.QA</option>
                                             <option value="R.QC">R.QC</option>
-                                            <option value="R.Demak">R.Demak</option>
+                                            <option value="R.Demak">R.DEMAK</option>
                                             <option value="R.TRNATE">R.TRNATE</option>
                                             <option value="PANTRY">PANTRY</option>
                                             <option value="MUSH BWH">MUSH BWH</option>
@@ -133,7 +140,7 @@ const Show = ({ auth, item , users}) => {
                                             <option value="ASSY 9">ASSY 9</option>
                                             <option value="KANTIN">KANTIN</option>
                                             <option value="DELIVERY">DELIVERY</option>
-                                            <option value="MASJID">MASJID</option>
+                                            <option value="MASJID">MASJID</option> */}
                                             {/* <option value="WORKSHOP">WORKSHOP</option> */}
 
                                             {/* <option value="Taruma">Taruma</option>
@@ -148,6 +155,8 @@ const Show = ({ auth, item , users}) => {
                                         <InputLabel htmlFor="pic" value="PIC" />
                                         <SelectInput
                                             className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
+                                            id="pic"
+                                            name="pic"
                                             onChange={(e) =>
                                                 setData("pic", e.target.value)
                                             }
@@ -170,6 +179,8 @@ const Show = ({ auth, item , users}) => {
                                         <InputLabel htmlFor="kondisi" value="Kondisi" />
                                         <SelectInput
                                             className="w-full cursor-pointer outline-none border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
+                                            id="kondisi"
+                                            name="kondisi"
                                             onChange={(e) =>
                                                 setData("kondisi", e.target.value)
                                             }

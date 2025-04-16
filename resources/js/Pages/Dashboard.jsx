@@ -23,7 +23,7 @@ export default function Dashboard({
     sto_progress,
 }) {
     // console.log(depreciation, depreciation_per_month);
-    console.log(sto_progress);
+    // console.log(sto_progress);
     //PIE CHART NBV_COST_CATEGORY_OPTIONS
     // let numOfItemsOptions = {
     //     series: [numberOfActiveItems,numberOfDeactiveItems],
@@ -322,6 +322,7 @@ export default function Dashboard({
                                 <SelectInput
                                     className="w-72 border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
                                     defaultValue={queryParams.category_id}
+                                    name="category_id"
                                     onChange={(e) =>
                                         searchFieldChanged(
                                             "category_id",
@@ -340,6 +341,7 @@ export default function Dashboard({
                                 <SelectInput
                                     className="w-72 border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
                                     defaultValue={queryParams.years}
+                                    name="years"
                                     onChange={(e) =>
                                         searchFieldChanged(
                                             "years",
@@ -350,7 +352,7 @@ export default function Dashboard({
                                     <option value="">All Year</option>
                                     {
                                         years.map(year=>(
-                                            <option value={year}>{year}</option>
+                                            <option key={year} value={year}>{year}</option>
                                         ))
                                     }
                                     {/* <option value="2025">2025</option>

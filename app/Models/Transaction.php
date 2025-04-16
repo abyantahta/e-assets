@@ -44,6 +44,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
     public function cutoff()
     {
         return $this->belongsTo(CutoffHistory::class, 'cutoff_counter');

@@ -1,13 +1,14 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { PlusIcon } from '@heroicons/react/16/solid';
-import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import Dropdown from "@/Components/Dropdown";
+import NavLink from "@/Components/NavLink";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import { PlusIcon } from "@heroicons/react/16/solid";
+import { Link, usePage } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
+    // console.log(user.role_id);
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
     return (
@@ -17,31 +18,42 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="flex h-16 justify-between">
                         <div className="flex  w-full justify-between">
                             <div className="flex shrink-0 items-center">
-                                <Link className='flex items-center gap-3' href="/">
+                                <Link
+                                    className="flex items-center gap-3"
+                                    href="/"
+                                >
                                     {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" /> */}
                                     {/* <div className="p-1 rounded-full h-fit bg-white shadow-md w-fit"> */}
-                                    <img className='w-14 h-14 rounded-full' src="/storage/logo/logo.png" alt="" />
+                                    <img
+                                        className="w-14 h-14 rounded-full"
+                                        src="/storage/logo/logo.png"
+                                        alt=""
+                                    />
                                     {/* </div> */}
-                                    <h2 className='font-semibold text-brownTheme text-2xl md:text-3xl'>e-Assets</h2>
+                                    <h2 className="font-semibold text-brownTheme text-2xl md:text-3xl">
+                                        e-Assets
+                                    </h2>
                                 </Link>
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                    className=''
+                                    href={route("dashboard")}
+                                    active={route().current("dashboard")}
+                                    className=""
                                 >
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    href={route('items.index')}
-                                    active={route().current('items.index')}
+                                    href={route("items.index")}
+                                    active={route().current("items.index")}
                                 >
                                     Items
                                 </NavLink>
                                 <NavLink
-                                    href={route('transactions.index')}
-                                    active={route().current('transactions.index')}
+                                    href={route("transactions.index")}
+                                    active={route().current(
+                                        "transactions.index"
+                                    )}
                                 >
                                     Transactions
                                 </NavLink>
@@ -79,24 +91,27 @@ export default function AuthenticatedLayout({ header, children }) {
                                         </span>
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
-                                        <Link
-                                            href={route('register')}
-                                            method="get"
-                                            as="button"
-                                            className='pl-4 text-white font-bold mb-2 mt-4'
-                                        >
-                                            <div className="px-4  rounded-full  text-sm py-1 bg-greenTheme flex gap-1">
-                                                Create New User
-                                                <PlusIcon className='w-4' />
-                                            </div>
-                                        </Link>
+                                        {(user.role_id == 2) &&
+                                        (
+                                            <Link
+                                                href={route("register")}
+                                                method="get"
+                                                as="button"
+                                                className="pl-4 text-white font-bold mb-2 mt-4"
+                                            >
+                                                <div className="px-4  rounded-full  text-sm py-1 bg-greenTheme flex gap-1">
+                                                    Create New User
+                                                    <PlusIcon className="w-4" />
+                                                </div>
+                                            </Link>
+                                        )}
                                         <Dropdown.Link
-                                            href={route('profile.edit')}
+                                            href={route("profile.edit")}
                                         >
                                             Profile
                                         </Dropdown.Link>
                                         <Dropdown.Link
-                                            href={route('logout')}
+                                            href={route("logout")}
                                             method="post"
                                             as="button"
                                         >
@@ -110,7 +125,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
-                                        (previousState) => !previousState,
+                                        (previousState) => !previousState
                                     )
                                 }
                                 className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none dark:text-gray-500 dark:hover:bg-gray-900 dark:hover:text-gray-400 dark:focus:bg-gray-900 dark:focus:text-gray-400"
@@ -124,8 +139,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <path
                                         className={
                                             !showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
+                                                ? "inline-flex"
+                                                : "hidden"
                                         }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -135,8 +150,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <path
                                         className={
                                             showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
+                                                ? "inline-flex"
+                                                : "hidden"
                                         }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -151,26 +166,26 @@ export default function AuthenticatedLayout({ header, children }) {
 
                 <div
                     className={
-                        (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
+                        (showingNavigationDropdown ? "block" : "hidden") +
+                        " sm:hidden"
                     }
                 >
                     <div className="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
+                            href={route("dashboard")}
+                            active={route().current("dashboard")}
                         >
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            href={route('items.index')}
-                            active={route().current('items.index')}
+                            href={route("items.index")}
+                            active={route().current("items.index")}
                         >
                             Items
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            href={route('transactions.index')}
-                            active={route().current('transactions.index')}
+                            href={route("transactions.index")}
+                            active={route().current("transactions.index")}
                         >
                             Transactions
                         </ResponsiveNavLink>
@@ -185,12 +200,12 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <ResponsiveNavLink href={route("profile.edit")}>
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
-                                href={route('logout')}
+                                href={route("logout")}
                                 as="button"
                             >
                                 Log Out
@@ -199,7 +214,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
             </nav>
-            <main className='pt-20'>{children}</main>
+            <main className="pt-20">{children}</main>
         </div>
     );
 }

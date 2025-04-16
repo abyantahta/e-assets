@@ -38,16 +38,12 @@ class AssetController extends Controller
         } else {
             DB::begintransaction();
             try {
-                $arra = array_slice($itemwsa[0],0,50);
-
-                foreach ($arra as $datas) {
+                // $arra = array_slice($itemwsa[0],0,200);
+                foreach ($itemwsa[0] as $datas) {
                 // foreach ($itemwsa[0] as $datas) {
                     $items = Item::where('no_asset',$datas->t_fa_id)->first();
                     if($items === null){
-                        // dd
                         $items = new Item(['no_asset' => $datas->t_fa_id]);
-                        // dd($items->id);
-                        // dd($items);
                         $items->name  = $datas->t_fa_desc1;
                         $items->cost  = $datas->t_fa_puramt;
                         $items->depreciation  = $datas->t_fabd_accamt;
@@ -161,10 +157,11 @@ class AssetController extends Controller
                         $items->nbv  = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
                         $items->disposal_date  = ($datas->t_fa_disp_dt == "") ?  null : Carbon::parse($datas->t_fa_disp_dt); 
                         // dd($items->id);
+                        // $isDepreciationExist = Depreciation::where('item_id',$items->id)->where('month',Carbon::now()->month)->where('year', Carbon::now()->year)->first();
                         $isDepreciationExist = Depreciation::where('item_id',$items->id)->where('month',Carbon::now()->month)->where('year', Carbon::now()->year)->first();
-                        // dd(!$isDepreciationExist);
-                        // if($items->id == 2602){
-                        //     dd($isDepreciationExist);
+                        // dd($items->id,$isDepreciationExist->item_id);
+                        // if($items->id == 150){
+                            // dd('halo guys');
                         // }
                         if(!$isDepreciationExist && floor($items->nbv)!=0 && $items->disposal_date == null ){
                             // dd('halo');
@@ -180,8 +177,6 @@ class AssetController extends Controller
                             
                         }
                         $items->save();
-                        // dd('halo');
-                        // $depreciation
                     }
 
                 }

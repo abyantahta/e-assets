@@ -19,9 +19,12 @@ export default function Index({
     transactions,
     queryParams = null,
     success,
+    locations,
+    categories,
+    periode_sto
 }) {
     queryParams = queryParams || {};
-
+    console.log(periode_sto)
     const searchFieldChanged = (name, value) => {
         if (value) {
             queryParams[name] = value;
@@ -113,17 +116,51 @@ export default function Index({
                                         }
                                     >
                                         <option value="">Category</option>
-                                        <option value="1">Tooling</option>
-                                        <option value="2">Tooling2</option>
-                                        <option value="3">Tooling3</option>
-                                        <option value="4">Building</option>
-                                        <option value="5">Vehicle</option>
-                                        {/* <option value="6">Office Equipment</option> */}
+                                        {
+                                            
+                                            categories.map(category=>(
+                                                <option key={category.name} value={category.id}>{category.name}</option>
+                                            ))
+                                        }
                                     </SelectInput>
                                     <DatePicker
                                         searchFieldChanged={searchFieldChanged}
-                                        queryParams={queryParams}
+                                        queryParams={queryParams}   
                                     />
+                                    <SelectInput
+                                        className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme md:w-52"
+                                        defaultValue={queryParams.location_id}
+                                        onChange={(e) =>
+                                            searchFieldChanged(
+                                                "location_id",
+                                                e.target.value
+                                            )
+                                        }
+                                    >
+                                        <option value="">Select Location</option>
+                                        {
+                                            locations.map(location=>(
+                                                <option key={location.location_name} value={location.id}>{location.location_name}</option>
+                                            ))
+                                        }
+                                    </SelectInput>
+                                    <SelectInput
+                                        className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme md:w-52"
+                                        defaultValue={queryParams.periode_sto}
+                                        onChange={(e) =>
+                                            searchFieldChanged(
+                                                "periode_sto",
+                                                e.target.value
+                                            )
+                                        }
+                                    >
+                                        <option value="">Periode STO</option>
+                                        {
+                                            periode_sto.data.map(item=>(
+                                                <option key={item.cutoff_counter} value={item.cutoff_counter}>{item.start_period} - {item.end_period}</option>
+                                            ))
+                                        }
+                                    </SelectInput>
                                 </div>
                             </div>
                             <div className="overflow-auto">
@@ -230,9 +267,14 @@ export default function Index({
                                             <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">
                                                 Created By
                                             </th>
-                                            <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">
-                                                Aksi
-                                            </th>
+                                            {
+                                                auth.user.role_id ===
+                                                2 &&(
+                                                <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">
+                                                    Aksi
+                                                </th>
+                                                )
+                                            }
                                         </tr>
                                     </thead>
                                     <tbody className="overflow-auto box-border no-scrollbar">
@@ -329,7 +371,7 @@ export default function Index({
                                                                 : "bg-white"
                                                         } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-32`}
                                                     >
-                                                        {transaction.lokasi}
+                                                        {transaction.location_id.location_name}
                                                     </td>
                                                     <td
                                                         className={`${
@@ -431,169 +473,3 @@ export default function Index({
         </AuthenticatedLayout>
     );
 }
-
-// {/* <table className="table-fixed w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-//     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-//         <tr className="text-nowrap">
-//             <TableHeading
-//                 name="id"
-//                 sort_field={queryParams.sort_field}
-//                 sort_direction={queryParams.sort_direction}
-//                 sortChanged={sortChanged}
-//                 className=" w-16"
-//             >
-//                 ID
-//             </TableHeading>
-//             <TableHeading
-//                 name="created_at"
-//                 sort_field={queryParams.sort_field}
-//                 sort_direction={queryParams.sort_direction}
-//                 sortChanged={sortChanged}
-//                 className=" w-28"
-//             >
-//                 Date
-//             </TableHeading>
-//             <th className="w-32 px-3 py-3">No Asset</th>
-//             {/* <TableHeading
-//                                                 name="name"
-//                                                 sort_field={queryParams.sort_field}
-//                                                 sort_direction={queryParams.sort_direction}
-//                                                 sortChanged={sortChanged}
-//                                                 className=" w-56 text-ellipsis"
-//                                             >
-//                                                 Nama Aset
-//                                             </TableHeading> */}
-//             <th className="w-56 text-ellipsis px-3">Nama Aset</th>
-//             <TableHeading
-//                 name="category_id"
-//                 sort_field={queryParams.sort_field}
-//                 sort_direction={queryParams.sort_direction}
-//                 sortChanged={sortChanged}
-//                 className=" w-40 text-ellipsis"
-//             >
-//                 Category
-//             </TableHeading>
-
-//             <TableHeading
-//                 name="condition"
-//                 sort_field={queryParams.sort_field}
-//                 sort_direction={queryParams.sort_direction}
-//                 sortChanged={sortChanged}
-//                 className=" w-32 text-ellipsis"
-//             >
-//                 Kondisi
-//             </TableHeading>
-
-//             <TableHeading
-//                 name="isDisposition"
-//                 sort_field={queryParams.sort_field}
-//                 sort_direction={queryParams.sort_direction}
-//                 sortChanged={sortChanged}
-//                 className=" w-24 text-ellipsis"
-//             >
-//                 Lokasi
-//             </TableHeading>
-//             <TableHeading
-//                 name="cost"
-//                 sort_field={queryParams.sort_field}
-//                 sort_direction={queryParams.sort_direction}
-//                 sortChanged={sortChanged}
-//                 className=" w-28 text-ellipsis"
-//             >
-//                 PIC
-//             </TableHeading>
-//             {/* <th className="px-3 py-3">Cost</th> */}
-//             <th className="px-3 py-3 w-28 text-center">Created By</th>
-//             {/* <th className="px-3 py-3 w-28 text-center">Updated By</th> */}
-//             {
-//                 auth.user.role === 'admin' && (
-//                     <th className="px-3 py-3 w-24  text-center">Action</th>
-//                 )
-//             }
-//         </tr>
-//     </thead>
-//     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-//         <tr className="text-nowrap">
-//             <th className="px-3 py-3"></th>
-//             <th className="px-3 py-3"></th>
-//             <th className=" py-3 w-1">
-// <TextInput
-//     className="w-full"
-//     defaultValue={queryParams.no_asset}
-//     placeholder="no_asset"
-//     onBlur={(e) =>
-//         searchFieldChanged("no_asset", e.target.value)
-//     }
-//     onKeyPress={(e) => onKeyPress("no_asset", e)}
-// />
-//             </th>
-//             <th className="px-3 py-3"></th>
-//             <th className="py-3">
-// <SelectInput
-//     className="w-full"
-//     defaultValue={queryParams.category_id}
-//     onChange={(e) =>
-//         searchFieldChanged("category_id", e.target.value)
-//     }
-// >
-//     <option value="">Category</option>
-//     <option value="1">Tooling</option>
-//     <option value="2">Tooling2</option>
-//     <option value="3">Tooling3</option>
-//     <option value="4">Building</option>
-//     <option value="5">Vehicle</option>
-//     {/* <option value="6">Office Equipment</option> */}
-// </SelectInput>
-//             </th>
-//             <th className="px-3 py-3"></th>
-//             {/* <th className="px-3 py-3"></th> */}
-//             <th className="px-3 py-3"></th>
-//             <th className="px-3 py-3"></th>
-//             <th className="px-3 py-3"></th>
-//             {
-//                 auth.user.role === 'admin' && (
-//                     <th className="px-3 py-3"></th>
-//                 )
-//             }
-//             {/* <th className="px-3 py-3"></th> */}
-//         </tr>
-//     </thead>
-//     <tbody>
-//         {transactions.data.map((transaction, index) => (
-//             <tr
-//                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-//                 key={transaction.id}
-//             >
-//                 <td className="px-3 py-2 text-center">{index + 1}</td>
-//                 <td className="px-3 py-2 text-ellipsis overflow-hidden">{new Date(transaction.created_at).toLocaleDateString()}</td>
-//                 <td className="px-3 py-2">{transaction.item_id.no_asset}</td>
-//                 <td className="px-3 py-2">{transaction.item_id.name}</td>
-//                 <td className="px-3 py-2 text-nowrap text-ellipsis overflow-hidden ">
-//                     {transaction.item_id.category_id.name}
-//                 </td>
-//                 <td className="px-3 py-2 text-ellipsis overflow-hidden text-nowrap  ">
-//                     {transaction.kondisi}
-//                 </td>
-//                 <td className="px-3 py-2 text-ellipsis overflow-hidden ">{transaction.lokasi}</td>
-//                 <td className="px-3 py-2 text-ellipsis overflow-hidden ">{transaction.pic}</td>
-//                 <td className="px-3 py-2 text-ellipsis overflow-hidden text-center">{transaction.user_id.name}</td>
-//                 {/* <td className="px-3 py-2 text-ellipsis overflow-hidde text-center">{transaction.nbv}</td>
-//                                                 <td className="px-3 py-2 text-ellipsis overflow-hidden text-center">{transaction.lokasi}</td> */}
-// {
-//     auth.user.role === 'admin' && (
-//         <td className="px-3 py-2 overflow-hidden flex gap-2">
-//             <Link href={route("transactions.edit", transaction)} className='bg-yellow-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
-//                 {/* <Squares2X2Icon className='w-5 text-white' />   */}
-//                 <PencilIcon className='w-5' />
-//             </Link>
-//             <button onClick={(e) => deleteTransaction(transaction)} className='bg-red-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
-//                 {/* <Squares2X2Icon className='w-5 text-white' />   */}
-//                 <XMarkIcon className='w-5' />
-//             </button>
-//         </td>
-//     )
-// }
-//             </tr>
-//         ))}
-//     </tbody>
-// </table> */}

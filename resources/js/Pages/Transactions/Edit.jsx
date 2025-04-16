@@ -7,16 +7,16 @@ import { Head, Link, useForm } from '@inertiajs/react'
 import React from 'react'
 import SelectInput from '@/Components/SelectInput'
 
-const Edit = ({ auth, transaction,users }) => {
-    let { id, image_path, kondisi, lokasi, pic, created_at, updated_by, updated_at, keterangan} = transaction.data
+const Edit = ({ auth, transaction,users,locations }) => {
+    let { id, image_path, kondisi, location_id, pic, created_at, updated_by, updated_at, keterangan} = transaction.data
     let { no_asset, name } = transaction.data.item_id
     let category = transaction.data.item_id.category_id.name
     let createdBy = transaction.data.created_by
-    // console.log(transaction.data)
+    console.log(location_id.id)
     const { data, setData, post, errors, reset } = useForm({
         item_id: id || "",
         image_path: "",
-        lokasi: lokasi || "",
+        location_id: location_id.id || "",
         kondisi: kondisi || "",
         keterangan: keterangan || "",
         pic: pic.id || "",
@@ -94,16 +94,21 @@ const Edit = ({ auth, transaction,users }) => {
                                         <SelectInput
                                             className="w-full outline-none border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                             onChange={(e) =>
-                                                setData("lokasi", e.target.value)
+                                                setData("location_id", e.target.value)
                                             }
-                                            value={data.lokasi}
+                                            value={data.location_id}
                                         >
                                             <option value="">Select Lokasi</option>
-                                            <option value="LOBBY">LOBBY</option>
+                                            {
+                                                locations.map(location=>(
+                                                    <option key={location.location_name} value={location.id}>{location.location_name}</option>
+                                                ))
+                                            }
+                                            {/* <option value="LOBBY">LOBBY</option>
                                             <option value="R.SRWJYA">R.SRWJYA</option>
                                             <option value="R.QA">R.QA</option>
                                             <option value="R.QC">R.QC</option>
-                                            <option value="R.Demak">R.Demak</option>
+                                            <option value="R.Demak">R.DEMAK</option>
                                             <option value="R.TRNATE">R.TRNATE</option>
                                             <option value="PANTRY">PANTRY</option>
                                             <option value="MUSH BWH">MUSH BWH</option>
@@ -138,7 +143,7 @@ const Edit = ({ auth, transaction,users }) => {
                                             <option value="ASSY 9">ASSY 9</option>
                                             <option value="KANTIN">KANTIN</option>
                                             <option value="DELIVERY">DELIVERY</option>
-                                            <option value="MASJID">MASJID</option>
+                                            <option value="MASJID">MASJID</option> */}
                                         </SelectInput>
                                         <InputError message={errors.lokasi} className='mt-2' />
                                     </div>

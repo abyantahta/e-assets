@@ -24,6 +24,7 @@ export default function Index({
     loadingParams = null,
     success,
     error,
+    categories,
 }) {
     const [loadingSync, setLoadingSync] = useState(false);
     const [successInfo, setSuccessInfo] = useState(null);
@@ -125,7 +126,7 @@ export default function Index({
                         <div className="bg-lightTheme dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg">
                             <div className="p-6 text-gray-900 dark:text-gray-100">
                                 <div className="flex flex-col-reverse gap-y-2 mb-4 md:flex-row md:justify-between">
-                                    <div className="flex flex-col gap-y-2 w-full md:flex-row md:w-[40rem] gap-4">
+                                    <div className="flex flex-col gap-y-2  w-full md:flex-row md:w-[50rem] gap-4">
                                         <SelectInput
                                             className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
                                             defaultValue={
@@ -139,13 +140,21 @@ export default function Index({
                                             }
                                         >
                                             <option value="">Category</option>
-                                            <option value="1">Tooling</option>
+                                            {categories.map((category) => (
+                                                <option
+                                                    key={category.name}
+                                                    value={category.id}
+                                                >
+                                                    {category.name}
+                                                </option>
+                                            ))}
+                                            {/* <option value="1">Tooling</option>
                                             <option value="2">Building</option>
                                             <option value="3">Vehicle</option>
                                             <option value="4">
                                                 Office Equipment
                                             </option>
-                                            <option value="5">Machine</option>
+                                            <option value="5">Machine</option> */}
                                             {/* <option value="6">Office Equipment</option> */}
                                         </SelectInput>
                                         <SelectInput
@@ -160,9 +169,26 @@ export default function Index({
                                                 )
                                             }
                                         >
-                                            <option value="">All</option>
+                                            <option value="">Item Status</option>
                                             <option value="1">Active</option>
                                             <option value="2">Deactive</option>
+                                        </SelectInput>
+                                        <SelectInput
+                                            className="w-full border-gray-700 italic border-[3px] font-semibold focus:none ring:none text-greenTheme"
+                                            defaultValue={
+                                                queryParams.sto_status
+                                            }
+                                            onChange={(e) =>
+                                                searchFieldChanged(
+                                                    "sto_status",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">STO Status</option>
+                                            <option value="1">Finished</option>
+                                            <option value="2">Not Finished</option>
+                                            <option value="3">Pending</option>
                                         </SelectInput>
                                         <form action="POST" onSubmit={onSubmit}>
                                             <button
@@ -324,7 +350,13 @@ export default function Index({
                                                                 "items.show",
                                                                 `${item.encrypted_no_asset}_${item.no_asset}`
                                                             )}
-                                                            className={` ${item.isSTO? 'bg-greenTheme': item.disposal_date? 'bg-gray-400' : 'bg-red-400'} hover:brightness-110 duration-200 p-1 w-fit font-bold text-white rounded-[0.25rem] flex items-center justify-center`}
+                                                            className={` ${
+                                                                item.isSTO
+                                                                    ? "bg-greenTheme"
+                                                                    : item.disposal_date || item.isNew
+                                                                    ? "bg-gray-400"
+                                                                    : "bg-red-400"
+                                                            } hover:brightness-110 duration-200 p-1 w-fit font-bold text-white rounded-[0.25rem] flex items-center justify-center`}
                                                         >
                                                             <Squares2X2Icon className="w-7 text-white" />
                                                         </Link>
@@ -336,7 +368,12 @@ export default function Index({
                                                                 : "bg-white"
                                                         } px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}
                                                     >
-                                                        {(items.meta.current_page-1)*items.meta.per_page+(index+1)}
+                                                        {(items.meta
+                                                            .current_page -
+                                                            1) *
+                                                            items.meta
+                                                                .per_page +
+                                                            (index + 1)}
                                                     </td>
                                                     <td
                                                         className={` overflow-visible sticky left-12 h-11 -mr-3 bg-lightTheme text-ellipsis text-nowrap text-center pr-3 w-40`}

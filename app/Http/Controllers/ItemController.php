@@ -8,6 +8,7 @@ use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Http\Resources\ItemResource;
 use App\Http\Resources\TransactionResource;
+use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
@@ -36,11 +37,21 @@ class ItemController extends Controller
             $query->whereNotNull('disposal_date');
             // $query->where('isDisposition',0);
         }
+        if (request("sto_status")==1) {
+            $query->where('isSTO', true);
+        }else if(request("sto_status")==2){
+            $query->where('isSTO', false)->where('isNew',false)->whereNull('disposal_date');
+        }else if(request("sto_status")==3){
+            $query->where('isSTO', false)->where('isNew',true)->whereNull('disposal_date');
+        }
         $items = $query->orderBy($sortField, $sortDirection)->paginate(10)->withQueryString();;
+        $categories = Category::all();
         return inertia("Items/Index",[
             "items" => ItemResource::collection($items),
             "queryParams" => request()->query() ?: null,
             "success" => session('success'),
+            "categories"=> $categories,
+            // "categories"=> $categories,
         ]);
         //
     }

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('item_id')->constrained('items');
             $table->foreignId('updated_by')->nullable()->default(null)->constrained('users');
-            $table->string('lokasi');
             $table->string('keterangan')->nullable();
             $table->foreignId('pic')->nullable()->default(null)->constrained('users');
+            $table->foreignId('location_id')->nullable()->default(null)->constrained('locations');
             $table->string('kondisi');
             $table->boolean('isEditable')->default(true);
             $table->string('image_path')->nullable();

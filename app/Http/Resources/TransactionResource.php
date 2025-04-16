@@ -34,6 +34,7 @@ class TransactionResource extends JsonResource
             'cutoff_counter' => $this->cutoff_counter,
             'isEditable' => $this->isEditable,
             'item_id' => new ItemResource($this->item),
+            'location_id' => new LocationResource($this->location),
             'lokasi' => $this->lokasi,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

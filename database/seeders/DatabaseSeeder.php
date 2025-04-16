@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Item;
+use App\Models\Location;
 use App\Models\Qxwsas;
 use App\Models\Role;
 use App\Models\Transaction;
@@ -19,7 +20,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-
         Role::factory()->create([
             'name' => 'user'
         ]);        
@@ -54,6 +54,18 @@ class DatabaseSeeder extends Seeder
             'name' => 'Machine',
             'lifetime'=> 96
         ]);
+        // $location = ["",""];
+        $locations = ["SDI","LOBBY","R.SRWJYA","R.QA","R.QC","R.Demak","R.TRNATE","PANTRY","MUSH BWH","R.IT","R.TARUMA","R.OBEYA","R.MAJPHT","R.MATRAM","R.SERVER","R.ARSIP","MUSH ATS","SECURITY","R.LOKER","KLINIK","R.DOJO","GUDANG","ASSY 1","ASSY 2","ASSY 3","ASSY 5","ASSY 6","BEND GL","SPINNING","WH 1","WH 2","WORKSHOP","AREA MTC","BEND GB","SEAMER","ASSY 7","ASSY 8","ASSY 9","KANTIN","DELIVERY","MASJID"];
+        // <option value="LOBBY">LOBBY</option>
+        
+        // Location::factory()->create([
+        //     'name' => $locations[0]
+        // ]);
+        foreach ($locations as $location){
+            Location::factory()->create([
+                'location_name' => $location
+            ]);
+        }
         
         Qxwsas::factory()->create();
 
