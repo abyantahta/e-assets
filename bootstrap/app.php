@@ -23,5 +23,5 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->withSchedule(function (Schedule $schedule){
-        $schedule->command('app:cut-off')->everyMinute();
+        $schedule->command('app:cut-off')->everyTwoMinutes();
     })->create(); 
