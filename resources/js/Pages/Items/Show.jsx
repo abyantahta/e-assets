@@ -3,26 +3,18 @@ import GuestLayout from "@/Layouts/GuestLayout";
 import { EyeIcon, PencilIcon, PlusIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
-// import {useNavigate}
-// import th from "@/Components/th";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
-// import TasksTable from "../Task/TasksTable";
 
 export default function Show({ auth, item, transactions }) {
     let [showHistory, setShowHistory] = useState(null);
-    let { id, encrypted_no_asset, no_asset, name, category_id, cost, disposal_date, lokasi, nbv, service_date, isNew } = item.data[0]
-    // console.log(auth.user.role_id)
+    let { id, encrypted_no_asset, no_asset, name, category_id, cost, disposal_date, lokasi, nbv, service_date, isNew, isSTO } = item.data[0]
     const viewHistory = () => {
-        // if(!auth) return to_route('items.index');
         if(auth.user){
             setShowHistory(true);
         }else{
             router.visit('/login')
-            // return Inertia::
-            // navigate('/login')
         }
-        // if(transactions)
     }
     let content = (
         <>
@@ -39,18 +31,18 @@ export default function Show({ auth, item, transactions }) {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            {/* <tr>
                                 <td className="font-bold">Cost</td>
                                 <td>: Rp. {Intl.NumberFormat('en-DE').format(cost)}</td>
-                            </tr>
+                            </tr> */}
                             <tr>
                                 <td className="font-bold ">Kategori</td>
                                 <td className=""> : {category_id.name}</td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                                 <td className="font-bold">NBV</td>
                                 <td>: Rp. {Intl.NumberFormat('en-DE').format(nbv)}</td>
-                            </tr>
+                            </tr> */}
                             <tr>
                                 <td className="font-bold">Lokasi</td>
                                 <td className="">: {lokasi}</td>
@@ -107,7 +99,6 @@ export default function Show({ auth, item, transactions }) {
                                         </thead>
                                         <tbody className='overflow-auto box-border no-scrollbar'>
                                             {(transactions.data).map((transaction, index) => {
-                                                // console.log(transaction)
                                                 return (
                                                     <tr className="min-w-full flex text-center gap-3 mt-3" key={transaction.id}>
                                                         <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}>{index+1}</td>
@@ -123,13 +114,7 @@ export default function Show({ auth, item, transactions }) {
                                                             
                                                             // </>
                                                             <td className={`${index % 2 != 0 ? "bg-green-50" : "bg-white"} px-6 flex h-11 py-1 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}>
-                                                                {/* <Link href={route("transactions.edit", transaction)} className='bg-yellow-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
-                                                                    <PencilIcon className='w-5' />
-                                                                </Link>
-                                                                <button onClick={(e) => deleteTransaction(transaction)} className='bg-red-400 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center'>
-                                                                    <XMarkIcon className='w-5' />
-                                                                </button> */}
-                                                                                                                            {transaction.isEditable ? (
+                                                                {transaction.isEditable ? (
                                                                 <>
                                                                     <Link
                                                                         href={route(
@@ -158,12 +143,10 @@ export default function Show({ auth, item, transactions }) {
                                                                 <div className="bg-gray-400 hover:brightness-110 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center">
                                                                     <PencilIcon className="w-5" />
                                                                 </div>
-                                                                <div
-                                                                        className="bg-gray-400 hover:brightness-125 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center"
+                                                                <div className="bg-gray-400 hover:brightness-125 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center"
                                                                     >
                                                                         <XMarkIcon className="w-5" />
                                                                     </div>
-
                                                                 </>
                                                             )}
                                                             </td>
@@ -182,21 +165,26 @@ export default function Show({ auth, item, transactions }) {
                     </div>
                     <div className="mt-1 flex flex-col md:flex-row justify-center gap-4">
                         {
-                            !showHistory && (
-                                <button onClick={() => viewHistory()} className="py-3 md:py-1 w-full md:w-48 -mb-4 md:mb-0 bg-orangeTheme hover:brightness-110 duration-150 font-semibold tracking-wider text-white rounded-md flex items-center gap-2 justify-center">
-                                    <EyeIcon className="w-6" />
-                                    STO History
-                                </button>
-
-                            )
-                        }
-                        {
-                            !(isNew || disposal_date) &&(
-                                <Link href={route("transactions.show", `${encrypted_no_asset}_${no_asset}`)} className="py-2 mt-3 md:mt-0 md:py-1 w-full md:w-48 text-center hover:brightness-110 duration-150 bg-brownTheme text-white font-semibold flex items-center justify-center gap-2  rounded-md">
-                                    <PlusIcon className="w-8" />
-                                    Add STO
-                                </Link>
-                            )
+                            auth.user && (<>
+                            {
+                                !showHistory && (
+                                    <button onClick={() => viewHistory()} className="py-3 md:py-1 w-full md:w-48 -mb-4 md:mb-0 bg-orangeTheme hover:brightness-110 duration-150 font-semibold tracking-wider text-white rounded-md flex items-center gap-2 justify-center">
+                                        <EyeIcon className="w-6" />
+                                        STO History
+                                    </button>
+    
+                                )
+                            }
+                            {
+                                !(isNew || disposal_date || isSTO ) &&(
+                                    <Link href={route("transactions.show", `${encrypted_no_asset}_${no_asset}`)} className="py-2 mt-3 md:mt-0 md:py-1 w-full md:w-48 text-center hover:brightness-110 duration-150 bg-brownTheme text-white font-semibold flex items-center justify-center gap-2  rounded-md">
+                                        <PlusIcon className="w-8" />
+                                        Add STO
+                                    </Link>
+                                )
+                            }
+                            
+                            </>)
                         }
                     </div>
                 </div>

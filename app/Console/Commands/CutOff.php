@@ -31,13 +31,7 @@ class CutOff extends Command
      */
     public function handle()
     {
-        // DB::table('reports')->insert([
-        //     'total' => rand(100,1000),
-        //     'created_at' => now()
-        // ]);
-        // dd('halo');
         $cutoff = CutoffHistory::all()->last();
-
         
         $cutoff_counter = ($cutoff) ? ($cutoff->cutoff_counter) : 0;
         if($cutoff){
@@ -55,7 +49,6 @@ class CutOff extends Command
             $transaction->save();
     }
 
-        // dd($cutoff_counter);
         CutoffHistory::create([
             'cutoff_counter' => $cutoff_counter+1,
             'cutoff_date' => Carbon::now(),
@@ -68,8 +61,5 @@ class CutOff extends Command
             $item->isNew = false;
             $item->save();
         }
-        // dd($item);
-        
-        //
     }
 }

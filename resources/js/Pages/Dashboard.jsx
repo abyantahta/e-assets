@@ -1,7 +1,6 @@
 import SelectInput from "@/Components/SelectInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
-// import Chart from react-ReactApexChart
 import { ShieldExclamationIcon } from "@heroicons/react/16/solid";
 import Chart from "react-apexcharts";
 export default function Dashboard({
@@ -22,14 +21,6 @@ export default function Dashboard({
     depreciationByMonths,
     sto_progress,
 }) {
-    // console.log(depreciation, depreciation_per_month);
-    // console.log(sto_progress);
-    //PIE CHART NBV_COST_CATEGORY_OPTIONS
-    // let numOfItemsOptions = {
-    //     series: [numberOfActiveItems,numberOfDeactiveItems],
-    //     labels: ['Active', 'Deactive'],
-    // }
-    // console.log(nbv_cost_category)
     let itemsByCategoriesOptions = {
         series: itemsByCategories.data,
         labels: itemsByCategories.label,
@@ -76,11 +67,7 @@ export default function Dashboard({
             },
             dataLabels: {
                 enabled: true,
-                // position: 'top',
-                // textAnchor: 'start',
                 style: {
-                    //   colors: ['#333'],
-                    //   backgroundColor : ['#333']
                 },
                 background: {
                     enabled: true,
@@ -95,7 +82,6 @@ export default function Dashboard({
                     return val + " JT";
                 },
 
-                // offsetX: 0, // decide on a value which looks right to you
             },
         },
         series: [
@@ -115,11 +101,7 @@ export default function Dashboard({
             },
             dataLabels: {
                 enabled: true,
-                // position: 'top',
-                // textAnchor: 'start',
                 style: {
-                    //   colors: ['#333'],
-                    //   backgroundColor : ['#333']
                 },
                 background: {
                     enabled: true,
@@ -134,7 +116,6 @@ export default function Dashboard({
                     return val + "M";
                 },
 
-                // offsetX: 0, // decide on a value which looks right to you
             },
         },
         series: [
@@ -148,7 +129,6 @@ export default function Dashboard({
         series: nbv_cost_category,
         chart: {
             type: "bar",
-            // height: 350,
             stacked: true,
             stackType: "100%",
         },
@@ -192,13 +172,6 @@ export default function Dashboard({
             offsetX: 0,
             offsetY: 0,
         },
-        // label: {
-        //     enabled: true,
-        //     style: {
-        //         colors: ['#333']
-        //     },
-        //     offsetX: 30
-        //   },
     };
     let sto_progress_options = {
         series: [sto_progress],
@@ -303,11 +276,11 @@ export default function Dashboard({
         >
             <Head title="Dashboard" />
 
-            <div className="py-12">
+            <div className="py-5">
                 <div className="mx-auto max-w-[100rem] sm:px-6 lg:px-8">
                     <div className="shadow-sm sm:rounded-lg ">
                         <div className="p-6 text-gray-900">
-                            <div className="bg-yellow-400 flex items-center justify-center gap-4 mb-4">
+                            {/* <div className="bg-yellow-400 flex items-center justify-center gap-4 mb-4">
                                 <ShieldExclamationIcon
                                     className={"h-12 text-red-500 "}
                                 />
@@ -317,10 +290,10 @@ export default function Dashboard({
                                 <ShieldExclamationIcon
                                     className={"h-12 text-red-500 "}
                                 />
-                            </div>
-                            <div className="flex gap-8 ">
+                            </div> */}
+                            <div className="flex md:flex-row flex-col gap-y-3 gap-x-8 ">
                                 <SelectInput
-                                    className="w-72 border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
+                                    className="md:w-72 border-gray-700 w-full border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
                                     defaultValue={queryParams.category_id}
                                     name="category_id"
                                     onChange={(e) =>
@@ -339,7 +312,7 @@ export default function Dashboard({
                                     {/* <option value="6">Office Equipment</option> */}
                                 </SelectInput>
                                 <SelectInput
-                                    className="w-72 border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
+                                    className="w-full md:w-72 border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
                                     defaultValue={queryParams.years}
                                     name="years"
                                     onChange={(e) =>
@@ -355,16 +328,9 @@ export default function Dashboard({
                                             <option key={year} value={year}>{year}</option>
                                         ))
                                     }
-                                    {/* <option value="2025">2025</option>
-                                    <option value="2024">2024</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2021">2021</option> */}
-                                    {/* <option value="6">Office Equipment</option> */}
                                 </SelectInput>
                             </div>
-
-                            <div className="w-full gap-4 flex mt-6">
+                            <div className="w-full gap-4 flex md:flex-row flex-col mt-6">
                                 <div className="flex flex-col gap-4  min-w-80 justify-between ">
                                     <div className="w-full flex flex-col bg-greenTheme text-white text-center h-32 rounded-xl justify-center">
                                         <h2 className="tracking-wider text-2xl">

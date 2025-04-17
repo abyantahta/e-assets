@@ -27,7 +27,6 @@ class WsaService
     public function wsaasset()
     {
         $wsa = Qxwsas::firstOrFail();
-        // dd($wsa);
         $qxUrl = $wsa->qxwsa_wsa_url;
         $qxReceiver = '';
         $qxSuppRes = 'false';
@@ -59,7 +58,6 @@ class WsaService
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false,
         );
-        // dd($qdocRequest);
         $getInfo = '';
         $httpCode = 0;
         $curlErrno = 0;
@@ -89,15 +87,12 @@ class WsaService
             }
             curl_close($curl);
         }
-        // dd($qdocResponse);
         try{
             $xmlResp = simplexml_load_string($qdocResponse);
             $xmlResp->registerXPathNamespace('ns1', $wsa->qxwsa_wsa_path);
         }catch(Exception $e){
-            // dd($e);
             return false;
         }
-        // dd($qdocResponse);
         $itemdata = $xmlResp->xpath('//ns1:tempRow');
         $qdocResult = (string) $xmlResp->xpath('//ns1:outOK')[0];
 

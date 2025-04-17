@@ -24,7 +24,6 @@ class StoreTransactionRequest extends FormRequest
         return [
             "item_id" => ['required', 'exists:items,id'],
             'image_path' => ['nullable', 'image', 'mimes:png,jpeg,jpg'],
-            // "lokasi" => ['required', 'string'],
             "kondisi" => ['required', 'string'],
             "pic" => ['required', 'exists:users,id'],
             "location_id" => ['required', 'exists:locations,id'],

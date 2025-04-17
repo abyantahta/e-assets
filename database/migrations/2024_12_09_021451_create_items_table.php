@@ -27,7 +27,6 @@ return new class extends Migration
             $table->string('lokasi');
             $table->boolean('isSTO')->default(false);
             $table->boolean('isNew')->default(true);
-            // $table->string('description');
         });
     }
 

@@ -7,9 +7,7 @@ use App\Models\Depreciation;
 use App\Models\Item;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-// use DB;
 use Illuminate\Support\Facades\DB as FacadesDB;
-// use PHPUnit\Framework\TestStatus\Deprecation;
 
 class DashboardController extends Controller
 {
@@ -18,13 +16,10 @@ class DashboardController extends Controller
         $itemsQuery = Item::query();
         $activeItemsQuery = (clone $itemsQuery);
         $years = Item::select(
-            // FacadesDB::raw("(DATE_FORMAT(problem_date, '%Y')) as year"),
             FacadesDB::raw("(DATE_FORMAT(service_date, '%Y')) as year"),
             )
             ->groupBy("year")->get();
-            // dd($stopline_per_years);
             $year_name = collect(json_decode($years))->pluck('year');
-            // dd($year_name);
 
             $activeItemsQuery->whereDate('service_date','<',request('years')?Carbon::parse('31-12-'.request('years'))->endOfYear():Carbon::parse('31-12-'.Carbon::now()->year)->endOfYear())
                 ->where(function($query){
@@ -32,24 +27,17 @@ class DashboardController extends Controller
                     ->orWhereNull('disposal_date');
                 });
             
-            // dd(Item::query()->whereYear('service_date',2012)->count());
             
         $deactiveItemsQuery = (clone $itemsQuery)->whereNotNull('disposal_date');
-        // $depreciationByMonth = Depreciation::select('depreciations.*', 'items.created_at AS it_created_at,','items.depreciation_per_month as depreciation_per_month')->leftJoin('items', 'items.id', '=', 'depreciations.item_id')->where('year', request('years') ?: Carbon::now()->year); 
-
         $depreciationByMonth = Depreciation::query()->where('year', request('years') ?: Carbon::now()->year);
-        // $depreciation_per_month = Depreciation::query()->get();
-        // dd($depreciation_per_month);
-        $items = Item::select("no_asset", "service_date", "disposal_date", "nbv", "categories.name AS category")->leftJoin('categories', 'categories.id', '=', 'items.category_id');
+        $items = Item::select("no_asset", "service_date", "disposal_date", "nbv", "categories.name AS category")->leftJoin('categories', 'categories.id', '=', 'items.category_id')->whereYear('service_date',request("years")?: Carbon::now()->year);
         $items_for_disposal = clone $items;
         if (request("years")) {
             $years = request("years");
-            // $years = [$years];
             $items = $items->whereYear('service_date',$years);
             $items_for_disposal->whereYear('disposal_date',$years);
             $itemsQuery->whereDate('service_date','<',Carbon::parse('31-12-'.request('years'))->endOfYear());
             
-            // Model::where();
             $deactiveItemsQuery->whereDate('disposal_date','<=',Carbon::parse('31-12-'.request('years')));
     }
         if (request("category_id")) {
@@ -60,27 +48,21 @@ class DashboardController extends Controller
             $depreciationByMonth = $depreciationByMonth->where("category_id",$category_id);
         }
         
-        // $years = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
         $categories = Category::select("name")->get();
         $items_number = (clone $itemsQuery)->count();
-        // dd($items_number);
         $activeItems_query = (clone $activeItemsQuery);
         $deactiveItems_query = (clone $deactiveItemsQuery);
 
         $activeItems = (clone $activeItems_query)->count();
         $deactiveItems = (clone $deactiveItems_query)->count();
-        // dd($deactiveItems);
-
         //TOTAL NBV
         $totalNBVAssets = (clone $items)->whereNull('disposal_date')->sum('nbv');
 
         //DEPRESIASI
         $depreciation = floor((clone $activeItems_query)->sum('depreciation'));
-        // dd($depreciation);        
         
         //DEPRESIASI PER BULAN
         $depreciation_per_month = (clone $items)->sum('depreciation_per_month');
-        // dd($depreciation_per_month);
 
 
 
@@ -140,7 +122,6 @@ class DashboardController extends Controller
         ];
         //PRESENTASE JENIS ASET AKTIF
         $numOfTooling = (clone $activeItems_query)->where('category_id', '1')->count();
-        // dd($numOfTooling);
         $numOfBuilding = (clone $activeItems_query)->where('category_id', '2')->count();
         $numOfVehicle = (clone $activeItems_query)->where('category_id', '3')->count();
         $numOfOEQ = (clone $activeItems_query)->where('category_id', '4')->count();
@@ -190,7 +171,6 @@ class DashboardController extends Controller
         $totalActiveItems = Item::where('disposal_date',null)->where('isNew',false)->count();
         $sto_count = Item::where('disposal_date',null)->where('isNew',false)->where('isSTO',true)->count();
         $sto_progress = $totalActiveItems? (int)ceil(($sto_count/$totalActiveItems)*100) : 0;
-        // dd($totalActiveItems,$sto_count,$sto_progress);
         
 
         return inertia("Dashboard", [

@@ -50,9 +50,6 @@ class TransactionController extends Controller
         if (request("periode_sto")) {
             $query->where("transactions.cutoff_counter",  request("periode_sto") )->get();
         }
-        // if (request("category_id")) {
-        //     $query->where("items.category_id",  request("category_id") )->get();
-        // }
         if(request("dateStart") && request("dateEnd")){
             $start = Carbon::parse(request("dateStart"));
             $end = Carbon::parse(request("dateEnd"));
@@ -65,9 +62,7 @@ class TransactionController extends Controller
             $start = Carbon::parse(request("dateStart"));
             $query->whereDate("transactions.created_at",$start)->get();
         }
-        // dd('halo');
         $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10)->withQueryString();
-        // dd($transactions);
         $locations = Location::all();
         $categories = Category::all();
         $periode_sto = CutoffHistory::all();
@@ -82,7 +77,6 @@ class TransactionController extends Controller
     }
     public function cobacoba(){
         $transaction = Transaction::all();
-        // dd($transaction->toJson());
     }
     /**
      * Show the form for creating a new resource.
@@ -97,11 +91,7 @@ class TransactionController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
-        // activity()
         $data = $request->validated();
-        // dd($data);
-        // $dnsoadas = "amin paling serius";
-        // dd(trim($dnsoadas));
         $image = $data['image_path'] ?? null;
         if ($image) {
             $filename = Str::random(20) . str_replace(" ","",$image->getClientOriginalName());
@@ -123,15 +113,12 @@ class TransactionController extends Controller
         $activity->subject;
         $activity->changes;
         
-        // dd((int)$data["item_id"]);
         $locationString = Location::where('id',$data["location_id"])->first();
         $item = Item::where('id',(int)$data["item_id"]);
         $item->update([
             'isSTO'=> true,
             'lokasi'=> $locationString->location_name
-            // 'location_id'
         ]);
-        // $activity->log_name = $data["item_id"]."was created";
         return to_route('items.index')
         ->with('success', 'Transaction was created');
         //
@@ -143,22 +130,17 @@ class TransactionController extends Controller
     public function show($encrypted_no_asset)
     {
         $output = explode('_',$encrypted_no_asset);
-        // dd($output);
     	$key = $output[0];
     	$no_asset = $output[1];
         $users = User::select('id','name')->get();
         $locations = Location::all();
-        // dd($users);
     	
-    // dd(Hash::check($no_asset, $key));
     try {
     	if (!(Hash::check($no_asset, $key))) {
         	abort(404);
 		}
-        //code...
     } catch (\Exception $e) {
         abort(404);
-        //throw $th;
     }
         $item = Item::query()->where('no_asset', $no_asset)->get();
         return inertia("Transactions/Show", [
@@ -175,7 +157,6 @@ class TransactionController extends Controller
     public function edit(Transaction $transaction)
     {
         if($transaction->isEditable == false){
-            // dd($transaction);
             return to_route('transactions.index');
         }
         $locations = Location::all();
@@ -193,7 +174,6 @@ class TransactionController extends Controller
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
         $data = $request->validated();
-        // dd($data);
         $image = $data['image_path'] ?? null;
         if ($image) {
             if ($transaction->image_path) {
@@ -212,6 +192,11 @@ class TransactionController extends Controller
             unset($data['image_path']);
         }
         $transaction->update($data);
+        $locationString = Location::where('id',$data["location_id"])->first();
+        $item = Item::where('id',(int)$data["item_id"]);
+        $item->update([
+            'lokasi'=> $locationString->location_name
+        ]);
         $activity = Activity::all()->last();
         $activity->description;
         $activity->subject;
@@ -237,9 +222,15 @@ class TransactionController extends Controller
         if ($transaction->image_path){
             Storage::disk('public')->deleteDirectory(dirname($transaction->image_path));
         }
+
+        $item = Item::where('id',(int)$transaction->item_id);
+        $item->update([
+            'isSTO'=> false
+        ]);
         return to_route('transactions.index')
         ->with('success', "Transaction was deleted");
         //
+        
     }
     public function exportSTO(){
         $dateStart = request("dateStart");
@@ -249,52 +240,31 @@ class TransactionController extends Controller
         return Excel::download(new ExportFullSTO($category_id,$dateStart,$dateEnd), "STO Transactions.xlsx");
     }
     public function dailyReportPage(){
-        // dd('kesini');
         $users = User::select('id','name','position')->get();
         $categories = Category::all();
-        // dd($users);
         return inertia("Transactions/DailyReport", [
             "users" => $users,
             "categories" => $categories,
         ]);
     }
     public function dailyreport(){
-        // dd(request("PIC"));
         $pic = User::select('name','position')->where('id',request("PIC"))->first();
         $divisionInCharge = User::select('name','position')->where('id',request("divisionInCharge"))->first();
-        // $pic = [
-        //     'name' => request("PIC"),
-        //     'role' => $this->role(request("PIC"))
-        // ];
-        // $divisionInCharge = [
-        //     'name' => request("divisionInCharge"),
-        //     'role' => $this->role(request("divisionInCharge"))
-        // ];
-        // $stoAdmin = [
-        //     'name' => request("stoAdmin"),
-        //     'role' => $this->role(request("stoAdmin"))
-        // ];
-        // dd($pic, $divisionInCharge);
         $date = request("date");
-            // 'role' => $this->role(request("stoAdmin"))
         
-        $kategori = request("kategori");
+        $category = Category::where('id',request("kategori"))->first();
         $transactions = Transaction::query()->whereDate("created_at",$date)->get();
-        // dd($transactions);
+        
         $pdf = Pdf::loadView('generateDailyReport',[
             "transactions" => TransactionResource::collection($transactions)->toJson(),
             "pic" => $pic,
             "divisionInCharge" => $divisionInCharge,
-            // "stoAdmin" => $stoAdmin,
-            "kategori" => $kategori,
+            "kategori" => $category->name,
             "date" => $date,
         ])->setOption(['dpi=>150'])->setPaper('a4', 'landscape')->setWarnings(false);
 
-        // $pdf = Pdf::loadHTML('coba');
-        // return $pdf->stream('app.pdf');
-
-        return $pdf->download('pdfkuh.pdf');
-        // exit();
+        $string = 'Berita acara STO '.Carbon::now()->format('d M Y').'.pdf';
+        return $pdf->download($string);
     }
 
         private function role($name)

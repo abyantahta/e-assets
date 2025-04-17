@@ -19,12 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
-        // $app->register(\Barryvdh\DomPDF\ServiceProvider::class);
-        //
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->withSchedule(function (Schedule $schedule){
         $schedule->command('app:cut-off')->everyFifteenSeconds();
-        // $schedule->call(new ReportGenerate)->everyFifteenSeconds();
     })->create(); 

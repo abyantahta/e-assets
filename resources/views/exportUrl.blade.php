@@ -12,7 +12,6 @@
 <body>
     @php
         // $transactionsDecode = json_decode($transactions);
-        // dd($items);
     @endphp;
     <table>
     <thead>

@@ -13,9 +13,7 @@ class ExportUrl implements FromView
 
     public function view(): View
     {
-        // $items = Item::select()
         $query = Item::query()->get();
-        // dd($query);
         return view('exportUrl', [
             "items" => $query,
         ]);

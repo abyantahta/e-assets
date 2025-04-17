@@ -21,7 +21,6 @@ export default {
             },
             colors:{
                 'lightTheme' : '#FFFEF5',
-                // 'lightTheme' : '#FFF5E5',
                 'orangeTheme' : '#E19922',
                 'greenTheme' : '#2C4D15',
                 'brownTheme' : '#612011',
@@ -33,9 +32,6 @@ export default {
                     '50%': { transform: 'translateX(-380px) translateY(-400px)' },
                     '75%': { transform: 'translateX(10px) translateY(-400px)' },
                     '100%': { transform: 'translateX(0) translateY(0)' },
-                    // '50%': { transform: 'translateY(100%)' },
-                    // '25%': { transform: 'translateX(100%)' },
-                    // '50%': { transform: 'translateY(100%)' },
                 },
                 loginGreen : {
                     '0%': { transform: 'translateX(0px)' },
@@ -43,9 +39,6 @@ export default {
                     '50%': { transform: 'translateX(380px) translateY(400px)' },
                     '75%': { transform: 'translateX(-10px) translateY(400px)' },
                     '100%': { transform: 'translateX(0) translateY(0)' },
-                    // '50%': { transform: 'translateY(100%)' },
-                    // '25%': { transform: 'translateX(100%)' },
-                    // '50%': { transform: 'translateY(100%)' },
                 },
             },
             animation:{

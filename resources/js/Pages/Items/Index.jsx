@@ -30,7 +30,6 @@ export default function Index({
     const [successInfo, setSuccessInfo] = useState(null);
     const [syncStatus, setSyncStatus] = useState();
     const [syncMessage, setSyncMessage] = useState();
-    // console.log(items);
     useEffect(() => {
         setLoadingSync(false);
         if (success) {
@@ -125,8 +124,8 @@ export default function Index({
                     <div className="max-w-[90rem] mx-auto sm:px-6 lg:px-8">
                         <div className="bg-lightTheme dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg">
                             <div className="p-6 text-gray-900 dark:text-gray-100">
-                                <div className="flex flex-col-reverse gap-y-2 mb-4 md:flex-row md:justify-between">
-                                    <div className="flex flex-col gap-y-2  w-full md:flex-row md:w-[50rem] gap-4">
+                                <div className="flex flex-col-reverse gap-y-2 mb-4 lg:flex-row lg:justify-between">
+                                    <div className="flex flex-col gap-y-2  w-full lg:flex-row lg:w-[50rem] gap-4">
                                         <SelectInput
                                             className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
                                             defaultValue={
@@ -148,14 +147,6 @@ export default function Index({
                                                     {category.name}
                                                 </option>
                                             ))}
-                                            {/* <option value="1">Tooling</option>
-                                            <option value="2">Building</option>
-                                            <option value="3">Vehicle</option>
-                                            <option value="4">
-                                                Office Equipment
-                                            </option>
-                                            <option value="5">Machine</option> */}
-                                            {/* <option value="6">Office Equipment</option> */}
                                         </SelectInput>
                                         <SelectInput
                                             className="w-full border-gray-700 italic border-[3px] font-semibold focus:none ring:none text-greenTheme"
@@ -169,7 +160,9 @@ export default function Index({
                                                 )
                                             }
                                         >
-                                            <option value="">Item Status</option>
+                                            <option value="">
+                                                Item Status
+                                            </option>
                                             <option value="1">Active</option>
                                             <option value="2">Deactive</option>
                                         </SelectInput>
@@ -187,13 +180,15 @@ export default function Index({
                                         >
                                             <option value="">STO Status</option>
                                             <option value="1">Finished</option>
-                                            <option value="2">Not Finished</option>
+                                            <option value="2">
+                                                Not Finished
+                                            </option>
                                             <option value="3">Pending</option>
                                         </SelectInput>
                                         <form action="POST" onSubmit={onSubmit}>
                                             <button
                                                 type="submit"
-                                                className="bg-orangeTheme rounded-md text-white font-bold tracking-wider md:w-36 md:h-full px-2 flex items-center justify-center gap-1 hover:duration-150 hover:brightness-110 duration-150 w-full h-11"
+                                                className="bg-orangeTheme rounded-md text-white font-bold tracking-wider lg:w-36 lg:h-full px-2 flex items-center justify-center gap-1 hover:duration-150 hover:brightness-110 duration-150 w-full h-11"
                                             >
                                                 Sync
                                                 <ArrowPathIcon className="w-5 text-white" />
@@ -201,14 +196,14 @@ export default function Index({
                                         </form>
                                         <a
                                             href={`items/export/url`}
-                                            className="w-full md:w-44 py-3 px-4 tracking-wide text-center bg-brownTheme font-bold flex items-center justify-center gap-2 text-white rounded-md hover:brightness-110 duration-150"
+                                            className="w-full lg:w-44 py-3 px-4 tracking-wide text-center bg-brownTheme font-bold flex items-center justify-center gap-2 text-white rounded-md hover:brightness-110 duration-150"
                                         >
                                             <ArrowLeftStartOnRectangleIcon className="w-6" />
                                             Barcode
                                         </a>
                                     </div>
                                     <TextInput
-                                        className="w-full md:w-56 border-gray-700 border-[3px] placeholder:italic text-greenTheme font-normal focus:border-greenTheme focus:ring-greenTheme placeholder:text-greenTheme"
+                                        className="w-full lg:w-56 border-gray-700 border-[3px] placeholder:italic text-greenTheme font-normal focus:border-greenTheme focus:ring-greenTheme placeholder:text-greenTheme"
                                         defaultValue={queryParams.no_asset}
                                         placeholder="Search by no asset"
                                         onBlur={(e) =>
@@ -257,7 +252,7 @@ export default function Index({
                                                         queryParams.sort_direction
                                                     }
                                                     sortChanged={sortChanged}
-                                                    className=" bg-greenTheme text-white w-52 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
+                                                    className=" bg-greenTheme text-white w-52 rounded-[0.25rem] h-11 flex grow items-center !font-semibold justify-center"
                                                 >
                                                     Nama Aset
                                                 </TableHeading>
@@ -303,23 +298,29 @@ export default function Index({
                                                 >
                                                     Disposal
                                                 </TableHeading>
-                                                <TableHeading
-                                                    name="cost"
-                                                    sort_field={
-                                                        queryParams.sort_field
-                                                    }
-                                                    sort_direction={
-                                                        queryParams.sort_direction
-                                                    }
-                                                    sortChanged={sortChanged}
-                                                    className=" bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
-                                                >
-                                                    Cost
-                                                </TableHeading>
-                                                {/* <th className="px-3 py-3">Cost</th> */}
-                                                <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">
-                                                    NBV
-                                                </th>
+                                                {auth.user.role_id == 2 && (
+                                                    <>
+                                                        <TableHeading
+                                                            name="cost"
+                                                            sort_field={
+                                                                queryParams.sort_field
+                                                            }
+                                                            sort_direction={
+                                                                queryParams.sort_direction
+                                                            }
+                                                            sortChanged={
+                                                                sortChanged
+                                                            }
+                                                            className=" bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
+                                                        >
+                                                            Cost
+                                                        </TableHeading>
+                                                        {/* <th className="px-3 py-3">Cost</th> */}
+                                                        <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">
+                                                            NBV
+                                                        </th>
+                                                    </>
+                                                )}
                                                 <th className="bg-greenTheme text-white w-48 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">
                                                     Lokasi
                                                 </th>
@@ -353,7 +354,8 @@ export default function Index({
                                                             className={` ${
                                                                 item.isSTO
                                                                     ? "bg-greenTheme"
-                                                                    : item.disposal_date || item.isNew
+                                                                    : item.disposal_date ||
+                                                                      item.isNew
                                                                     ? "bg-gray-400"
                                                                     : "bg-red-400"
                                                             } hover:brightness-110 duration-200 p-1 w-fit font-bold text-white rounded-[0.25rem] flex items-center justify-center`}
@@ -393,7 +395,7 @@ export default function Index({
                                                             index % 2 != 0
                                                                 ? "bg-green-50"
                                                                 : "bg-white"
-                                                        } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-52`}
+                                                        } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap grow text-center border-greenTheme border-2 rounded-[0.25rem] w-52`}
                                                     >
                                                         {item.name}
                                                     </td>
@@ -437,6 +439,9 @@ export default function Index({
                                                               )
                                                             : ""}
                                                     </td>
+                                                    {
+                                                        auth.user.role_id == 2 && (
+                                                            <>
                                                     <td
                                                         className={`${
                                                             index % 2 != 0
@@ -461,6 +466,9 @@ export default function Index({
                                                             "en-DE"
                                                         ).format(item.nbv)}
                                                     </td>
+                                                            </>
+                                                        )
+                                                    }
                                                     <td
                                                         className={`${
                                                             index % 2 != 0

@@ -122,10 +122,10 @@ export default function DatePicker({ searchFieldChanged, queryParams }) {
     }, []);
 
     return (
-        <section className="cursor-pointer md:w-fit dark:bg-dark w-full">
+        <section className="cursor-pointer lg:w-fit dark:bg-dark w-full">
             <div className="container">
-                <div className="-mx-4 flex flex-wrap">
-                    <div className="px-4 md:w-fit w-full ">
+                <div className="flex flex-wrap">
+                    <div className=" lg:w-fit w-full">
                         <div className="">
                             <div className="relative" ref={datepickerRef}>
                                 <div className="relative flex items-center">

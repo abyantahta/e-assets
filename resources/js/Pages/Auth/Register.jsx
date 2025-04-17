@@ -18,7 +18,6 @@ export default function Register({roles}) {
         password_confirmation: '',
         role: '',
     });
-// console.log(roles)
     const submit = (e) => {
         e.preventDefault();
 

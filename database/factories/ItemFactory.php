@@ -18,10 +18,8 @@ class ItemFactory extends Factory
     public function definition(): array
     {
         return [
-            // 'id' => uniqid(),
             'created_at' => time(),
             'updated_at' => time(),
-            // 'encrypted_no_asset' => Str::random(30),
             'no_asset' => Str::random(9),
             'encrypted_no_asset' => Str::random(30),
             'name' => fake()->sentence(),
@@ -31,8 +29,6 @@ class ItemFactory extends Factory
             'cost' => fake()->randomNumber(),
             'nbv' => fake()->randomNumber(),
             'lokasi' => fake()->randomElement(["Taruma", "Dojo","Pos Satpam", "Gedung Baru", "Gedung Lama"]),
-            // 'lokasi' => fake()->sentence(1),
-            //
         ];
     }
 }

@@ -21,8 +21,6 @@ return new class extends Migration
             $table->integer('category_id')->nullable();
             $table->foreignId('item_id')->constrained('items');
             $table->timestamps();
-            // $table->string('no_asset');
-            // $table->foreignId('item_id')->nullable()->default(null)->constrained('items');
         });
     }
 

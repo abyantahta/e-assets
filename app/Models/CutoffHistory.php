@@ -15,8 +15,4 @@ class CutoffHistory extends Model
     {
         return $this->hasMany(Transaction::class, 'cutoff_counter');
     }
-    // public function items()
-    // {
-    //     return $this->hasMany(Item::class, 'category_id');
-    // }
 }

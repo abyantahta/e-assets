@@ -24,7 +24,6 @@ export default function Index({
     periode_sto
 }) {
     queryParams = queryParams || {};
-    console.log(periode_sto)
     const searchFieldChanged = (name, value) => {
         if (value) {
             queryParams[name] = value;
@@ -89,9 +88,9 @@ export default function Index({
                 <div className="max-w-[90rem] mx-auto sm:px-6 lg:px-8">
                     <div className="bg-lightTheme dark:bg-gray-800 shadow-lg sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="mb-4 flex flex-col gap-y-2 md:flex-row-reverse justify-between">
+                            <div className="mb-4 flex flex-col gap-y-2 lg:flex-row-reverse justify-between">
                                 <TextInput
-                                    className="w-full md:w-56 border-gray-700 border-[3px] placeholder:italic text-greenTheme font-normal focus:border-greenTheme focus:ring-greenTheme placeholder:text-greenTheme"
+                                    className="w-full lg:w-56 border-gray-700 border-[3px] placeholder:italic text-greenTheme font-normal focus:border-greenTheme focus:ring-greenTheme placeholder:text-greenTheme"
                                     defaultValue={queryParams.no_asset}
                                     placeholder="Search by no asset"
                                     onBlur={(e) =>
@@ -104,9 +103,9 @@ export default function Index({
                                         onKeyPress("no_asset", e)
                                     }
                                 />
-                                <div className="flex flex-col md:flex-row gap-x-4 gap-y-2">
+                                <div className="flex flex-col lg:flex-row gap-x-4 gap-y-2">
                                     <SelectInput
-                                        className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme md:w-52"
+                                        className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme lg:w-52"
                                         defaultValue={queryParams.category_id}
                                         onChange={(e) =>
                                             searchFieldChanged(
@@ -128,7 +127,7 @@ export default function Index({
                                         queryParams={queryParams}   
                                     />
                                     <SelectInput
-                                        className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme md:w-52"
+                                        className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme lg:w-52"
                                         defaultValue={queryParams.location_id}
                                         onChange={(e) =>
                                             searchFieldChanged(
@@ -145,7 +144,7 @@ export default function Index({
                                         }
                                     </SelectInput>
                                     <SelectInput
-                                        className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme md:w-52"
+                                        className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme lg:w-52"
                                         defaultValue={queryParams.periode_sto}
                                         onChange={(e) =>
                                             searchFieldChanged(

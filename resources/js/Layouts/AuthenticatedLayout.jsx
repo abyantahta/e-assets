@@ -8,7 +8,6 @@ import { useState } from "react";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
-    // console.log(user.role_id);
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
     return (
@@ -22,8 +21,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                     className="flex items-center gap-3"
                                     href="/"
                                 >
-                                    {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" /> */}
-                                    {/* <div className="p-1 rounded-full h-fit bg-white shadow-md w-fit"> */}
                                     <img
                                         className="w-14 h-14 rounded-full"
                                         src="/storage/logo/logo.png"
@@ -57,12 +54,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Transactions
                                 </NavLink>
-                                {/* <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                >
-                                    Dashboard
-                                </NavLink> */}
                             </div>
                         </div>
                         <div className=" hidden sm:ms-6 sm:flex sm:items-center ">
@@ -200,6 +191,20 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
                         <div className="mt-3 space-y-1">
+                        {(user.role_id == 2) &&
+                                        (
+                                            <Link
+                                                href={route("register")}
+                                                method="get"
+                                                as="button"
+                                                className=" text-white font-bold mb-2 mt-4 w-52 hover:w-64 duration-200 "
+                                            >
+                                                <div className="ml-4 pl-4 py-2 text-sm rounded-r-full hover:w-full hover:rounded-r-none bg-greenTheme hover: flex gap-1">
+                                                    Create New User
+                                                    <PlusIcon className="w-4" />
+                                                </div>
+                                            </Link>
+                                        )}
                             <ResponsiveNavLink href={route("profile.edit")}>
                                 Profile
                             </ResponsiveNavLink>

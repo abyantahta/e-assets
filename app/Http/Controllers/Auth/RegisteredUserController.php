@@ -23,7 +23,6 @@ class RegisteredUserController extends Controller
     public function create(): Response
     {
         $roles = Role::select('id','name')->get();
-        // dd($roles);
         return Inertia::render('Auth/Register',[
             'roles' => $roles,
         ]);
@@ -43,10 +42,6 @@ class RegisteredUserController extends Controller
             'position' => 'required|string|max:255',
             'role' => 'required|string|'
         ]);
-        // dd($request);
-        // $role = Role::select('id')->where('name',$request->role)->get();
-        // dd($role, $request->role);
-        // dd(intval($request->role));
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -61,7 +56,6 @@ class RegisteredUserController extends Controller
         $activity->subject;
         $activity->changes;
 
-        // Auth::login($user);
 
         return redirect(route('items.index', absolute: false));
     }

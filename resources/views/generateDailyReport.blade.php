@@ -239,7 +239,7 @@
                         </td>
                         <td class="childRow">
 
-                            {{ $transaction->lokasi }}
+                            {{ $transaction->location_id->location_name }}
 
                         </td>
                         <td class="childRow">
