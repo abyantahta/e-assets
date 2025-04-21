@@ -35,7 +35,6 @@ class ItemController extends Controller
             $query->whereNull('disposal_date');
         }else if(request("isDisposal")==2){
             $query->whereNotNull('disposal_date');
-            // $query->where('isDisposition',0);
         }
         if (request("sto_status")==1) {
             $query->where('isSTO', true);
@@ -51,7 +50,6 @@ class ItemController extends Controller
             "queryParams" => request()->query() ?: null,
             "success" => session('success'),
             "categories"=> $categories,
-            // "categories"=> $categories,
         ]);
         //
     }
@@ -78,24 +76,16 @@ class ItemController extends Controller
     	$key = $output[0];
     	$no_asset = $output[1];
     	
-    // dd(Hash::check($no_asset, $key));
     try {
     	if (!(Hash::check($no_asset, $key))) {
         	abort(404);
 		}
-        //code...
     } catch (\Exception $e) {
         abort(404);
-        //throw $th;
     }
     
-    	// dd($encryptedId);
-        // $no_asset = Crypt::decryptString($encryptedId);
-        // dd($encryptedId,$id);
         $item = Item::query()->where('no_asset',$no_asset)->get();
-        // dd($item);
         $transactions = Transaction::query()->where('item_id', $item[0]->id)->get();
-        // dd($transactions);
         return inertia("Items/Show", [
             "item" => ItemResource::collection($item),
             "transactions" => TransactionResource::collection($transactions),
@@ -126,7 +116,6 @@ class ItemController extends Controller
         //
     }
     public function exportUrl(){
-        // dd('masuk sini');
         return Excel::download(new ExportUrl(), 'items.xlsx');
     }
 }

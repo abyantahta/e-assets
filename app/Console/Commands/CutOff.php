@@ -43,7 +43,7 @@ class CutOff extends Command
             $cutoff->save();
         }
         $transactions = Transaction::where('cutoff_counter',$cutoff_counter)->get();
-        Log::info('halo');
+        // Log::info('halo');
         foreach ($transactions as $transaction){
             $transaction->isEditable = false;
             $transaction->save();
