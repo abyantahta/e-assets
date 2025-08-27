@@ -92,6 +92,7 @@ class TransactionController extends Controller
     public function store(StoreTransactionRequest $request)
     {
         $data = $request->validated();
+        // dd($data);
         $image = $data['image_path'] ?? null;
         if ($image) {
             $filename = Str::random(20) . str_replace(" ","",$image->getClientOriginalName());
@@ -174,6 +175,7 @@ class TransactionController extends Controller
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
         $data = $request->validated();
+        // dd($data);
         $image = $data['image_path'] ?? null;
         if ($image) {
             if ($transaction->image_path) {
@@ -236,7 +238,7 @@ class TransactionController extends Controller
         $dateStart = request("dateStart");
         $dateEnd = request("dateEnd");
         $category_id = request("category_id");
-        
+        // dd('halo');
         return Excel::download(new ExportFullSTO($category_id,$dateStart,$dateEnd), "STO Transactions.xlsx");
     }
     public function dailyReportPage(){

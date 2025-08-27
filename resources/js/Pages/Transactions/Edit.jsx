@@ -8,8 +8,8 @@ import React from 'react'
 import SelectInput from '@/Components/SelectInput'
 
 const Edit = ({ auth, transaction,users,locations }) => {
-    let { id, image_path, kondisi, location_id, pic, created_at, updated_by, updated_at, keterangan} = transaction.data
-    let { no_asset, name } = transaction.data.item_id
+    let { image_path, kondisi, location_id, pic, created_at, updated_by, updated_at, keterangan} = transaction.data
+    let { id,no_asset, name } = transaction.data.item_id
     let category = transaction.data.item_id.category_id.name
     let createdBy = transaction.data.created_by
     const { data, setData, post, errors, reset } = useForm({
@@ -23,9 +23,10 @@ const Edit = ({ auth, transaction,users,locations }) => {
         updated_by : auth.user.id,
         _method: "PUT"
     })
+    // console.log(data,transaction.data)
     const onSubmit = (e) => {
         e.preventDefault();
-        post(route('transactions.update', id));
+        post(route('transactions.update', transaction.data.id));
     }
     return (
         <AuthenticatedLayout

@@ -39,6 +39,7 @@ class ExportFullSTO implements FromView
         } else {
             $query = Transaction::all();
         }
+        // dd($query);
         return view('exportFullSTO', [
             "transactions" => TransactionResource::collection($query)->toJson(),
         ]);

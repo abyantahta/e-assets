@@ -12,7 +12,13 @@ import {
     XMarkIcon,
 } from "@heroicons/react/16/solid";
 import { Head, router, Link } from "@inertiajs/react";
-import moment from "moment";
+import moment from "moment-timezone";
+moment.locale('id')
+
+// const jakartaTime = moment("2023-08-27T08:00:00Z")
+//   .tz("Asia/Jakarta")
+//   .format("DD/MM/YYYY - HH:mm");
+
 
 export default function Index({
     auth,
@@ -33,6 +39,7 @@ export default function Index({
 
         router.get(route("transactions.index"), queryParams);
     };
+    // console.log(jakartaTime)
     const exportTransaction = () => {
         router.get(route("transactions.fullsto"), queryParams);
     };
@@ -306,9 +313,10 @@ export default function Index({
                                                     >
                                                         {moment(
                                                             transaction.created_at
-                                                        ).format(
-                                                            "DD/MM/YYYY - hh:mm"
+                                                        ).tz("Asia/Jakarta").format(
+                                                            "DD/MM/YYYY - HH:mm"
                                                         )}
+                                                        
                                                     </td>
                                                     <td
                                                         className={` overflow-visible  h-11 -mr-3 bg-lightTheme text-ellipsis text-nowrap text-center pr-3 w-40`}
