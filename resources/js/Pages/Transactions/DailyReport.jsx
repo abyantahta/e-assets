@@ -9,9 +9,6 @@ import SelectInput from "@/Components/SelectInput";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/16/solid";
 
 const DailyReport = ({users, categories}) => {
-    // const {users} = props[0]
-    // console.log(users)
-    // dd('users');
     const [PIC, setPIC] = useState(0);
     const [divisionInCharge, setdivisionInCharge] = useState(0);
     const [kategori, setKategori] = useState("");

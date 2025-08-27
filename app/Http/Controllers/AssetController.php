@@ -15,15 +15,14 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use session;
 use Illuminate\Support\Str;
-// use DB;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use function PHPUnit\Framework\isNull;
 set_time_limit(900);
+// ini_set("")
 class AssetController extends Controller
 {
-    //
     public function store(Request $request)
     {
         $loadingToggle = request("loadingToggle");
@@ -38,9 +37,7 @@ class AssetController extends Controller
         } else {
             DB::begintransaction();
             try {
-                // $arra = array_slice($itemwsa[0],0,200);
                 foreach ($itemwsa[0] as $datas) {
-                // foreach ($itemwsa[0] as $datas) {
                     $items = Item::where('no_asset',$datas->t_fa_id)->first();
                     if($items === null){
                         $items = new Item(['no_asset' => $datas->t_fa_id]);
@@ -49,14 +46,11 @@ class AssetController extends Controller
                         $items->depreciation  = $datas->t_fabd_accamt;
                         $items->nbv = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
                         $items->disposal_date  = ($datas->t_fa_disp_dt == "") ?  null : Carbon::parse($datas->t_fa_disp_dt);
-                        // $items->disposal_date  = Carbon::parse('2017-05-12 00:00:00');
                         $items->service_date  = Carbon::parse($datas->t_fa_startdt);
-                        // $items->encrypted_no_asset  = Crypt::encryptString($datas->t_fa_id);
                         $items->encrypted_no_asset = $this->handleHashing($datas->t_fa_id);
                         $items->lokasi  = $datas->t_fa_faloc_id;
                         switch ($datas->t_fa_facls_id) {
                             case "TOOLING":
-                                // dd('heyoo');
                                 $category = Category::select('id','lifetime')->where('name','=','Tooling')->get();
                                 $items->category_id  = $category[0]->id;
                                 $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
@@ -71,8 +65,6 @@ class AssetController extends Controller
                                     $category = Category::select('id')->where('name','=','Tooling')->get();
                                     $items->category_id  = $category[0]->id;
                                     $items->depreciation_per_month = ($datas->t_fa_puramt) / 36;
-                                    
-                                // $items->depreciation_per_month = ($datas->t_fa_puramt) / $lifetime[0]->lifetime;
                                 break;
                             case "BUILDING":
                                 $category = Category::select('id','lifetime')->where('name','=','Building')->get();
@@ -95,24 +87,17 @@ class AssetController extends Controller
                                 $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
                                 break;
                                 default:
-                                // dd($$datas->t_fa_facls_id);
                                 $category = Category::select('id','lifetime')->where('name','=','Vehicle')->get();
                                 $items->category_id  = $category[0]->id;
                                 $items->depreciation_per_month = ($datas->t_fa_puramt) / $category[0]->lifetime;
                             }
                             $items->save();
-                            // dd('halo');
-                        // dd($items->id);
-
                         $running_date = Carbon::parse($datas->t_fa_startdt);
                         $endOfMonth = Carbon::now()->endOfMonth();
-                        // dd($endOfMonth);
                         $running_date->endOfMonth();
                         $depreciation = 0;
-                        // $nbv = $items->cost;
                         $index = 0;
                             while(($depreciation - $items->cost <= 1) && ($items->disposal_date? ($running_date < $items->disposal_date) : ($running_date < $endOfMonth)) ){
-                                // dd
                                 if($depreciation - $items->cost > 0) $depreciation = $items->cost;
                                 Depreciation::create([
                                     'item_id'=> $items->id,
@@ -135,36 +120,15 @@ class AssetController extends Controller
                                 
                                 $depreciation += $items->depreciation_per_month;
                                 $running_date->addMonth();
-                                // if($index == 59){
-                                //     dd($depreciation,$items->cost,$running_date,$endOfMonth,($depreciation - $items->cost <= 1), $running_date < $endOfMonth);
-                                // }
                                 $index = $index + 1;
-                                // NetBookValue::create([
-                                //     'no_asset'=> $datas->t_fa_id,
-                                //     'category_id' => $items->category_id,
-                                //     'month' => $running_date->month,
-                                //     'year' => $running_date->year,
-                                //     'net_book_value' => $nbv
-                                // ]);
-                                // dd($nbv);
-                                // $nbv = $items->cost - $depreciation;
-                                // $depreciations_data->save();
-                                // $nbv_data->save();
                             }
                     }
                     else{
                         $items->depreciation  = $datas->t_fabd_accamt;
                         $items->nbv  = ($datas->t_fa_puramt - $datas->t_fabd_accamt);
                         $items->disposal_date  = ($datas->t_fa_disp_dt == "") ?  null : Carbon::parse($datas->t_fa_disp_dt); 
-                        // dd($items->id);
-                        // $isDepreciationExist = Depreciation::where('item_id',$items->id)->where('month',Carbon::now()->month)->where('year', Carbon::now()->year)->first();
                         $isDepreciationExist = Depreciation::where('item_id',$items->id)->where('month',Carbon::now()->month)->where('year', Carbon::now()->year)->first();
-                        // dd($items->id,$isDepreciationExist->item_id);
-                        // if($items->id == 150){
-                            // dd('halo guys');
-                        // }
                         if(!$isDepreciationExist && floor($items->nbv)!=0 && $items->disposal_date == null ){
-                            // dd('halo');
                             Depreciation::create([
                                 'item_id'=> $items->id,
                                 'category_id' => $items->category_id,
@@ -174,7 +138,6 @@ class AssetController extends Controller
                                 'nbv' => $items->nbv,
                                 'depreciation_per_month' => $items->depreciation_per_month
                             ]);
-                            
                         }
                         $items->save();
                     }
@@ -191,7 +154,6 @@ class AssetController extends Controller
             "status" => "success",
             "message" => "Items successfully loaded"
         ]);
-        //
     }
 
 	private function handleHashing($plaintext){

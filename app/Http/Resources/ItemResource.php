@@ -22,7 +22,6 @@ class ItemResource extends JsonResource
             'encrypted_no_asset'=> $this->encrypted_no_asset,
             'name'=> $this->name,
             'category_id'=> new CategoryResource($this->category),
-            // 'createdBy'=> new UserResource(1),
             'service_date'=> $this->service_date,
             'disposal_date'=> $this->disposal_date,
             'cost'=> $this->cost,

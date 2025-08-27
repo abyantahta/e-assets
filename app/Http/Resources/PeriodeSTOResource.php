@@ -18,7 +18,6 @@ class PeriodeSTOResource extends JsonResource
         return [
             'id'=> $this->id,
             'cutoff_counter'=> $this->cutoff_counter,
-            // 'cutoff_counter'=> $this->cutoff_counter,
             'start_period'=> Carbon::parse($this->cutoff_date)->format('M Y'),
             'end_period'=> Carbon::parse($this->cutoff_date)->addYear()->format('M Y'),
         ];

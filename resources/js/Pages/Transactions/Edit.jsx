@@ -12,7 +12,6 @@ const Edit = ({ auth, transaction,users,locations }) => {
     let { no_asset, name } = transaction.data.item_id
     let category = transaction.data.item_id.category_id.name
     let createdBy = transaction.data.created_by
-    console.log(location_id.id)
     const { data, setData, post, errors, reset } = useForm({
         item_id: id || "",
         image_path: "",
@@ -23,7 +22,6 @@ const Edit = ({ auth, transaction,users,locations }) => {
         created_by: createdBy.id || "",
         updated_by : auth.user.id,
         _method: "PUT"
-        // nbv: due_date,
     })
     const onSubmit = (e) => {
         e.preventDefault();
@@ -56,7 +54,6 @@ const Edit = ({ auth, transaction,users,locations }) => {
                                         name="item_id"
                                         isFocused={true}
                                         defaultValue={no_asset}
-                                        // disabled
                                         className="mt-1 block w-full outline-none border-none bg-lightTheme text-gray-400 shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-3xl text-center   h-16" />
                                     <InputError message={errors.item_id} className='mt-2' />
                                 </div>
@@ -104,46 +101,6 @@ const Edit = ({ auth, transaction,users,locations }) => {
                                                     <option key={location.location_name} value={location.id}>{location.location_name}</option>
                                                 ))
                                             }
-                                            {/* <option value="LOBBY">LOBBY</option>
-                                            <option value="R.SRWJYA">R.SRWJYA</option>
-                                            <option value="R.QA">R.QA</option>
-                                            <option value="R.QC">R.QC</option>
-                                            <option value="R.Demak">R.DEMAK</option>
-                                            <option value="R.TRNATE">R.TRNATE</option>
-                                            <option value="PANTRY">PANTRY</option>
-                                            <option value="MUSH BWH">MUSH BWH</option>
-                                            <option value="R.IT">R.IT</option>
-                                            <option value="R.TARUMA">R.TARUMA</option>
-                                            <option value="R.OBEYA">R.OBEYA</option>
-                                            <option value="R.MAJPHT">R.MAJPHT</option>
-                                            <option value="R.MATRAM">R.MATRAM</option>
-                                            <option value="R.SERVER">R.SERVER</option>
-                                            <option value="R.ARSIP">R.ARSIP</option>
-                                            <option value="MUSH ATS">MUSH ATS</option>
-                                            <option value="SECURITY">SECURITY</option>
-                                            <option value="R.LOKER">R.LOKER</option>
-                                            <option value="KLINIK">KLINIK</option>
-                                            <option value="R.DOJO">R.DOJO</option>
-                                            <option value="GUDANG">GUDANG</option>
-                                            <option value="ASSY 1">ASSY 1</option>
-                                            <option value="ASSY 2">ASSY 2</option>
-                                            <option value="ASSY 3">ASSY 3</option>
-                                            <option value="ASSY 5">ASSY 5</option>
-                                            <option value="ASSY 6">ASSY 6</option>
-                                            <option value="BEND GL">BEND GL</option>
-                                            <option value="SPINNING">SPINNING</option>
-                                            <option value="WH 1">WH 1</option>
-                                            <option value="WH 2">WH 2</option>
-                                            <option value="WORKSHOP">WORKSHOP</option>
-                                            <option value="AREA MTC">AREA MTC</option>
-                                            <option value="BEND GB">BEND GB</option>
-                                            <option value="SEAMER">SEAMER</option>
-                                            <option value="ASSY 7">ASSY 7</option>
-                                            <option value="ASSY 8">ASSY 8</option>
-                                            <option value="ASSY 9">ASSY 9</option>
-                                            <option value="KANTIN">KANTIN</option>
-                                            <option value="DELIVERY">DELIVERY</option>
-                                            <option value="MASJID">MASJID</option> */}
                                         </SelectInput>
                                         <InputError message={errors.lokasi} className='mt-2' />
                                     </div>
@@ -192,7 +149,6 @@ const Edit = ({ auth, transaction,users,locations }) => {
                                         name="keterangan"
                                         isFocused={true}
                                         value={data.keterangan}
-                                        // disable="true"
                                         className="mt-1 block w-full outline-none border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                         onChange={e => setData("keterangan", e.target.value)} />
                                     <InputError message={errors.keterangan} className='mt-2' />
@@ -206,11 +162,9 @@ const Edit = ({ auth, transaction,users,locations }) => {
                                             id="project_image_path"
                                             type="file"
                                             name="image_path"
-                                            // value={data.image_path} 
                                             className="mt-1 block w-full outline-none border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12 file:bg-brownTheme file:border-none file:h-full file:text-white file:px-4 file:text-base file:mr-4"
                                             onChange={e => setData('image_path',
                                                 e.target.files[0])} />
-                                        {/* <input class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="default_size" type="file"> */}
                                         <InputError message={errors.image_path} className='mt-2' />
                                     </div>
                                 {image_path && (
