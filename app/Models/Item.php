@@ -23,7 +23,7 @@ class Item extends Model
     }
     public function depreciations()
     {
-        return $this->hasMany(Deprecation::class, 'item_id');
+        return $this->hasMany(Depreciation::class, 'item_id');
     }
     public function scopeWhereYearIn($query, array $years)
 {

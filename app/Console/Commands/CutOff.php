@@ -5,10 +5,9 @@ namespace App\Console\Commands;
 use App\Models\CutoffHistory;
 use App\Models\Item;
 use App\Models\Transaction;
+use App\Support\StoProgress;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class CutOff extends Command
 {
@@ -37,13 +36,12 @@ class CutOff extends Command
         if($cutoff){
             $totalActiveItems = Item::where('disposal_date',null)->where('isNew',false)->count();
             $sto_count = Item::where('disposal_date',null)->where('isNew',false)->where('isSTO',true)->count();
-            $sto_progress = ($sto_count/$totalActiveItems);
-            
+            $sto_progress = StoProgress::ratio($sto_count, $totalActiveItems);
+
             $cutoff->sto_progress = $sto_progress;
             $cutoff->save();
         }
         $transactions = Transaction::where('cutoff_counter',$cutoff_counter)->get();
-        // Log::info('halo');
         foreach ($transactions as $transaction){
             $transaction->isEditable = false;
             $transaction->save();

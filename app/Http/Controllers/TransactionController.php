@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use File;
 use App\Models\Transaction;
 use Illuminate\Support\Str;
-use Intervention\Image\Image;
 use App\Exports\ExportFullSTO;
 use App\Http\Resources\ItemResource;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,12 +19,9 @@ use App\Models\CutoffHistory;
 use App\Models\Location;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
-use Spatie\Activitylog\Models\Activity;
 
 class TransactionController extends Controller
 {
@@ -39,28 +34,28 @@ class TransactionController extends Controller
         $sortField = request("sort_field", "transactions.created_at");
         $sortDirection = request("sort_direction", "desc");
         if (request("no_asset")) {
-            $query->where("items.no_asset", "like", "%" . request("no_asset") . "%")->get();
+            $query->where("items.no_asset", "like", "%" . request("no_asset") . "%");
         }
         if (request("category_id")) {
-            $query->where("items.category_id",  request("category_id") )->get();
+            $query->where("items.category_id",  request("category_id"));
         }
         if (request("location_id")) {
-            $query->where("transactions.location_id",  request("location_id") )->get();
+            $query->where("transactions.location_id",  request("location_id"));
         }
         if (request("periode_sto")) {
-            $query->where("transactions.cutoff_counter",  request("periode_sto") )->get();
+            $query->where("transactions.cutoff_counter",  request("periode_sto"));
         }
         if(request("dateStart") && request("dateEnd")){
             $start = Carbon::parse(request("dateStart"));
             $end = Carbon::parse(request("dateEnd"));
             if(request("dateStart") == request("dateEnd")){
-                $query->whereDate("transactions.created_at",$start)->get();
+                $query->whereDate("transactions.created_at",$start);
             }else{
-                $query->whereBetween('transactions.created_at', [$start,$end])->get();
+                $query->whereBetween('transactions.created_at', [$start,$end]);
             }
         }else if(request("dateStart")){
             $start = Carbon::parse(request("dateStart"));
-            $query->whereDate("transactions.created_at",$start)->get();
+            $query->whereDate("transactions.created_at",$start);
         }
         $transactions = $query->orderBy($sortField, $sortDirection)->paginate(10)->withQueryString();
         $locations = Location::all();
@@ -75,17 +70,6 @@ class TransactionController extends Controller
             "periode_sto" => PeriodeSTOResource::collection($periode_sto)
         ]);
     }
-    public function cobacoba(){
-        $transaction = Transaction::all();
-    }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-        
     /**
      * Store a newly created resource in storage.
      */
@@ -109,11 +93,7 @@ class TransactionController extends Controller
         }
         $data['updated_by'] = null;
         Transaction::create($data);
-        $activity = Activity::all()->last();
-        $activity->description;
-        $activity->subject;
-        $activity->changes;
-        
+
         $locationString = Location::where('id',$data["location_id"])->first();
         $item = Item::where('id',(int)$data["item_id"]);
         $item->update([
@@ -199,12 +179,6 @@ class TransactionController extends Controller
         $item->update([
             'lokasi'=> $locationString->location_name
         ]);
-        $activity = Activity::all()->last();
-        $activity->description;
-        $activity->subject;
-        $activity->changes;
-
-
 
         return to_route('transactions.index')
         ->with('success', "Transaction \"$transaction->name\" was updated");
@@ -217,10 +191,6 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         $transaction->delete();
-        $activity = Activity::all()->last();
-        $activity->description;
-        $activity->subject;
-        $activity->changes;
         if ($transaction->image_path){
             Storage::disk('public')->deleteDirectory(dirname($transaction->image_path));
         }
@@ -267,17 +237,5 @@ class TransactionController extends Controller
 
         $string = 'Berita acara STO '.Carbon::now()->format('d M Y').'.pdf';
         return $pdf->download($string);
-    }
-
-        private function role($name)
-    {
-        $translate = [
-            'Amrullah' => 'IT Section Head',
-            'Pietra Shafira' => 'HRGA Section Head',
-            'Muhammad Khoirifan' => 'Asset Management',
-            'Agung Samudra' => 'Admin Dept.Head',
-        ];
-
-        return $translate[$name] ?? $name;
     }
 }

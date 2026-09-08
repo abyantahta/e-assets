@@ -4,13 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Exports\ExportUrl;
 use App\Models\Item;
-use App\Http\Requests\StoreItemRequest;
-use App\Http\Requests\UpdateItemRequest;
 use App\Http\Resources\ItemResource;
 use App\Http\Resources\TransactionResource;
 use App\Models\Category;
 use App\Models\Transaction;
-use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
 
@@ -43,7 +40,7 @@ class ItemController extends Controller
         }else if(request("sto_status")==3){
             $query->where('isSTO', false)->where('isNew',true)->whereNull('disposal_date');
         }
-        $items = $query->orderBy($sortField, $sortDirection)->paginate(10)->withQueryString();;
+        $items = $query->orderBy($sortField, $sortDirection)->paginate(10)->withQueryString();
         $categories = Category::all();
         return inertia("Items/Index",[
             "items" => ItemResource::collection($items),
@@ -51,20 +48,6 @@ class ItemController extends Controller
             "success" => session('success'),
             "categories"=> $categories,
         ]);
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    public function store(StoreItemRequest $request)
-    {
-        //
     }
 
     /**
@@ -92,29 +75,6 @@ class ItemController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Item $item)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateItemRequest $request, Item $item)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Item $item)
-    {
-        //
-    }
     public function exportUrl(){
         return Excel::download(new ExportUrl(), 'items.xlsx');
     }

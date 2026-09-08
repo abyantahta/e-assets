@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Depreciation;
 use App\Models\Item;
+use App\Support\StoProgress;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB as FacadesDB;
@@ -66,111 +67,62 @@ class DashboardController extends Controller
 
 
 
-        //PENAMBAHAN ASET MONTHLY
-        $penambahan_januari = ceil((((clone $items)->whereMonth('service_date', 1)->sum('cost'))/1000000000)*100)/100;
-        $penambahan_februari = ceil((((clone $items)->whereMonth('service_date', 2)->sum('cost'))/1000000000)*100)/100;
-        $penambahan_maret = ceil((((clone $items)->whereMonth('service_date', 3)->sum('cost'))/1000000000)*100)/100;
-        $penambahan_april = ceil((((clone $items)->whereMonth('service_date', 4)->sum('cost'))/1000000000)*100)/100;
-        $penambahan_mei = ceil((((clone $items)->whereMonth('service_date', 5)->sum('cost'))/1000000000)*100)/100;
-        $penambahan_juni = ceil((((clone $items)->whereMonth('service_date', 6)->sum('cost'))/1000000000)*100)/100;
-        $penambahan_juli = ceil((((clone $items)->whereMonth('service_date', 7)->sum('cost'))/1000000000)*100)/100;
-        $penambahan_agustus = ceil((((clone $items)->whereMonth('service_date', 8)->sum('cost'))/1000000000)*100)/100;
-        $penambahan_september = ceil((((clone $items)->whereMonth('service_date', 9)->sum('cost'))/1000000000)*100)/100;
-        $penambahan_oktober = ceil((((clone $items)->whereMonth('service_date', 10)->sum('cost'))/1000000000)*100)/100;
-        $penambahan_november = ceil((((clone $items)->whereMonth('service_date', 11)->sum('cost'))/1000000000)*100)/100;
-        $penambahan_desember = ceil((((clone $items)->whereMonth('service_date', 12)->sum('cost'))/1000000000)*100)/100;
         $months_label = ["JAN", "FEB", "MAR", "APR", "MEI", "JUNI", "JULI", "AUG", "SEP", "OKT", "NOV", "DES"];
-        $penambahan_aset_monthly = [$penambahan_januari, $penambahan_februari, $penambahan_maret, $penambahan_april, $penambahan_mei, $penambahan_juni, $penambahan_juli, $penambahan_agustus, $penambahan_september, $penambahan_oktober, $penambahan_november, $penambahan_desember];
+
+        //PENAMBAHAN ASET MONTHLY
+        $penambahan_aset_monthly = $this->monthlyTotals(
+            $items,
+            fn ($query, $month) => $query->whereMonth('service_date', $month),
+            'cost',
+            1000000000
+        );
 
         //DISPOSAL ASET MONTHLY
-        $disposal_januari = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 1)->sum('nbv'))/1000000)*100)/100;
-        $disposal_februari = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 2)->sum('nbv'))/1000000)*100)/100;
-        $disposal_maret = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 3)->sum('nbv'))/1000000)*100)/100;
-        $disposal_april = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 4)->sum('nbv'))/1000000)*100)/100;
-        $disposal_mei = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 5)->sum('nbv'))/1000000)*100)/100;
-        $disposal_juni = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 6)->sum('nbv'))/1000000)*100)/100;
-        $disposal_juli = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 7)->sum('nbv'))/1000000)*100)/100;
-        $disposal_agustus = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 8)->sum('nbv'))/1000000)*100)/100;
-        $disposal_september = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 9)->sum('nbv'))/1000000)*100)/100;
-        $disposal_oktober = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 10)->sum('nbv'))/1000000)*100)/100;
-        $disposal_november = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 11)->sum('nbv'))/1000000)*100)/100;
-        $disposal_desember = ceil((((clone $items_for_disposal)->whereMonth('disposal_date', 12)->sum('nbv'))/1000000)*100)/100;
-        $months_label = ["JAN", "FEB", "MAR", "APR", "MEI", "JUNI", "JULI", "AUG", "SEP", "OKT", "NOV", "DES"];
-        $disposal_aset_monthly = [$disposal_januari, $disposal_februari, $disposal_maret, $disposal_april, $disposal_mei, $disposal_juni, $disposal_juli, $disposal_agustus, $disposal_september, $disposal_oktober, $disposal_november, $disposal_desember];
-        
+        $disposal_aset_monthly = $this->monthlyTotals(
+            $items_for_disposal,
+            fn ($query, $month) => $query->whereMonth('disposal_date', $month),
+            'nbv',
+            1000000
+        );
 
         //DEPRESIASI ASET MONTHLY
-        $depreciation_januari = ceil((((clone $depreciationByMonth)->where('month', 1)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        $depreciation_februari = ceil((((clone $depreciationByMonth)->where('month', 2)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        $depreciation_maret = ceil((((clone $depreciationByMonth)->where('month', 3)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        $depreciation_april = ceil((((clone $depreciationByMonth)->where('month', 4)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        // dd($depreciation_april);
-        $depreciation_mei = ceil((((clone $depreciationByMonth)->where('month', 5)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        $depreciation_juni = ceil((((clone $depreciationByMonth)->where('month', 6)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        $depreciation_juli = ceil((((clone $depreciationByMonth)->where('month', 7)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        $depreciation_agustus = ceil((((clone $depreciationByMonth)->where('month', 8)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        $depreciation_september = ceil((((clone $depreciationByMonth)->where('month', 9)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        $depreciation_oktober = ceil((((clone $depreciationByMonth)->where('month', 10)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        $depreciation_november = ceil((((clone $depreciationByMonth)->where('month', 11)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        $depreciation_desember = ceil((((clone $depreciationByMonth)->where('month', 12)->sum('depreciations.depreciation_per_month'))/1000000000)*100)/100;
-        $months_label = ["JAN", "FEB", "MAR", "APR", "MEI", "JUNI", "JULI", "AUG", "SEP", "OKT", "NOV", "DES"];
-        $depreciation_aset_monthly = [$depreciation_januari, $depreciation_februari, $depreciation_maret, $depreciation_april, $depreciation_mei, $depreciation_juni, $depreciation_juli, $depreciation_agustus, $depreciation_september, $depreciation_oktober, $depreciation_november, $depreciation_desember];
+        $depreciation_aset_monthly = $this->monthlyTotals(
+            $depreciationByMonth,
+            fn ($query, $month) => $query->where('month', $month),
+            'depreciations.depreciation_per_month',
+            1000000000
+        );
 
         $depreciationByMonths = [
             'label'=> $months_label,
             'data' => $depreciation_aset_monthly
         ];
+
         //PRESENTASE JENIS ASET AKTIF
-        $numOfTooling = (clone $activeItems_query)->where('category_id', '1')->count();
-        $numOfBuilding = (clone $activeItems_query)->where('category_id', '2')->count();
-        $numOfVehicle = (clone $activeItems_query)->where('category_id', '3')->count();
-        $numOfOEQ = (clone $activeItems_query)->where('category_id', '4')->count();
-        $numOfMachine = (clone $activeItems_query)->where('category_id', '5')->count();
+        $categoryLabels = [$categories[0]->name, $categories[1]->name, $categories[2]->name, $categories[3]->name, $categories[4]->name];
         $itemsByCategories = [
-            "label" => [$categories[0]->name, $categories[1]->name, $categories[2]->name, $categories[3]->name, $categories[4]->name],
-            "data" => [$numOfTooling, $numOfBuilding, $numOfVehicle, $numOfOEQ, $numOfMachine]
+            "label" => $categoryLabels,
+            "data" => $this->perCategory($activeItems_query),
         ];
 
-        //PRESENTASE JENIS ASET AKTIF
-        $tooling_cost = ((clone $activeItems_query)->where('category_id', '1')->sum('cost')) / 1;
-        $building_cost = ((clone $activeItems_query)->where('category_id', '2')->sum('cost')) / 1;
-        $vehicle_cost = ((clone $activeItems_query)->where('category_id', '3')->sum('cost')) / 1;
-        $oeq_cost = ((clone $activeItems_query)->where('category_id', '4')->sum('cost')) / 1;
-        $machine_cost = ((clone $activeItems_query)->where('category_id', '5')->sum('cost')) / 1;
+        $costPerCategory = $this->perCategory($activeItems_query, 'cost');
+        $nbvPerCategory = $this->perCategory($activeItems_query, 'nbv');
         $costPerCategories = [
-            "label" => [$categories[0]->name, $categories[1]->name, $categories[2]->name, $categories[3]->name, $categories[4]->name],
-            "data" => [$tooling_cost, $building_cost, $vehicle_cost, $oeq_cost, $machine_cost]
+            "label" => $categoryLabels,
+            "data" => $costPerCategory,
         ];
-        //PRESENTASE JENIS ASET AKTIF
-        $tooling_nbv = ((clone $activeItems_query)->where('category_id', '1')->sum('nbv')) / 1;
-        $building_nbv = ((clone $activeItems_query)->where('category_id', '2')->sum('nbv')) / 1;
-        $vehicle_nbv = ((clone $activeItems_query)->where('category_id', '3')->sum('nbv')) / 1;
-        $oeq_nbv = ((clone $activeItems_query)->where('category_id', '4')->sum('nbv')) / 1;
-        $machine_nbv = ((clone $activeItems_query)->where('category_id', '5')->sum('nbv')) / 1;
 
-        
-        $nbv_cost_category = [
-            [
-                "name" => 'Tooling',
-                "data" => [$tooling_cost, $tooling_nbv]
-            ],            [
-                "name" => 'Building',
-                "data" => [$building_cost, $building_nbv]
-            ],            [
-                "name" => 'Vehicle',
-                "data" => [$vehicle_cost, $vehicle_nbv]
-            ],            [
-                "name" => 'Office Equipment',
-                "data" => [$oeq_cost, $oeq_nbv]
-            ],            [
-                "name" => 'Machine',
-                "data" => [$machine_cost, $machine_nbv]
-            ],
-        ];
+        $nbv_cost_category = [];
+        foreach ($categoryLabels as $index => $categoryLabel) {
+            $nbv_cost_category[] = [
+                "name" => $categoryLabel,
+                "data" => [$costPerCategory[$index], $nbvPerCategory[$index]],
+            ];
+        }
 
         $totalActiveItems = Item::where('disposal_date',null)->where('isNew',false)->count();
         $sto_count = Item::where('disposal_date',null)->where('isNew',false)->where('isSTO',true)->count();
-        $sto_progress = $totalActiveItems? (int)ceil(($sto_count/$totalActiveItems)*100) : 0;
+        $sto_progress = (int) ceil(StoProgress::ratio($sto_count, $totalActiveItems) * 100);
         
 
         return inertia("Dashboard", [
@@ -190,10 +142,41 @@ class DashboardController extends Controller
             "depreciationByMonths"=> $depreciationByMonths,
             "queryParams" => request()->query() ?: null,
             "sto_progress" => $sto_progress,
-            // "items" => ItemResource::collection($items),
-            // "queryParams" => request()->query() ?: null,
-            // "success" => session('success'),
         ]);
     }
-    //
+
+    /**
+     * Sum `$sumColumn` on `$baseQuery` for each of the 12 months, scoped by
+     * `$scopeToMonth`, expressed in units of `$divisor` and rounded to 2
+     * decimal places.
+     *
+     * @return array<int, float> 12 values, January first
+     */
+    private function monthlyTotals($baseQuery, \Closure $scopeToMonth, string $sumColumn, float $divisor): array
+    {
+        $totals = [];
+        for ($month = 1; $month <= 12; $month++) {
+            $sum = $scopeToMonth(clone $baseQuery, $month)->sum($sumColumn);
+            $totals[] = ceil(($sum / $divisor) * 100) / 100;
+        }
+
+        return $totals;
+    }
+
+    /**
+     * Count (or sum `$sumColumn`) on `$baseQuery` for each of the 5 seeded
+     * categories (id 1-5), in that order.
+     *
+     * @return array<int, int|float>
+     */
+    private function perCategory($baseQuery, ?string $sumColumn = null): array
+    {
+        $results = [];
+        for ($categoryId = 1; $categoryId <= 5; $categoryId++) {
+            $query = (clone $baseQuery)->where('category_id', (string) $categoryId);
+            $results[] = $sumColumn ? $query->sum($sumColumn) : $query->count();
+        }
+
+        return $results;
+    }
 }

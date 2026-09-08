@@ -3,10 +3,7 @@
 namespace App\Services;
 
 use App\Models\Qxwsas;
-use Carbon\Carbon;
-use Exception;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class WsaService
 {
@@ -87,18 +84,53 @@ class WsaService
             }
             curl_close($curl);
         }
-        try{
-            $xmlResp = simplexml_load_string($qdocResponse);
-            $xmlResp->registerXPathNamespace('ns1', $wsa->qxwsa_wsa_path);
-        }catch(Exception $e){
+
+        if ($curlErrno !== 0 || $httpCode >= 400 || $qdocResponse === '') {
+            Log::error('WSA sync: request to WSA endpoint did not succeed', [
+                'url' => $qxUrl,
+                'curl_errno' => $curlErrno,
+                'curl_error' => $curlError,
+                'http_code' => $httpCode,
+            ]);
+        }
+
+        $parsed = $this->parseResponse($qdocResponse, $wsa->qxwsa_wsa_path);
+
+        if ($parsed === false) {
+            Log::error('WSA sync: could not parse WSA response as XML', [
+                'url' => $qxUrl,
+                'response_snippet' => substr((string) $qdocResponse, 0, 500),
+            ]);
+        }
+
+        return $parsed;
+    }
+
+    /**
+     * Parse the raw SOAP XML response into `[itemRows, outOkFlag]`, or
+     * `false` if the response isn't valid XML for the given namespace.
+     *
+     * @return array{0: \SimpleXMLElement[], 1: string}|false
+     */
+    public function parseResponse(string $xml, string $namespace): array|false
+    {
+        $xmlResp = @simplexml_load_string($xml);
+
+        if ($xmlResp === false) {
             return false;
         }
-        $itemdata = $xmlResp->xpath('//ns1:tempRow');
-        $qdocResult = (string) $xmlResp->xpath('//ns1:outOK')[0];
+
+        try {
+            $xmlResp->registerXPathNamespace('ns1', $namespace);
+            $itemdata = $xmlResp->xpath('//ns1:tempRow');
+            $outOk = $xmlResp->xpath('//ns1:outOK');
+        } catch (\Throwable $e) {
+            return false;
+        }
 
         return [
             $itemdata,
-            $qdocResult,
+            (string) ($outOk[0] ?? ''),
         ];
     }
 }
