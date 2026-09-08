@@ -1,10 +1,7 @@
-import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import TextInput from "@/Components/TextInput";
-// import TextAreaInput from '@/Components/TextAreaInput'
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, router, useForm } from "@inertiajs/react";
-import React, { useState } from "react";
+import { Head, Link, router } from "@inertiajs/react";
+import { useState } from "react";
 import SelectInput from "@/Components/SelectInput";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/16/solid";
 
@@ -13,10 +10,9 @@ const DailyReport = ({users, categories}) => {
     const [divisionInCharge, setdivisionInCharge] = useState(0);
     const [kategori, setKategori] = useState("");
     const [date, setDate] = useState(new Date().toISOString().substr(0, 10));
-    // let users = ["Pietra Shafira", "Amrullah", "Muhammad Khoirifan"];
     const onSubmit = (e) => {
         e.preventDefault();
-        router.get(route("transactions.dailyreport"), queryParams);
+        router.get(route("transactions.dailyreport"), { PIC, divisionInCharge, kategori, date });
     };
     const queryParamsExport = () => {
         let string = "?";
@@ -73,7 +69,6 @@ const DailyReport = ({users, categories}) => {
                                             </option>
                                         ))}
                                     </SelectInput>
-                                    {/* <InputError className='mt-2' /> */}
                                 </div>
                                 <div className="mt-4">
                                     <InputLabel htmlFor="pic" value="PIC" />
@@ -90,7 +85,6 @@ const DailyReport = ({users, categories}) => {
                                             </option>
                                         ))}
                                     </SelectInput>
-                                    {/* <InputError message={errors.pic} className='mt-2' /> */}
                                 </div>
                                 <div className="mt-4 w-full">
                                     <InputLabel
@@ -115,7 +109,6 @@ const DailyReport = ({users, categories}) => {
                                             </option>
                                         ))}
                                     </SelectInput>
-                                    {/* <InputError message={errors.kategori} className='mt-2' /> */}
                                 </div>
                                 <div className="mt-4 w-full">
                                     <InputLabel
@@ -132,7 +125,6 @@ const DailyReport = ({users, categories}) => {
                                         type="date"
                                         className="w-52 outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                     />
-                                    {/* <InputError message={errors.kategori} className='mt-2' /> */}
                                 </div>
 
                                 <div className="mt-8 text-center flex flex-col-reverse md:flex-row gap-x-4 gap-y-3 justify-center ">
@@ -142,9 +134,6 @@ const DailyReport = ({users, categories}) => {
                                     >
                                         Cancel
                                     </Link>
-                                    {/* <button type='submit' className='bg-orangeTheme font-semibold py-3 text-md px-20 text-white rounded shadow transition-all hover:brightness-110'>
-                                        Generate
-                                    </button> */}
                                     <a
                                         href={`/transactions/dailyreport${queryParamsExport()}`}
                                         className="w-full md:w-72  py-3 px-4 tracking-wide text-center bg-orangeTheme font-bold flex items-center justify-center gap-2 text-white rounded-md hover:brightness-110 duration-150"

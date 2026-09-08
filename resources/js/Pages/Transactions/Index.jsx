@@ -2,47 +2,33 @@ import DatePicker from "@/Components/DatePicker";
 import Pagination from "@/Components/Pagination";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
+import ZebraCell from "@/Components/Table/ZebraCell";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import useQueryParams from "@/hooks/useQueryParams";
+import { isAdmin } from "@/utils/roles";
 import {
     ArrowDownOnSquareIcon,
     ArrowLeftStartOnRectangleIcon,
     PencilIcon,
-    PlusIcon,
     XMarkIcon,
 } from "@heroicons/react/16/solid";
-import { Head, router, Link } from "@inertiajs/react";
+import { router, Head, Link } from "@inertiajs/react";
 import moment from "moment-timezone";
-moment.locale('id')
-
-// const jakartaTime = moment("2023-08-27T08:00:00Z")
-//   .tz("Asia/Jakarta")
-//   .format("DD/MM/YYYY - HH:mm");
-
+moment.locale("id");
 
 export default function Index({
     auth,
     transactions,
     queryParams = null,
-    success,
     locations,
     categories,
-    periode_sto
+    periode_sto,
 }) {
-    queryParams = queryParams || {};
-    const searchFieldChanged = (name, value) => {
-        if (value) {
-            queryParams[name] = value;
-        } else {
-            delete queryParams[name];
-        }
-
-        router.get(route("transactions.index"), queryParams);
-    };
-    // console.log(jakartaTime)
-    const exportTransaction = () => {
-        router.get(route("transactions.fullsto"), queryParams);
-    };
+    const { queryParams: params, searchFieldChanged, sortChanged, onKeyPress } = useQueryParams(
+        "transactions.index",
+        queryParams
+    );
     const deleteTransaction = (transaction) => {
         if (
             !window.confirm("Are you sure you want to delete the transaction?")
@@ -51,34 +37,17 @@ export default function Index({
         }
         router.delete(route("transactions.destroy", transaction.id));
     };
-    const onKeyPress = (name, e) => {
-        if (e.key !== "Enter") return;
-
-        searchFieldChanged(name, e.target.value);
-    };
     const queryParamsExport = () => {
         let string = "?";
-        if (queryParams["category_id"])
-            string += `&category_id=${queryParams["category_id"]}`;
-        if (queryParams["dateStart"])
-            string += `&dateStart=${queryParams["dateStart"]}`;
-        if (queryParams["dateEnd"])
-            string += `&dateEnd=${queryParams["dateEnd"]}`;
+        if (params["category_id"])
+            string += `&category_id=${params["category_id"]}`;
+        if (params["dateStart"])
+            string += `&dateStart=${params["dateStart"]}`;
+        if (params["dateEnd"])
+            string += `&dateEnd=${params["dateEnd"]}`;
         return string;
     };
-    const sortChanged = (name) => {
-        if (name === queryParams.sort_field) {
-            if (queryParams.sort_direction === "asc") {
-                queryParams.sort_direction = "desc";
-            } else {
-                queryParams.sort_direction = "asc";
-            }
-        } else {
-            queryParams.sort_field = name;
-            queryParams.sort_direction = "asc";
-        }
-        router.get(route("transactions.index"), queryParams);
-    };
+    const admin = isAdmin(auth);
     return (
         <AuthenticatedLayout
             header={
@@ -98,74 +67,59 @@ export default function Index({
                             <div className="mb-4 flex flex-col gap-y-2 lg:flex-row-reverse justify-between">
                                 <TextInput
                                     className="w-full lg:w-56 border-gray-700 border-[3px] placeholder:italic text-greenTheme font-normal focus:border-greenTheme focus:ring-greenTheme placeholder:text-greenTheme"
-                                    defaultValue={queryParams.no_asset}
+                                    defaultValue={params.no_asset}
                                     placeholder="Search by no asset"
                                     onBlur={(e) =>
-                                        searchFieldChanged(
-                                            "no_asset",
-                                            e.target.value
-                                        )
+                                        searchFieldChanged("no_asset", e.target.value)
                                     }
-                                    onKeyPress={(e) =>
-                                        onKeyPress("no_asset", e)
-                                    }
+                                    onKeyPress={(e) => onKeyPress("no_asset", e)}
                                 />
                                 <div className="flex flex-col lg:flex-row gap-x-4 gap-y-2">
                                     <SelectInput
                                         className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme lg:w-52"
-                                        defaultValue={queryParams.category_id}
+                                        defaultValue={params.category_id}
                                         onChange={(e) =>
-                                            searchFieldChanged(
-                                                "category_id",
-                                                e.target.value
-                                            )
+                                            searchFieldChanged("category_id", e.target.value)
                                         }
                                     >
                                         <option value="">Category</option>
-                                        {
-                                            
-                                            categories.map(category=>(
-                                                <option key={category.name} value={category.id}>{category.name}</option>
-                                            ))
-                                        }
+                                        {categories.map((category) => (
+                                            <option key={category.name} value={category.id}>
+                                                {category.name}
+                                            </option>
+                                        ))}
                                     </SelectInput>
                                     <DatePicker
                                         searchFieldChanged={searchFieldChanged}
-                                        queryParams={queryParams}   
+                                        queryParams={params}
                                     />
                                     <SelectInput
                                         className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme lg:w-52"
-                                        defaultValue={queryParams.location_id}
+                                        defaultValue={params.location_id}
                                         onChange={(e) =>
-                                            searchFieldChanged(
-                                                "location_id",
-                                                e.target.value
-                                            )
+                                            searchFieldChanged("location_id", e.target.value)
                                         }
                                     >
                                         <option value="">Select Location</option>
-                                        {
-                                            locations.map(location=>(
-                                                <option key={location.location_name} value={location.id}>{location.location_name}</option>
-                                            ))
-                                        }
+                                        {locations.map((location) => (
+                                            <option key={location.location_name} value={location.id}>
+                                                {location.location_name}
+                                            </option>
+                                        ))}
                                     </SelectInput>
                                     <SelectInput
                                         className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme lg:w-52"
-                                        defaultValue={queryParams.periode_sto}
+                                        defaultValue={params.periode_sto}
                                         onChange={(e) =>
-                                            searchFieldChanged(
-                                                "periode_sto",
-                                                e.target.value
-                                            )
+                                            searchFieldChanged("periode_sto", e.target.value)
                                         }
                                     >
                                         <option value="">Periode STO</option>
-                                        {
-                                            periode_sto.data.map(item=>(
-                                                <option key={item.cutoff_counter} value={item.cutoff_counter}>{item.start_period} - {item.end_period}</option>
-                                            ))
-                                        }
+                                        {periode_sto.data.map((item) => (
+                                            <option key={item.cutoff_counter} value={item.cutoff_counter}>
+                                                {item.start_period} - {item.end_period}
+                                            </option>
+                                        ))}
                                     </SelectInput>
                                 </div>
                             </div>
@@ -175,12 +129,8 @@ export default function Index({
                                         <tr className="min-w-full flex text-center gap-3 !font-semibold">
                                             <TableHeading
                                                 name="id"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
+                                                sort_field={params.sort_field}
+                                                sort_direction={params.sort_direction}
                                                 sortChanged={sortChanged}
                                                 className=" bg-greenTheme text-white w-16 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
                                             >
@@ -188,18 +138,13 @@ export default function Index({
                                             </TableHeading>
                                             <TableHeading
                                                 name="created_at"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
+                                                sort_field={params.sort_field}
+                                                sort_direction={params.sort_direction}
                                                 sortChanged={sortChanged}
                                                 className=" bg-greenTheme text-white w-44 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
                                             >
                                                 Date
                                             </TableHeading>
-                                            {/* <th className='bg-greenTheme text-white w-12 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center'>No</th> */}
                                             <th className=" border-r-[10px] border-r-lightTheme text-white w-40 -mr-3 h-11 flex items-center !font-semibold justify-center">
                                                 <span className="bg-greenTheme  w-full h-11 flex items-center justify-center rounded-[0.25rem]">
                                                     No Asset
@@ -207,12 +152,8 @@ export default function Index({
                                             </th>
                                             <TableHeading
                                                 name="name"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
+                                                sort_field={params.sort_field}
+                                                sort_direction={params.sort_direction}
                                                 sortChanged={sortChanged}
                                                 className=" bg-greenTheme text-white w-52 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
                                             >
@@ -220,12 +161,8 @@ export default function Index({
                                             </TableHeading>
                                             <TableHeading
                                                 name="category_id"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
+                                                sort_field={params.sort_field}
+                                                sort_direction={params.sort_direction}
                                                 sortChanged={sortChanged}
                                                 className=" bg-greenTheme text-white w-40 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
                                             >
@@ -233,12 +170,8 @@ export default function Index({
                                             </TableHeading>
                                             <TableHeading
                                                 name="kondisi"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
+                                                sort_field={params.sort_field}
+                                                sort_direction={params.sort_direction}
                                                 sortChanged={sortChanged}
                                                 className=" bg-greenTheme text-white w-40 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
                                             >
@@ -246,12 +179,8 @@ export default function Index({
                                             </TableHeading>
                                             <TableHeading
                                                 name="lokasi"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
+                                                sort_field={params.sort_field}
+                                                sort_direction={params.sort_direction}
                                                 sortChanged={sortChanged}
                                                 className=" bg-greenTheme text-white w-32 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
                                             >
@@ -259,12 +188,8 @@ export default function Index({
                                             </TableHeading>
                                             <TableHeading
                                                 name="pic"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
+                                                sort_field={params.sort_field}
+                                                sort_direction={params.sort_direction}
                                                 sortChanged={sortChanged}
                                                 className=" bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center"
                                             >
@@ -273,186 +198,84 @@ export default function Index({
                                             <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">
                                                 Created By
                                             </th>
-                                            {
-                                                auth.user.role_id ===
-                                                2 &&(
+                                            {admin && (
                                                 <th className="bg-greenTheme text-white w-36 rounded-[0.25rem] h-11 flex items-center !font-semibold justify-center">
                                                     Aksi
                                                 </th>
-                                                )
-                                            }
+                                            )}
                                         </tr>
                                     </thead>
                                     <tbody className="overflow-auto box-border no-scrollbar">
-                                        {transactions.data.map(
-                                            (transaction, index) => (
-                                                <tr
-                                                    className="min-w-full flex text-center gap-3 mt-3"
-                                                    key={transaction.id}
-                                                >
-                                                    <td
+                                        {transactions.data.map((transaction, index) => (
+                                            <tr className="min-w-full flex text-center gap-3 mt-3" key={transaction.id}>
+                                                <ZebraCell index={index} className="px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16">
+                                                    {(transactions.meta.current_page - 1) *
+                                                        transactions.meta.per_page +
+                                                        (index + 1)}
+                                                </ZebraCell>
+                                                <ZebraCell index={index} className="px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-44">
+                                                    {moment(transaction.created_at)
+                                                        .tz("Asia/Jakarta")
+                                                        .format("DD/MM/YYYY - HH:mm")}
+                                                </ZebraCell>
+                                                <td className=" overflow-visible  h-11 -mr-3 bg-lightTheme text-ellipsis text-nowrap text-center pr-3 w-40">
+                                                    <span
                                                         className={`${
-                                                            index % 2 != 0
-                                                                ? "bg-green-50"
-                                                                : "bg-white"
-                                                        } px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-16`}
+                                                            index % 2 != 0 ? "bg-green-50" : "bg-white"
+                                                        } border-greenTheme border-2 rounded-[0.25rem] w-full h-full inline-block px-3 py-2 `}
                                                     >
-                                                        {(transactions.meta
-                                                            .current_page -
-                                                            1) *
-                                                            transactions.meta
-                                                                .per_page +
-                                                            (index + 1)}
-                                                    </td>
-                                                    <td
-                                                        className={`${
-                                                            index % 2 != 0
-                                                                ? "bg-green-50"
-                                                                : "bg-white"
-                                                        } px-1 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-44`}
-                                                    >
-                                                        {moment(
-                                                            transaction.created_at
-                                                        ).tz("Asia/Jakarta").format(
-                                                            "DD/MM/YYYY - HH:mm"
-                                                        )}
-                                                        
-                                                    </td>
-                                                    <td
-                                                        className={` overflow-visible  h-11 -mr-3 bg-lightTheme text-ellipsis text-nowrap text-center pr-3 w-40`}
-                                                    >
-                                                        <span
-                                                            className={`${
-                                                                index % 2 != 0
-                                                                    ? "bg-green-50"
-                                                                    : "bg-white"
-                                                            } border-greenTheme border-2 rounded-[0.25rem] w-full h-full inline-block px-3 py-2 `}
-                                                        >
-                                                            {
-                                                                transaction
-                                                                    .item_id
-                                                                    ?.no_asset
-                                                            }
-                                                        </span>
-                                                    </td>
-                                                    <td
-                                                        className={`${
-                                                            index % 2 != 0
-                                                                ? "bg-green-50"
-                                                                : "bg-white"
-                                                        } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-52`}
-                                                    >
-                                                        {" "}
-                                                        {
-                                                            transaction.item_id
-                                                                .name
-                                                        }{" "}
-                                                    </td>
-                                                    <td
-                                                        className={` ${
-                                                            index % 2 != 0
-                                                                ? "bg-green-50"
-                                                                : "bg-white"
-                                                        } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}
-                                                    >
-                                                        {" "}
-                                                        {
-                                                            transaction.item_id
-                                                                .category_id
-                                                                ?.name
-                                                        }{" "}
-                                                    </td>
-                                                    <td
-                                                        className={`${
-                                                            index % 2 != 0
-                                                                ? "bg-green-50"
-                                                                : "bg-white"
-                                                        } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40`}
-                                                    >
-                                                        {transaction.kondisi}
-                                                    </td>
-                                                    <td
-                                                        className={`${
-                                                            index % 2 != 0
-                                                                ? "bg-green-50"
-                                                                : "bg-white"
-                                                        } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-32`}
-                                                    >
-                                                        {transaction.location_id.location_name}
-                                                    </td>
-                                                    <td
-                                                        className={`${
-                                                            index % 2 != 0
-                                                                ? "bg-green-50"
-                                                                : "bg-white"
-                                                        } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}
-                                                    >
-                                                        {transaction.pic?.name}
-                                                    </td>
-                                                    <td
-                                                        className={`${
-                                                            index % 2 != 0
-                                                                ? "bg-green-50"
-                                                                : "bg-white"
-                                                        } px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}
-                                                    >
-                                                        {
-                                                            transaction
-                                                                .created_by.name
-                                                        }
-                                                    </td>
-                                                    {auth.user.role_id ===
-                                                        2 && (
-                                                        <td
-                                                            className={`${
-                                                                index % 2 != 0
-                                                                    ? "bg-green-50"
-                                                                    : "bg-white"
-                                                            } px-6 flex h-11 py-1 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36`}
-                                                        >
-                                                            {transaction.isEditable ? (
-                                                                <>
-                                                                    <Link
-                                                                        href={route(
-                                                                            "transactions.edit",
-                                                                            transaction
-                                                                        )}
-                                                                        className="bg-yellow-500 hover:brightness-110 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center"
-                                                                    >
-                                                                        <PencilIcon className="w-5" />
-                                                                    </Link>
-                                                                    <button
-                                                                        onClick={(
-                                                                            e
-                                                                        ) =>
-                                                                            deleteTransaction(
-                                                                                transaction
-                                                                            )
-                                                                        }
-                                                                        className="bg-red-400 hover:brightness-125 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center"
-                                                                    >
-                                                                        <XMarkIcon className="w-5" />
-                                                                    </button>
-                                                                </>
-                                                            ) : (
-                                                                <>
+                                                        {transaction.item_id?.no_asset}
+                                                    </span>
+                                                </td>
+                                                <ZebraCell index={index} className="px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-52">
+                                                    {transaction.item_id.name}
+                                                </ZebraCell>
+                                                <ZebraCell index={index} className="px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40">
+                                                    {transaction.item_id.category_id?.name}
+                                                </ZebraCell>
+                                                <ZebraCell index={index} className="px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-40">
+                                                    {transaction.kondisi}
+                                                </ZebraCell>
+                                                <ZebraCell index={index} className="px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-32">
+                                                    {transaction.location_id.location_name}
+                                                </ZebraCell>
+                                                <ZebraCell index={index} className="px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36">
+                                                    {transaction.pic?.name}
+                                                </ZebraCell>
+                                                <ZebraCell index={index} className="px-3 h-11 py-2 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36">
+                                                    {transaction.created_by.name}
+                                                </ZebraCell>
+                                                {admin && (
+                                                    <ZebraCell index={index} className="px-6 flex h-11 py-1 text-ellipsis overflow-hidden text-nowrap text-center border-greenTheme border-2 rounded-[0.25rem] w-36">
+                                                        {transaction.isEditable ? (
+                                                            <>
+                                                                <Link
+                                                                    href={route("transactions.edit", transaction)}
+                                                                    className="bg-yellow-500 hover:brightness-110 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center"
+                                                                >
+                                                                    <PencilIcon className="w-5" />
+                                                                </Link>
+                                                                <button
+                                                                    onClick={() => deleteTransaction(transaction)}
+                                                                    className="bg-red-400 hover:brightness-125 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center"
+                                                                >
+                                                                    <XMarkIcon className="w-5" />
+                                                                </button>
+                                                            </>
+                                                        ) : (
+                                                            <>
                                                                 <div className="bg-gray-400 hover:brightness-110 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center">
                                                                     <PencilIcon className="w-5" />
                                                                 </div>
-                                                                <div
-                                                                        className="bg-gray-400 hover:brightness-125 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center"
-                                                                    >
-                                                                        <XMarkIcon className="w-5" />
-                                                                    </div>
-
-                                                                </>
-                                                            )}
-                                                        </td>
-                                                    )}
-                                                </tr>
-                                            )
-                                        )}
-                                        {/* </tr> */}
+                                                                <div className="bg-gray-400 hover:brightness-125 duration-150 p-2 mx-auto w-fit font-bold text-white rounded-md flex items-center justify-center">
+                                                                    <XMarkIcon className="w-5" />
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                    </ZebraCell>
+                                                )}
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             </div>

@@ -3,12 +3,11 @@ import InputLabel from '@/Components/InputLabel'
 import TextInput from '@/Components/TextInput'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, Link, useForm } from '@inertiajs/react'
-import React from 'react'
 import SelectInput from '@/Components/SelectInput'
 
 const Show = ({ auth, item , users, locations}) => {
-    let { id, no_asset, name, category_id, cost, disposal_date, lokasi, nbv, service_date } = item.data[0]
-    const { data, setData, post, errors, reset } = useForm({
+    let { id, no_asset, name, category_id } = item.data[0]
+    const { data, setData, post, errors } = useForm({
         item_id: id,
         location_id: '',
         image_path: '',
