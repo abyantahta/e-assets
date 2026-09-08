@@ -246,6 +246,7 @@
 
                             {{ $transaction->keterangan }}
                         </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>

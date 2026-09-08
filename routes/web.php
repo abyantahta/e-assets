@@ -26,16 +26,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/transactions/fullsto', [TransactionController::class, 'exportSTO'])->name('transactions.fullsto');
         Route::get('/transactions/dailyreport', [TransactionController::class, 'dailyreport'])->name('transactions.dailyreport');
         Route::get('/transactions/dailyreportpage', [TransactionController::class, 'dailyreportpage'])->name('transactions.dailyreportpage');
-        Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
         Route::put('/transactions/{transaction}', [TransactionController::class, 'update'])->name('transactions.update');
         Route::delete('/transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
-        Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
         Route::get('/transactions/{transaction}/edit', [TransactionController::class, 'edit'])->name('transactions.edit');
         Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
         Route::post('register', [RegisteredUserController::class, 'store']);
 
         Route::get('/items/export/departments', [ItemController::class, 'exportDepartments'])->name('items.export.departments');
         Route::post('/items/import/departments', [ItemController::class, 'importDepartments'])->name('items.import.departments');
+    });
+
+    Route::middleware(['permission:perform-sto'])->group(function () {
+        Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
+        Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
     });
 
     Route::middleware(['permission:manage-locations'])->group(function () {

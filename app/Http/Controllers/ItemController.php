@@ -49,7 +49,7 @@ class ItemController extends Controller
             "items" => ItemResource::collection($items),
             "queryParams" => request()->query() ?: null,
             "success" => session('success'),
-            "importResult" => session('importResult'),
+            "error" => session('error'),
             "categories"=> $categories,
         ]);
     }
@@ -76,6 +76,7 @@ class ItemController extends Controller
         return inertia("Items/Show", [
             "item" => ItemResource::collection($item),
             "transactions" => TransactionResource::collection($transactions),
+            "canSto" => $item[0]->isEligibleForSto() && (request()->user()?->hasPermission('perform-sto') ?? false),
         ]);
     }
 

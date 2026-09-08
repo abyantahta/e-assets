@@ -36,4 +36,23 @@ class Item extends Model
     }
     return $query;
 }
+
+    /**
+     * An item can be STO'd if it isn't disposed, and either has never been
+     * STO'd before or its last STO was more than a year ago.
+     */
+    public function isEligibleForSto(): bool
+    {
+        if ($this->disposal_date) {
+            return false;
+        }
+
+        $lastStoDate = $this->transactions()->max('created_at');
+
+        if (!$lastStoDate) {
+            return true;
+        }
+
+        return \Carbon\Carbon::parse($lastStoDate)->lt(now()->subYear());
+    }
 }

@@ -6,9 +6,9 @@ import { EyeIcon, PencilIcon, PlusIcon, XMarkIcon } from "@heroicons/react/16/so
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Show({ auth, item, transactions }) {
+export default function Show({ auth, item, transactions, canSto }) {
     const [showHistory, setShowHistory] = useState(null);
-    const { encrypted_no_asset, no_asset, name, category_id, disposal_date, lokasi, service_date, isNew, isSTO } = item.data[0];
+    const { encrypted_no_asset, no_asset, name, category_id, lokasi, service_date } = item.data[0];
     const viewHistory = () => {
         if (auth.user) {
             setShowHistory(true);
@@ -157,7 +157,7 @@ export default function Show({ auth, item, transactions }) {
                                         STO History
                                     </button>
                                 )}
-                                {!(isNew || disposal_date || isSTO) && (
+                                {canSto && (
                                     <Link
                                         href={route("transactions.show", `${encrypted_no_asset}_${no_asset}`)}
                                         className="py-2 mt-3 md:mt-0 md:py-1 w-full md:w-48 text-center hover:brightness-110 duration-150 bg-brownTheme text-white font-semibold flex items-center justify-center gap-2  rounded-md"

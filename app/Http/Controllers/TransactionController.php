@@ -76,7 +76,13 @@ class TransactionController extends Controller
     public function store(StoreTransactionRequest $request)
     {
         $data = $request->validated();
-        // dd($data);
+
+        $item = Item::findOrFail((int) $data['item_id']);
+        if (!$item->isEligibleForSto()) {
+            return to_route('items.index')
+                ->with('error', 'This item cannot be STO\'d yet (already STO\'d within the last year, or disposed)');
+        }
+
         $image = $data['image_path'] ?? null;
         if ($image) {
             $filename = Str::random(20) . str_replace(" ","",$image->getClientOriginalName());
@@ -95,7 +101,6 @@ class TransactionController extends Controller
         Transaction::create($data);
 
         $locationString = Location::where('id',$data["location_id"])->first();
-        $item = Item::where('id',(int)$data["item_id"]);
         $item->update([
             'isSTO'=> true,
             'lokasi'=> $locationString->location_name
@@ -212,10 +217,18 @@ class TransactionController extends Controller
         return Excel::download(new ExportFullSTO($category_id,$dateStart,$dateEnd), "STO Transactions.xlsx");
     }
     public function dailyReportPage(){
-        $users = User::select('id','name')->get();
+        $divisionInChargeJabatans = ['Section Head', 'Department Head'];
+
+        $divisionInChargeUsers = User::select('id','name')
+            ->whereHas('jabatan', fn ($query) => $query->whereIn('name', $divisionInChargeJabatans))
+            ->get();
+        $picUsers = User::select('id','name')
+            ->whereDoesntHave('jabatan', fn ($query) => $query->whereIn('name', $divisionInChargeJabatans))
+            ->get();
         $categories = Category::all();
         return inertia("Transactions/DailyReport", [
-            "users" => $users,
+            "divisionInChargeUsers" => $divisionInChargeUsers,
+            "picUsers" => $picUsers,
             "categories" => $categories,
         ]);
     }
@@ -225,7 +238,10 @@ class TransactionController extends Controller
         $date = request("date");
         
         $category = Category::where('id',request("kategori"))->first();
-        $transactions = Transaction::query()->whereDate("created_at",$date)->get();
+        $transactions = Transaction::query()
+            ->whereDate("created_at",$date)
+            ->whereHas('item', fn ($query) => $query->where('category_id', request("kategori")))
+            ->get();
         
         $pdf = Pdf::loadView('generateDailyReport',[
             "transactions" => TransactionResource::collection($transactions)->toJson(),

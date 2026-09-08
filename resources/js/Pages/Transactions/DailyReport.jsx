@@ -5,7 +5,7 @@ import { useState } from "react";
 import SelectInput from "@/Components/SelectInput";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/16/solid";
 
-const DailyReport = ({users, categories}) => {
+const DailyReport = ({divisionInChargeUsers, picUsers, categories}) => {
     const [PIC, setPIC] = useState(0);
     const [divisionInCharge, setdivisionInCharge] = useState(0);
     const [kategori, setKategori] = useState("");
@@ -63,7 +63,7 @@ const DailyReport = ({users, categories}) => {
                                         <option value="">
                                             Select Division in Charge Head
                                         </option>
-                                        {users.map((user) => (
+                                        {divisionInChargeUsers.map((user) => (
                                             <option key={user.id} value={user.id}>
                                                 {user.name}
                                             </option>
@@ -79,7 +79,7 @@ const DailyReport = ({users, categories}) => {
                                         onChange={(e) => setPIC(e.target.value)}
                                     >
                                         <option value="PIC">Select PIC</option>
-                                        {users.map((user) => (
+                                        {picUsers.map((user) => (
                                             <option key={user.id} value={user.id}>
                                                 {user.name}
                                             </option>
