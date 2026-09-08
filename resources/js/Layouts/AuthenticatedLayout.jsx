@@ -1,13 +1,17 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
+import HoverDropdown from "@/Components/HoverDropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import { isAdmin } from "@/utils/roles";
 import { PlusIcon } from "@heroicons/react/16/solid";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
+    const { auth } = usePage().props;
+    const user = auth.user;
+    const admin = isAdmin(auth);
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
     return (
@@ -54,6 +58,25 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Transactions
                                 </NavLink>
+                                {admin && (
+                                    <HoverDropdown
+                                        label="Master"
+                                        active={
+                                            route().current("locations.index") ||
+                                            route().current("departments.index") ||
+                                            route().current("jabatans.index") ||
+                                            route().current("users.index") ||
+                                            route().current("roles.index")
+                                        }
+                                        items={[
+                                            { href: route("locations.index"), label: "Lokasi" },
+                                            { href: route("departments.index"), label: "Department" },
+                                            { href: route("jabatans.index"), label: "Jabatan" },
+                                            { href: route("users.index"), label: "Users" },
+                                            { href: route("roles.index"), label: "Role" },
+                                        ]}
+                                    />
+                                )}
                             </div>
                         </div>
                         <div className=" hidden sm:ms-6 sm:flex sm:items-center ">
@@ -82,7 +105,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         </span>
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
-                                        {(user.role_id == 2) &&
+                                        {admin &&
                                         (
                                             <Link
                                                 href={route("register")}
@@ -180,6 +203,43 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Transactions
                         </ResponsiveNavLink>
+                        {admin && (
+                            <>
+                                <div className="px-3 pt-3 text-xs font-semibold uppercase text-gray-400">
+                                    Master
+                                </div>
+                                <ResponsiveNavLink
+                                    href={route("locations.index")}
+                                    active={route().current("locations.index")}
+                                >
+                                    Lokasi
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route("departments.index")}
+                                    active={route().current("departments.index")}
+                                >
+                                    Department
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route("jabatans.index")}
+                                    active={route().current("jabatans.index")}
+                                >
+                                    Jabatan
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route("users.index")}
+                                    active={route().current("users.index")}
+                                >
+                                    Users
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route("roles.index")}
+                                    active={route().current("roles.index")}
+                                >
+                                    Role
+                                </ResponsiveNavLink>
+                            </>
+                        )}
                     </div>
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
                         <div className="px-4">
@@ -191,7 +251,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
                         <div className="mt-3 space-y-1">
-                        {(user.role_id == 2) &&
+                        {admin &&
                                         (
                                             <Link
                                                 href={route("register")}

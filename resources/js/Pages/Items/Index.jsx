@@ -8,13 +8,15 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import useQueryParams from "@/hooks/useQueryParams";
 import { isAdmin } from "@/utils/roles";
 import {
+    ArrowDownTrayIcon,
     ArrowLeftStartOnRectangleIcon,
     ArrowPathIcon,
+    ArrowUpTrayIcon,
     Squares2X2Icon,
 } from "@heroicons/react/16/solid";
 import { Head, router, Link } from "@inertiajs/react";
 import moment from "moment-timezone";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Index({
     auth,
@@ -22,6 +24,7 @@ export default function Index({
     queryParams = null,
     loadingParams = null,
     success,
+    importResult,
     categories,
 }) {
     const [loadingSync, setLoadingSync] = useState(false);
@@ -53,6 +56,16 @@ export default function Index({
         setSuccessInfo(null);
     };
     const admin = isAdmin(auth);
+    const importDepartmentInputRef = useRef(null);
+    const onImportDepartmentFileChosen = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        router.post(
+            route("items.import.departments"),
+            { file },
+            { forceFormData: true, onFinish: () => (e.target.value = "") }
+        );
+    };
     return (
         <>
             <SyncStatusOverlay
@@ -76,6 +89,11 @@ export default function Index({
                     <div className="max-w-[90rem] mx-auto sm:px-6 lg:px-8">
                         <div className="bg-lightTheme dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg">
                             <div className="p-6 text-gray-900 dark:text-gray-100">
+                                {importResult && (
+                                    <div className="mb-4 rounded-md bg-green-100 px-4 py-2 text-green-800">
+                                        {importResult}
+                                    </div>
+                                )}
                                 <div className="flex flex-col-reverse gap-y-2 mb-4 lg:flex-row lg:justify-between">
                                     <div className="flex flex-col gap-y-2  w-full lg:flex-row lg:w-[50rem] gap-4">
                                         <SelectInput
@@ -147,6 +165,32 @@ export default function Index({
                                             <ArrowLeftStartOnRectangleIcon className="w-6" />
                                             Barcode
                                         </a>
+                                        {admin && (
+                                            <>
+                                                <a
+                                                    href={route("items.export.departments")}
+                                                    className="w-full lg:w-52 py-3 px-4 tracking-wide text-center bg-brownTheme font-bold flex items-center justify-center gap-2 text-white rounded-md hover:brightness-110 duration-150"
+                                                >
+                                                    <ArrowDownTrayIcon className="w-6" />
+                                                    Export for Dept
+                                                </a>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => importDepartmentInputRef.current?.click()}
+                                                    className="w-full lg:w-52 py-3 px-4 tracking-wide text-center bg-brownTheme font-bold flex items-center justify-center gap-2 text-white rounded-md hover:brightness-110 duration-150"
+                                                >
+                                                    <ArrowUpTrayIcon className="w-6" />
+                                                    Import Department
+                                                </button>
+                                                <input
+                                                    ref={importDepartmentInputRef}
+                                                    type="file"
+                                                    accept=".xlsx,.xls,.csv"
+                                                    className="hidden"
+                                                    onChange={onImportDepartmentFileChosen}
+                                                />
+                                            </>
+                                        )}
                                     </div>
                                     <TextInput
                                         className="w-full lg:w-56 border-gray-700 border-[3px] placeholder:italic text-greenTheme font-normal focus:border-greenTheme focus:ring-greenTheme placeholder:text-greenTheme"

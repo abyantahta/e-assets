@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportItemsForDepartment;
 use App\Exports\ExportUrl;
+use App\Imports\ImportItemDepartments;
 use App\Models\Item;
 use App\Http\Resources\ItemResource;
 use App\Http\Resources\TransactionResource;
 use App\Models\Category;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
 
@@ -46,6 +49,7 @@ class ItemController extends Controller
             "items" => ItemResource::collection($items),
             "queryParams" => request()->query() ?: null,
             "success" => session('success'),
+            "importResult" => session('importResult'),
             "categories"=> $categories,
         ]);
     }
@@ -77,5 +81,27 @@ class ItemController extends Controller
 
     public function exportUrl(){
         return Excel::download(new ExportUrl(), 'items.xlsx');
+    }
+
+    public function exportDepartments()
+    {
+        return Excel::download(new ExportItemsForDepartment(), 'items-department.xlsx');
+    }
+
+    public function importDepartments(Request $request)
+    {
+        $request->validate([
+            'file' => ['required', 'file', 'mimes:xlsx,xls,csv'],
+        ]);
+
+        $import = new ImportItemDepartments();
+        Excel::import($import, $request->file('file'));
+
+        $message = "{$import->updated} item(s) updated.";
+        if (!empty($import->skipped)) {
+            $message .= ' Skipped: ' . implode('; ', $import->skipped);
+        }
+
+        return to_route('items.index')->with('importResult', $message);
     }
 }

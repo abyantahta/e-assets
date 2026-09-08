@@ -1,20 +1,19 @@
-import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import GuestLayout from '@/Layouts/GuestLayout';
 import { Cog6ToothIcon, Cog8ToothIcon, EnvelopeIcon, KeyIcon, UserIcon, UserGroupIcon } from '@heroicons/react/16/solid';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 
-export default function Register({roles}) {
+export default function Register({roles, departments, jabatans, status}) {
     const {data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
         password: '',
-        position: '',
+        jabatan_id: '',
+        department_id: '',
         password_confirmation: '',
         role: '',
     });
@@ -118,22 +117,44 @@ export default function Register({roles}) {
 
                         </div>
                         <div className='flex gap-2 items-center px-3 py-1 mt-4 w-full rounded-xl shadow-md bg-opacity-15 !bg-white'>
-                            {/* <InputLabel htmlFor="email" value="Email" /> */}
-                            <InputLabel htmlFor="position" value="">
+                            <InputLabel htmlFor="jabatan_id" value="">
                                 <UserGroupIcon className='w-6 text-blackTheme' />
                             </InputLabel>
-                            <TextInput
-                                id="position"
-                                type="text"
-                                name="position"
-                                value={data.position}
-                                className="bg-transparent w-full outline-none border-none"
-                                placeholder="position"
-                                autoComplete="posiiton"
-                                isFocused={true}
-                                onChange={(e) => setData('position', e.target.value)}
-                            />
-                            <InputError message={errors.name} className="mt-2" />
+                            <SelectInput
+                                id="jabatan_id"
+                                name="jabatan_id"
+                                value={data.jabatan_id}
+                                className="outline-none italic border-none bg-transparent w-full focus:outline-none"
+                                onChange={(e) => setData('jabatan_id', e.target.value)}
+                            >
+                                <option value="">Select Jabatan</option>
+                                {
+                                    jabatans.map(jabatan=>(
+                                        <option key={jabatan.id} value={jabatan.id}>{jabatan.name}</option>
+                                    ))
+                                }
+                            </SelectInput>
+                            <InputError message={errors.jabatan_id} className="mt-2" />
+                        </div>
+                        <div className='flex gap-2 items-center px-3 py-1 mt-4 w-full rounded-xl shadow-md bg-opacity-15 !bg-white'>
+                            <InputLabel htmlFor="department_id" value="">
+                                <Cog6ToothIcon className='w-6 text-blackTheme' />
+                            </InputLabel>
+                            <SelectInput
+                                id="department_id"
+                                name="department_id"
+                                value={data.department_id}
+                                className="outline-none italic border-none bg-transparent w-full focus:outline-none"
+                                onChange={(e) => setData('department_id', e.target.value)}
+                            >
+                                <option value="">Select Department</option>
+                                {
+                                    departments.map(department=>(
+                                        <option key={department.id} value={department.id}>{department.name}</option>
+                                    ))
+                                }
+                            </SelectInput>
+                            <InputError message={errors.department_id} className="mt-2" />
                         </div>
                         <div className=" flex gap-2 items-center px-3 mt-5 w-full rounded-xl py-1 shadow-md bg-opacity-15 !bg-white">
                             <InputLabel htmlFor="role" value="">
@@ -172,95 +193,3 @@ export default function Register({roles}) {
         </AuthenticatedLayout>
     );
 }
-
-            // <h2>Create New User</h2>
-            // <form onSubmit={submit}>
-                // <div>
-                //     <InputLabel htmlFor="name" value="Name" />
-
-                //     <TextInput
-                //         id="name"
-                //         name="name"
-                //         value={data.name}
-                //         className="mt-1 block w-full"
-                //         autoComplete="name"
-                //         isFocused={true}
-                //         onChange={(e) => setData('name', e.target.value)}
-                //         required
-                //     />
-
-                //     <InputError message={errors.name} className="mt-2" />
-                // </div>
-
-            //     <div className="mt-4">
-            //         <InputLabel htmlFor="email" value="Email" />
-
-            //         <TextInput
-            //             id="email"
-            //             type="email"
-            //             name="email"
-            //             value={data.email}
-            //             className="mt-1 block w-full"
-            //             autoComplete="username"
-            //             onChange={(e) => setData('email', e.target.value)}
-            //             required
-            //         />
-
-            //         <InputError message={errors.email} className="mt-2" />
-            //     </div>
-
-            //     <div className="mt-4">
-            //         <InputLabel htmlFor="password" value="Password" />
-
-            //         <TextInput
-            //             id="password"
-            //             type="password"
-            //             name="password"
-            //             value={data.password}
-            //             className="mt-1 block w-full"
-            //             autoComplete="new-password"
-            //             onChange={(e) => setData('password', e.target.value)}
-            //             required
-            //         />
-
-            //         <InputError message={errors.password} className="mt-2" />
-            //     </div>
-
-            //     <div className="mt-4">
-            //         <InputLabel
-            //             htmlFor="password_confirmation"
-            //             value="Confirm Password"
-            //         />
-
-            //         <TextInput
-            //             id="password_confirmation"
-            //             type="password"
-            //             name="password_confirmation"
-            //             value={data.password_confirmation}
-            //             className="mt-1 block w-full"
-            //             autoComplete="new-password"
-            //             onChange={(e) =>
-            //                 setData('password_confirmation', e.target.value)
-            //             }
-            //             required
-            //         />
-
-            //         <InputError
-            //             message={errors.password_confirmation}
-            //             className="mt-2"
-            //         />
-            //     </div>
-
-            //     <div className="mt-4 flex items-center justify-end">
-            //         <Link
-            //             href={route('register')}
-            //             className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-greenTheme focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-            //         >
-            //             Already registered?
-            //         </Link>
-
-            //         <PrimaryButton className="ms-4" disabled={processing}>
-            //             Register
-            //         </PrimaryButton>
-            //     </div>
-            // </form>

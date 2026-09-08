@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Item;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -25,7 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        'position',
+        'department_id',
+        'jabatan_id',
     ];
     public function getActivitylogOptions(): LogOptions
     {
@@ -59,8 +58,21 @@ class User extends Authenticatable
     }
     public function role()
     {
-        return $this->belongsTo(Category::class, 'role_id');
+        return $this->belongsTo(Role::class, 'role_id');
     }
 
-    
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
+
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan_id');
+    }
+
+    public function hasPermission(string $key): bool
+    {
+        return $this->role !== null && $this->role->hasPermission($key);
+    }
 }

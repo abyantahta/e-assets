@@ -17,6 +17,10 @@ class Item extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
     public function transactions()
     {
         return $this->hasMany(Transaction::class, 'item_id');

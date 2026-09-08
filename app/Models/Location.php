@@ -9,6 +9,8 @@ class Location extends Model
 {
     /** @use HasFactory<\Database\Factories\LocationFactory> */
     use HasFactory;
+    protected $fillable = ['location_name'];
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class, 'location_id');
