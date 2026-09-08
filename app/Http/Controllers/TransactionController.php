@@ -219,10 +219,10 @@ class TransactionController extends Controller
     public function dailyReportPage(){
         $divisionInChargeJabatans = ['Section Head', 'Department Head'];
 
-        $divisionInChargeUsers = User::select('id','name')
+        $divisionInChargeUsers = User::select('id','name','department_id')
             ->whereHas('jabatan', fn ($query) => $query->whereIn('name', $divisionInChargeJabatans))
             ->get();
-        $picUsers = User::select('id','name')
+        $picUsers = User::select('id','name','department_id')
             ->whereDoesntHave('jabatan', fn ($query) => $query->whereIn('name', $divisionInChargeJabatans))
             ->get();
         $categories = Category::all();

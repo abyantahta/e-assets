@@ -10,6 +10,19 @@ const DailyReport = ({divisionInChargeUsers, picUsers, categories}) => {
     const [divisionInCharge, setdivisionInCharge] = useState(0);
     const [kategori, setKategori] = useState("");
     const [date, setDate] = useState(new Date().toISOString().substr(0, 10));
+
+    const selectedDivisionInCharge = divisionInChargeUsers.find(
+        (user) => String(user.id) === String(divisionInCharge)
+    );
+    const filteredPicUsers = selectedDivisionInCharge
+        ? picUsers.filter((user) => user.department_id === selectedDivisionInCharge.department_id)
+        : picUsers;
+
+    const onDivisionInChargeChange = (value) => {
+        setdivisionInCharge(value);
+        setPIC(0);
+    };
+
     const onSubmit = (e) => {
         e.preventDefault();
         router.get(route("transactions.dailyreport"), { PIC, divisionInCharge, kategori, date });
@@ -57,7 +70,7 @@ const DailyReport = ({divisionInChargeUsers, picUsers, categories}) => {
                                     	id = "divisionInCharge"
                                         className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
                                         onChange={(e) =>
-                                            setdivisionInCharge(e.target.value)
+                                            onDivisionInChargeChange(e.target.value)
                                         }
                                     >
                                         <option value="">
@@ -76,10 +89,11 @@ const DailyReport = ({divisionInChargeUsers, picUsers, categories}) => {
                                         required
                                     	id = "pic"
                                         className="w-full outline-none cursor-pointer border-none bg-[#FFFEF5] shadow-[-3px_4px_14px_-5px_rgba(0,_0,_0,_0.1)] text-xl  !text-greenTheme  h-12"
+                                        value={PIC}
                                         onChange={(e) => setPIC(e.target.value)}
                                     >
                                         <option value="PIC">Select PIC</option>
-                                        {picUsers.map((user) => (
+                                        {filteredPicUsers.map((user) => (
                                             <option key={user.id} value={user.id}>
                                                 {user.name}
                                             </option>
