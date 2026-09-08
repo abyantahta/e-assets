@@ -265,8 +265,7 @@ export default function Index({
                                                             className={` ${
                                                                 item.isSTO
                                                                     ? "bg-greenTheme"
-                                                                    : item.disposal_date ||
-                                                                      item.isNew
+                                                                    : item.disposal_date
                                                                     ? "bg-gray-400"
                                                                     : "bg-red-400"
                                                             } hover:brightness-110 duration-200 p-1 w-fit font-bold text-white rounded-[0.25rem] flex items-center justify-center`}
