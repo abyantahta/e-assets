@@ -20,6 +20,13 @@ Route::post('/sync_qad_asset', [AssetController::class, 'store'])->name('syncqad
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
+// Registered before the /items/{encryptedId} wildcard below, since that
+// pattern would otherwise swallow this static path first (Laravel matches
+// routes in registration order).
+Route::get('/items/departments', [ItemController::class, 'departmentsPage'])
+    ->middleware(['auth', 'verified', 'permission:manage-departments'])
+    ->name('items.departments');
+
 Route::get('/items/{encryptedId}', [ItemController::class, 'show'])->name('items.show');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['admin'])->group(function () {
@@ -57,7 +64,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
         Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
 
-        Route::get('/items/departments', [ItemController::class, 'departmentsPage'])->name('items.departments');
         Route::get('/items/export/departments', [ItemController::class, 'exportDepartments'])->name('items.export.departments');
         Route::post('/items/import/departments', [ItemController::class, 'importDepartments'])->name('items.import.departments');
     });
