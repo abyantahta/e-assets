@@ -212,7 +212,7 @@ class TransactionController extends Controller
         return Excel::download(new ExportFullSTO($category_id,$dateStart,$dateEnd), "STO Transactions.xlsx");
     }
     public function dailyReportPage(){
-        $users = User::select('id','name','position')->get();
+        $users = User::select('id','name')->get();
         $categories = Category::all();
         return inertia("Transactions/DailyReport", [
             "users" => $users,
@@ -220,8 +220,8 @@ class TransactionController extends Controller
         ]);
     }
     public function dailyreport(){
-        $pic = User::select('name','position')->where('id',request("PIC"))->first();
-        $divisionInCharge = User::select('name','position')->where('id',request("divisionInCharge"))->first();
+        $pic = User::select('id','name')->where('id',request("PIC"))->first();
+        $divisionInCharge = User::with('jabatan')->select('id','name','jabatan_id')->where('id',request("divisionInCharge"))->first();
         $date = request("date");
         
         $category = Category::where('id',request("kategori"))->first();

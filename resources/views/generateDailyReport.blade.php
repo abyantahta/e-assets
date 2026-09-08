@@ -159,7 +159,7 @@
             <table style="font-size: 12px" class="tableHeader">
                 <tr class="">
                     <td style="min-width: 100px" class="tdTableHeader">Admin Dept. Head</td>
-                    <td style="min-width: 100px" class="tdTableHeader">{{ $divisionInCharge['position'] }}</td>
+                    <td style="min-width: 100px" class="tdTableHeader">{{ $divisionInCharge->jabatan?->name }}</td>
                     <td style="min-width: 100px" class="tdTableHeader">Asset Management</td>
                     {{-- <td style="min-width: 100px" class="tdTableHeader">{{ $stoAdmin['position']  }} </td> --}}
                     <td style="min-width: 100px" class="tdTableHeader">PIC</td>

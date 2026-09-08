@@ -95,9 +95,9 @@ export default function Index({
                                     </div>
                                 )}
                                 <div className="flex flex-col-reverse gap-y-2 mb-4 lg:flex-row lg:justify-between">
-                                    <div className="flex flex-col gap-y-2  w-full lg:flex-row lg:w-[50rem] gap-4">
+                                    <div className="flex flex-col gap-y-2  w-full lg:flex-row lg:flex-wrap gap-4">
                                         <SelectInput
-                                            className="w-full border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
+                                            className="w-full lg:w-40 border-gray-700 border-[3px] italic font-semibold focus:none ring:none text-greenTheme"
                                             defaultValue={params.category_id}
                                             onChange={(e) =>
                                                 searchFieldChanged(
@@ -117,7 +117,7 @@ export default function Index({
                                             ))}
                                         </SelectInput>
                                         <SelectInput
-                                            className="w-full border-gray-700 italic border-[3px] font-semibold focus:none ring:none text-greenTheme"
+                                            className="w-full lg:w-40 border-gray-700 italic border-[3px] font-semibold focus:none ring:none text-greenTheme"
                                             defaultValue={params.isDisposal}
                                             onChange={(e) =>
                                                 searchFieldChanged(
@@ -133,7 +133,7 @@ export default function Index({
                                             <option value="2">Deactive</option>
                                         </SelectInput>
                                         <SelectInput
-                                            className="w-full border-gray-700 italic border-[3px] font-semibold focus:none ring:none text-greenTheme"
+                                            className="w-full lg:w-40 border-gray-700 italic border-[3px] font-semibold focus:none ring:none text-greenTheme"
                                             defaultValue={params.sto_status}
                                             onChange={(e) =>
                                                 searchFieldChanged(

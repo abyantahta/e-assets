@@ -184,7 +184,7 @@ export default function Index({ locations, queryParams = null, success, error })
                         <SecondaryButton onClick={() => setShowCreateModal(false)}>
                             Cancel
                         </SecondaryButton>
-                        <PrimaryButton className="px-4 py-2" disabled={createForm.processing}>
+                        <PrimaryButton className="px-4 py-2 bg-greenTheme" disabled={createForm.processing}>
                             Save
                         </PrimaryButton>
                     </div>
@@ -211,7 +211,7 @@ export default function Index({ locations, queryParams = null, success, error })
                         <SecondaryButton onClick={() => setEditingLocation(null)}>
                             Cancel
                         </SecondaryButton>
-                        <PrimaryButton className="px-4 py-2" disabled={editForm.processing}>
+                        <PrimaryButton className="px-4 py-2 bg-greenTheme" disabled={editForm.processing}>
                             Save
                         </PrimaryButton>
                     </div>

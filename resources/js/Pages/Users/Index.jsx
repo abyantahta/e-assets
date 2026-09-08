@@ -227,7 +227,7 @@ export default function Index({ auth, users, roles, departments, jabatans, query
                         <SecondaryButton onClick={() => setEditingUser(null)}>
                             Cancel
                         </SecondaryButton>
-                        <PrimaryButton className="px-4 py-2" disabled={editForm.processing}>
+                        <PrimaryButton className="px-4 py-2 bg-greenTheme" disabled={editForm.processing}>
                             Save
                         </PrimaryButton>
                     </div>
