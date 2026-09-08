@@ -66,7 +66,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                             route().current("departments.index") ||
                                             route().current("jabatans.index") ||
                                             route().current("users.index") ||
-                                            route().current("roles.index")
+                                            route().current("roles.index") ||
+                                            route().current("items.departments")
                                         }
                                         items={[
                                             { href: route("locations.index"), label: "Lokasi" },
@@ -74,6 +75,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                             { href: route("jabatans.index"), label: "Jabatan" },
                                             { href: route("users.index"), label: "Users" },
                                             { href: route("roles.index"), label: "Role" },
+                                            { href: route("items.departments"), label: "Kategorisasi Item" },
                                         ]}
                                     />
                                 )}
@@ -237,6 +239,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current("roles.index")}
                                 >
                                     Role
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route("items.departments")}
+                                    active={route().current("items.departments")}
+                                >
+                                    Kategorisasi Item
                                 </ResponsiveNavLink>
                             </>
                         )}

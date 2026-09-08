@@ -84,6 +84,16 @@ class ItemController extends Controller
         return Excel::download(new ExportUrl(), 'items.xlsx');
     }
 
+    public function departmentsPage()
+    {
+        return inertia("ItemDepartments/Index", [
+            "totalItems" => Item::count(),
+            "itemsWithoutDepartment" => Item::whereNull('department_id')->count(),
+            "success" => session('success'),
+            "error" => session('error'),
+        ]);
+    }
+
     public function exportDepartments()
     {
         return Excel::download(new ExportItemsForDepartment(), 'items-department.xlsx');
@@ -99,10 +109,17 @@ class ItemController extends Controller
         Excel::import($import, $request->file('file'));
 
         $message = "{$import->updated} item(s) updated.";
+        if ($import->blank > 0) {
+            $message .= " {$import->blank} row(s) left blank (not filled in yet).";
+        }
         if (!empty($import->skipped)) {
-            $message .= ' Skipped: ' . implode('; ', $import->skipped);
+            $shown = array_slice($import->skipped, 0, 20);
+            $message .= ' Issues: ' . implode('; ', $shown);
+            if (count($import->skipped) > 20) {
+                $message .= ' ... and ' . (count($import->skipped) - 20) . ' more.';
+            }
         }
 
-        return to_route('items.index')->with('importResult', $message);
+        return to_route('items.departments')->with('success', $message);
     }
 }

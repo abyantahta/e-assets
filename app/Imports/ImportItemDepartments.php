@@ -12,6 +12,12 @@ class ImportItemDepartments implements ToCollection, WithHeadingRow
 {
     public int $updated = 0;
 
+    /**
+     * Rows left with a blank department column - expected when filling the
+     * sheet in gradually, not treated as an error.
+     */
+    public int $blank = 0;
+
     /** @var list<string> */
     public array $skipped = [];
 
@@ -29,7 +35,7 @@ class ImportItemDepartments implements ToCollection, WithHeadingRow
             }
 
             if ($departmentName === '') {
-                $this->skipped[] = "Row {$rowNumber} ({$noAsset}): no department given";
+                $this->blank++;
                 continue;
             }
 

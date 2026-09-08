@@ -31,9 +31,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/transactions/{transaction}/edit', [TransactionController::class, 'edit'])->name('transactions.edit');
         Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
         Route::post('register', [RegisteredUserController::class, 'store']);
-
-        Route::get('/items/export/departments', [ItemController::class, 'exportDepartments'])->name('items.export.departments');
-        Route::post('/items/import/departments', [ItemController::class, 'importDepartments'])->name('items.import.departments');
     });
 
     Route::middleware(['permission:perform-sto'])->group(function () {
@@ -59,6 +56,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
         Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
         Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+
+        Route::get('/items/departments', [ItemController::class, 'departmentsPage'])->name('items.departments');
+        Route::get('/items/export/departments', [ItemController::class, 'exportDepartments'])->name('items.export.departments');
+        Route::post('/items/import/departments', [ItemController::class, 'importDepartments'])->name('items.import.departments');
     });
 
     Route::middleware(['permission:manage-jabatan'])->group(function () {
