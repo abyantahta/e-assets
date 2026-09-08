@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         if ($this->app->environment('production') || $this->app->environment('dev')) {
-            // URL::forceScheme('https');
+            URL::forceScheme('https');
         }
     }
     /**
@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-    	// $this->app['request']->server->set('HTTPS','on');
+    	$this->app['request']->server->set('HTTPS','on');
         Carbon::setLocale('id');
         date_default_timezone_set('Asia/Jakarta');
         Vite::prefetch(concurrency: 3);
